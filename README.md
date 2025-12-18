@@ -23,7 +23,7 @@ The frontend interacts with a backend API to fetch, update, and display data dyn
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/mulham-salem/Event-Management-System-.git
+git clone https://github.com/mulham-salem/Event-Management-System.git
 ````
 
 ### 2. Navigate to the frontend folder
