@@ -14,7 +14,7 @@ export const Footer: React.FC = () => {
     ];
 
     return (
-        <footer className="w-full border-t border-black/5 bg-gradient-to-br from-[#f9f7ff] via-[#efe8ff] to-[#e9f6ff] px-8 py-16 text-black">
+        <footer className="w-full border-t border-black/5 bg-gradient-to-br from-[#f9f7ff] via-[#efe8ff] to-[#e9f6ff] px-8 py-10 text-black ">
 
             {/* ===== Container centered ===== */}
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-14 sm:grid-cols-2 md:grid-cols-4">
@@ -121,7 +121,7 @@ export const Footer: React.FC = () => {
             </div>
 
             {/* ===== Divider ===== */}
-            <div className="mx-auto mt-14 max-w-6xl border-t border-black/10 pt-6 text-center">
+            <div className="mx-auto mt-10 max-w-6xl border-t border-black/10 pt-6 text-center">
                 <p className="font-nata-sans-rg text-sm text-black/60">
                     © 2025 ListEMO - All Rights Reserved.
                 </p>

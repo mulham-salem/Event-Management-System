@@ -15,6 +15,7 @@ export interface SignupPayload {
 
 export interface MeResponse {
   full_name: string;
+  role: string;
   email: string;
   phone: string;
   profile_picture: string;

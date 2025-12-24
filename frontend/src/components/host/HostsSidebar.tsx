@@ -29,12 +29,12 @@ export const HostsSidebar: React.FC<HostsSidebarProps> = ({
       initial={{ opacity: 0, x: -20 }}
       animate={{ opacity: 1, x: 0 }}
       transition={{ duration: 0.35, ease: "easeOut" }}
-      className="sticky top-40 rounded-[18px] bg-white p-6 shadow-[0_20px_40px_rgba(124,58,237,0.12)]"
+      className="sticky top-24 rounded-[18px] bg-white p-6 shadow-[0_20px_40px_rgba(124,58,237,0.12)]"
     >
       {/* Title */}
       <div className="mb-6 flex items-center justify-between">
         <h2 className="font-nata-sans-bd text-sm">Refine Results</h2>
-        <span className="rounded-full bg-violet-100 px-3 py-1 font-nata-sans-md text-[11px] text-violet-700">
+        <span className="rounded-full bg-violet-100 px-3 py-1 font-nata-sans-bd text-[11px] text-violet-700">
           Filters
         </span>
       </div>
@@ -56,40 +56,56 @@ export const HostsSidebar: React.FC<HostsSidebarProps> = ({
 
       {/* Rating */}
       <div className="mb-5">
-        <p className="mb-2 font-nata-sans-eb text-[11px] tracking-widest text-gray-500">
+        <p className="mb-3 font-nata-sans-eb text-[11px] tracking-widest text-gray-500">
           RATING
         </p>
 
-        <div className="flex flex-col gap-3">
-          <motion.input
-            whileFocus={{ scale: 1.02 }}
-            type="number"
-            value={filters.min_score ?? ""}
-            onChange={(e) =>
-              onChange({
-                min_score: e.target.value
-                  ? Number(e.target.value)
-                  : undefined,
-              })
-            }
-            placeholder="Min score"
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-violet-600 focus:bg-white focus:outline-none"
-          />
+        <div className="flex flex-col gap-4">
+          {/* Min Score */}
+          <div>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              type="number"
+              min={0}
+              max={5}
+              step={0.1}
+              value={filters.min_score ?? ""}
+              onChange={(e) =>
+                onChange({
+                  min_score: e.target.value
+                    ? Number(e.target.value)
+                    : undefined,
+                })
+              }
+              placeholder="e.g. 4.5"
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-violet-600 focus:bg-white focus:outline-none"
+            />
+            <p className="mt-1 text-[10px] text-gray-400">
+              Filter by average rating
+            </p>
+          </div>
 
-          <motion.input
-            whileFocus={{ scale: 1.02 }}
-            type="number"
-            value={filters.min_votes ?? ""}
-            onChange={(e) =>
-              onChange({
-                min_votes: e.target.value
-                  ? Number(e.target.value)
-                  : undefined,
-              })
-            }
-            placeholder="Min votes"
-            className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-violet-600 focus:bg-white focus:outline-none"
-          />
+          {/* Min Votes */}
+          <div>
+            <motion.input
+              whileFocus={{ scale: 1.02 }}
+              type="number"
+              min={0}
+              value={filters.min_votes ?? ""}
+              onChange={(e) =>
+                onChange({
+                  min_votes: e.target.value
+                    ? Number(e.target.value)
+                    : undefined,
+                })
+              }
+              placeholder="e.g. 100"
+              className="w-full rounded-xl border border-gray-200 bg-gray-50 px-4 py-2.5 text-sm focus:border-violet-600 focus:bg-white focus:outline-none"
+            />
+            <p className="mt-1 text-[10px] text-gray-400">
+              Minimum number of ratings
+            </p>
+          </div>
         </div>
       </div>
 

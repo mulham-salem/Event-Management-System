@@ -1,0 +1,114 @@
+import React from "react";
+import {
+  PlusCircle,
+  UserPlus,
+  Star,
+  Heart,
+  Building2,
+  CalendarDays,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+
+type Action = {
+  label: string;
+  description: string;
+  icon: React.ElementType;
+  iconBg: string;
+  iconColor: string;
+  path: string;
+};
+
+export const QuickActions: React.FC = () => {
+  const actions: Action[] = [
+    {
+      label: "New Registration",
+      description: "Add a new event registration",
+      icon: UserPlus,
+      iconBg: "bg-blue-100",
+      iconColor: "text-blue-600",
+      path: "/client/events",
+    },
+    {
+      label: "Rate Event",
+      description: "Submit an event rating",
+      icon: Heart,
+      iconBg: "bg-pink-100",
+      iconColor: "text-pink-600",
+      path: "/events",
+    },
+    {
+      label: "Venue Providers",
+      description: "Browse all venue providers",
+      icon: Building2,
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-600",
+      path: "/client/providers",
+    },
+    {
+      label: "New Booking",
+      description: "Create a new venue booking",
+      icon: PlusCircle,
+      iconBg: "bg-violet-100",
+      iconColor: "text-violet-600",
+      path: "/client/venues",
+    },
+    {
+      label: "Rate Venue",
+      description: "Submit a venue rating",
+      icon: Star,
+      iconBg: "bg-yellow-100",
+      iconColor: "text-yellow-600",
+      path: "/venues",
+    },
+    {
+      label: "Event Organizers",
+      description: "Browse event organizers",
+      icon: CalendarDays,
+      iconBg: "bg-indigo-100",
+      iconColor: "text-indigo-600",
+      path: "/client/organizers",
+    },
+  ];
+
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
+      <h3 className="mb-6 font-nata-sans-bd text-lg text-gray-800">
+        Quick Actions
+      </h3>
+
+      <div
+        className="grid gap-4 
+                  [grid-template-columns:repeat(auto-fit,minmax(290px,1fr))]"
+      >
+        {actions.map((action) => {
+          const Icon = action.icon;
+
+          return (
+            <Link
+              key={action.label}
+              to={action.path}
+              className="flex items-center justify-center gap-4 rounded-xl
+                         border-2 border-dashed border-gray-200 p-6
+                         text-left transition hover:bg-gray-50"
+            >
+              <div
+                className={`flex h-12 w-12 items-center justify-center rounded-lg ${action.iconBg}`}
+              >
+                <Icon className={`h-8 w-12 ${action.iconColor}`} />
+              </div>
+
+              <div>
+                <p className="font-nata-sans-md text-gray-800">
+                  {action.label}
+                </p>
+                <p className="whitespace-nowrap font-nata-sans-rg text-sm text-gray-500">
+                  {action.description}
+                </p>
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+};

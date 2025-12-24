@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ENV } from "../config/env";
+import { getToken } from "../utils/authToken";
 
 declare module "axios" {
     export interface AxiosRequestConfig {
@@ -17,7 +18,7 @@ const axiosClient = axios.create({
 // Request interceptor
 axiosClient.interceptors.request.use((config) => {
     if (!config.skipAuth) { // if skipAuth is not provided (skipAuth = false)
-        const token = localStorage.getItem("authToken");
+        const token = getToken();
         if (token) {
             (config.headers as any) = {
                 ...config.headers,

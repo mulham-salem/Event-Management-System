@@ -5,57 +5,67 @@
 /* ====== Custom Font Faces ====== */
 
 @font-face {
-    font-family: "NataSans-ExtraBold";
-    src: url('assets/fonts/Nata_Sans/static/NataSans-ExtraBold.ttf') format('truetype');
+  font-family: NataSans-ExtraBold;
+  src: url("assets/fonts/Nata_Sans/static/NataSans-ExtraBold.ttf")
+    format("truetype");
 }
 
 @font-face {
-    font-family: "NataSans-Bold";
-    src: url('assets/fonts/Nata_Sans/static/NataSans-Bold.ttf') format('truetype');
+  font-family: NataSans-Bold;
+  src: url("assets/fonts/Nata_Sans/static/NataSans-Bold.ttf") format("truetype");
 }
 
 @font-face {
-    font-family: "NataSans-Medium";
-    src: url('assets/fonts/Nata_Sans/static/NataSans-Medium.ttf') format('truetype');
+  font-family: NataSans-Medium;
+  src: url("assets/fonts/Nata_Sans/static/NataSans-Medium.ttf")
+    format("truetype");
 }
 
 @font-face {
-    font-family: "NataSans-Regular";
-    src: url('assets/fonts/Nata_Sans/static/NataSans-Regular.ttf') format('truetype');
+  font-family: NataSans-Regular;
+  src: url("assets/fonts/Nata_Sans/static/NataSans-Regular.ttf")
+    format("truetype");
 }
-
 
 /* ====== Custom SimpleBar Style ====== */
 
-.custom-scrollbar .simplebar-scrollbar:before {
-    background: linear-gradient(to bottom, #5021fc, #380d80);
-    border-radius: 6px;
-    transition: background 0.25s ease, box-shadow 0.25s ease;
-    transform: scaleY(0.8); /* تقصير */
-    transform-origin: center;
+.custom-scrollbar .simplebar-scrollbar::before {
+  background: linear-gradient(to bottom, #5021fc, #380d80);
+  border-radius: 6px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  transform: scaleY(0.8); /* تقصير */
+  transform-origin: center;
 }
 
-.custom-scrollbar .simplebar-scrollbar:hover:before {
-    background: linear-gradient(to bottom, #6112c2, #380e6b);
-    box-shadow: 0 0 14px rgba(65, 0, 255, 0.7);
+.custom-scrollbar .simplebar-scrollbar:hover::before {
+  background: linear-gradient(to bottom, #6112c2, #380e6b);
+  box-shadow: 0 0 14px rgb(65 0 255 / 70%);
 }
 
 .custom-scrollbar .simplebar-scrollbar {
-    width: 10px;
+  width: 10px;
 }
 
 .custom-scrollbar .simplebar-track.simplebar-vertical {
-    background: rgba(0, 0, 0, 0);
-    width: 10px;
-    border-radius: 20px;
+  background: rgb(0 0 0 / 0%);
+  width: 10px;
+  border-radius: 20px;
 }
 
 /* ====== Custom CSS Animation ====== */
 
 @keyframes gradient-x {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+  
+  100% {
+    background-position: 0 50%;
+  }
 }
 
 .animate-gradient-x {
@@ -72,5 +82,4 @@
 
 .hide-date-icon {
   appearance: none;
-  -moz-appearance: textfield;
 }

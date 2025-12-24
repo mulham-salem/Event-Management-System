@@ -1,6 +1,8 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { authApi, type LoginPayload, type SignupPayload } from "../api/auth";
+import { setToken, removeToken } from "../utils/authToken";
+import { setRole, removeRole } from "../utils/authRole";
 
 export const useLogin = () => {
   const navigate = useNavigate();
@@ -10,11 +12,11 @@ export const useLogin = () => {
     mutationFn: (data: LoginPayload) => authApi.login(data),
     onSuccess: (data) => {
       if (data.access) {
-        localStorage.setItem("authToken", data.access);
+        setToken(data.access);
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
-      if (data.role) localStorage.setItem("currentRole", data.role);
-      navigate("/dashboard");
+      if (data.role) setRole(data.role);
+      navigate("/client/dashboard", { replace: true });
     },
   });
 };
@@ -27,11 +29,11 @@ export const useSignup = () => {
     mutationFn: (data: SignupPayload) => authApi.signup(data),
     onSuccess: (data) => {
       if (data.access) {
-        localStorage.setItem("authToken", data.access);
+        setToken(data.access);
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
-      if (data.role) localStorage.setItem("currentRole", data.role);
-      navigate("/dashboard");
+      if (data.role) setRole(data.role);;
+      navigate("/client/dashboard", { replace: true });
     },
   });
 };
@@ -41,7 +43,6 @@ export const useMe = () => {
     queryKey: ["me"],
     queryFn: authApi.me,
     staleTime: 1000 * 60 * 5, // 5 دقائق
-    retry: false, // لو فشل ما يعيد
   });
 };
 
@@ -50,14 +51,11 @@ export const useLogout = () => {
   const navigate = useNavigate();
 
   const logout = () => {
-    // 1️⃣ حذف التوكن
-    localStorage.removeItem("authToken");
-    localStorage.removeItem("currentRole");
+    removeToken();
+    removeRole();
 
-    // 2️⃣ مسح كل كاش اليوزر
     queryClient.removeQueries({ queryKey: ["me"] });
 
-    // 3️⃣ إعادة توجيه
     navigate("/", { replace: true });
   };
 

@@ -15,7 +15,7 @@ declare global {
 window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 
 
-// Development only, Run MSW
+// Development only, Run MSW 
 if (import.meta.env.DEV) {
     const { worker } = await import("./mocks/browser");
     // void worker.start();

@@ -5,6 +5,17 @@ import type { EventsResponse } from "../api/events";
 import type { VenueItem } from "../api/venues.ts";
 import type { VenueDetails } from "../api/venues.ts";
 import type { Host } from "../api/hosts.ts";
+import { v4 as uuid } from "uuid";
+import type {
+  CreateBookingPayload,
+  UpdateBookingPayload,
+  Venue,
+} from "../api/bookings";
+import type {
+  CreateRegistrationPayload,
+  UpdateRegistrationPayload,
+  Event,
+} from "../api/registrations";
 
 // ===== RANDOM HELPERS =====
 const random = (arr: any[]) => arr[Math.floor(Math.random() * arr.length)];
@@ -50,11 +61,11 @@ const mockEvents: EventsResponse = {
     start_time: randomTime(),
     end_time: randomTime(),
     organizer: {
-        id: i + 1,
-        email: "",
-        full_name: "",
-        phone: ""
-    }
+      id: i + 1,
+      email: "",
+      full_name: "",
+      phone: "",
+    },
   })),
   total: 50,
   page: 1,
@@ -193,6 +204,7 @@ mockVenues.forEach((v) => {
 // Mock user (current logged-in user)
 const mockMe = {
   full_name: "Mulham Al-Hakim",
+  role: "client",
   email: "mulham@example.com",
   phone: "+963999888777",
   profile_picture: "https://api.dicebear.com/7.x/avataaars/svg?seed=mulham",
@@ -209,10 +221,179 @@ const allHosts: Host[] = Array.from({ length: 50 }).map((_, i) => ({
   votes_count: Math.floor(Math.random() * 50),
 }));
 
+// Mock recent activity dashboard
+const recentActivity = [
+  {
+    id: 1,
+    type: "booking",
+    title: "New booking created",
+    description: "Wedding Event at Royal Hall",
+    time: "2 hours ago",
+  },
+  {
+    id: 2,
+    type: "registration",
+    title: "New registration",
+    description: "John Doe registered for Tech Conference",
+    time: "5 hours ago",
+  },
+  {
+    id: 3,
+    type: "venue_rating",
+    title: "Venue rated",
+    description: "Royal Hall received a 5-star rating",
+    time: "1 day ago",
+  },
+  {
+    id: 4,
+    type: "event_rating",
+    title: "Event rated",
+    description: "Tech Conference rated by attendee",
+    time: "2 days ago",
+  },
+];
+
+// Mock bookings
+const statuses = ["pending", "confirmed", "cancelled", "completed"];
+
+const venues: Venue[] = [
+  {
+    id: "venue-1",
+    name: "Main Conference Hall",
+    description: "Large indoor venue for conferences",
+  },
+  {
+    id: "venue-2",
+    name: "Open Air Arena",
+    description: "Outdoor venue for concerts and festivals",
+  },
+  {
+    id: "venue-3",
+    name: "Meeting Room A",
+    description: "Small private room for workshops",
+  },
+  {
+    id: "venue-4",
+    name: "Design Workshop",
+    description: "Community gathering",
+  },
+  {
+    id: "venue-5",
+    name: "Business Forum",
+    description: "Annual professional event",
+  },
+];
+
+let bookings = Array.from({ length: 10 }).map(() => ({
+  id: uuid(),
+  venue: random(venues),
+  date: randomDate(),
+  start_time: randomTime(),
+  end_time: randomTime(),
+  notes: Math.random() > 0.5 ? "Special requirements" : "",
+  status: random(statuses),
+  created_at: new Date(
+    Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 7
+  ).toISOString(),
+}));
+
+const bookingApplySearchAndOrdering = (
+  data: typeof bookings,
+  search?: string,
+  ordering?: string
+) => {
+  let result = [...data];
+
+  if (search) {
+    result = result.filter(
+      (b) =>
+        b.venue.name.toLowerCase().includes(search.toLowerCase()) ||
+        b.venue.description.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  if (ordering) {
+    const isDesc = ordering.startsWith("-");
+    const field = isDesc ? ordering.slice(1) : ordering;
+
+    result.sort((a: any, b: any) => {
+      if (a[field] < b[field]) return isDesc ? 1 : -1;
+      if (a[field] > b[field]) return isDesc ? -1 : 1;
+      return 0;
+    });
+  }
+
+  return result;
+};
+
+// Mock Registerations
+const events: Event[] = [
+  {
+    id: "event-1",
+    name: "Tech Conference",
+    description: "Annual technology conference",
+  },
+  {
+    id: "event-2",
+    name: "Music Festival",
+    description: "Live music festival",
+  },
+  {
+    id: "event-3",
+    name: "Startup Meetup",
+    description: "Networking for startups",
+  },
+];
+
+/* ================= Registrations ================= */
+
+let registrations = Array.from({ length: 10 }).map(() => ({
+  id: uuid(),
+  event: random(events),
+  date: randomDate(),
+  start_time: randomTime(),
+  end_time: randomTime(),
+  notes: Math.random() > 0.5 ? "Looking forward to this event" : "",
+  status: random(statuses),
+  created_at: new Date(
+    Date.now() - Math.random() * 1000 * 60 * 60 * 24 * 7
+  ).toISOString(),
+}));
+
+/* ================= Utils ================= */
+
+const RegisterationApplySearchAndOrdering = (
+  data: typeof registrations,
+  search?: string,
+  ordering?: string
+) => {
+  let result = [...data];
+
+  if (search) {
+    result = result.filter(
+      (r) =>
+        r.event.title.toLowerCase().includes(search.toLowerCase()) ||
+        r.event.description.toLowerCase().includes(search.toLowerCase())
+    );
+  }
+
+  if (ordering) {
+    const isDesc = ordering.startsWith("-");
+    const field = isDesc ? ordering.slice(1) : ordering;
+
+    result.sort((a: any, b: any) => {
+      if (a[field] < b[field]) return isDesc ? 1 : -1;
+      if (a[field] > b[field]) return isDesc ? -1 : 1;
+      return 0;
+    });
+  }
+
+  return result;
+};
+
 // ===== HANDLERS =====
 export const handlers = [
-
-  // Login Handlers
+  // Login Handler
   http.post(`${ENV.API_BASE_URL}/auth/login`, async ({ request }) => {
     const body = (await request.json()) as {
       email: string;
@@ -250,7 +431,7 @@ export const handlers = [
     });
   }),
 
-  // Me Handlers
+  // Me Handler
   http.get(`${ENV.API_BASE_URL}/auth/me`, ({ request }) => {
     const authHeader = request.headers.get("authorization");
 
@@ -263,7 +444,7 @@ export const handlers = [
     return HttpResponse.json(mockMe, { status: 200 });
   }),
 
-  // Events with Filters Handlers
+  // Events with Filters Handler
   http.get(`${ENV.API_BASE_URL}/events/public`, ({ request }) => {
     const url = new URL(request.url);
 
@@ -299,8 +480,8 @@ export const handlers = [
 
     // organizer
     if (organizerId) {
-        const idNum = Number(organizerId);
-        filtered = filtered.filter((e) => e.organizer.id === idNum);
+      const idNum = Number(organizerId);
+      filtered = filtered.filter((e) => e.organizer.id === idNum);
     }
 
     // ordering
@@ -320,7 +501,7 @@ export const handlers = [
     });
   }),
 
-  // Specific Event Handlers
+  // Specific Event Handler
   http.get(`${ENV.API_BASE_URL}/events/public/:id`, ({ params }) => {
     const id = params.id as string;
 
@@ -331,7 +512,7 @@ export const handlers = [
     return HttpResponse.json(mockEventDetails[id], { status: 200 });
   }),
 
-  // Venues with Filters Handlers
+  // Venues with Filters Handler
   http.get(`${ENV.API_BASE_URL}/venues/public`, async ({ request }) => {
     const url = new URL(request.url);
 
@@ -368,8 +549,8 @@ export const handlers = [
 
     // provider
     if (providerId) {
-        const idNum = Number(providerId);
-        filtered = filtered.filter((e) => e.provider.id === idNum);
+      const idNum = Number(providerId);
+      filtered = filtered.filter((e) => e.provider.id === idNum);
     }
 
     // Ordering
@@ -397,7 +578,7 @@ export const handlers = [
     });
   }),
 
-  // Specific Venue Handlers
+  // Specific Venue Handler
   http.get(`${ENV.API_BASE_URL}/venues/public/:id`, async ({ params }) => {
     const id = params.id as string;
     const venue = mockVenueDetails[id];
@@ -406,139 +587,136 @@ export const handlers = [
     return HttpResponse.json(venue);
   }),
 
-  // Organizers Handlers
+  // Organizers Handler
   http.get(`${ENV.API_BASE_URL}/auth/organizers`, async ({ request }) => {
-      const url = new URL(request.url);
+    const url = new URL(request.url);
 
-      const search = url.searchParams.get("search");
-      const minScore = Number(url.searchParams.get("min_score"));
-      const minVotes = Number(url.searchParams.get("min_votes"));
-      const ordering = url.searchParams.get("ordering");
-      const page = Number(url.searchParams.get("page") || 1);
-      const pageSize = Number(url.searchParams.get("page_size") || 10);
+    const search = url.searchParams.get("search");
+    const minScore = Number(url.searchParams.get("min_score"));
+    const minVotes = Number(url.searchParams.get("min_votes"));
+    const ordering = url.searchParams.get("ordering");
+    const page = Number(url.searchParams.get("page") || 1);
+    const pageSize = Number(url.searchParams.get("page_size") || 10);
 
-      let filtered = allHosts.filter((h) => h.role === "organizer");
+    let filtered = allHosts.filter((h) => h.role === "organizer");
 
-      // 🔍 Search
-      if (search) {
-        filtered = filtered.filter(
-          (h) =>
-            h.full_name.toLowerCase().includes(search.toLowerCase()) ||
-            h.email.toLowerCase().includes(search.toLowerCase())
-        );
-      }
-
-      // ⭐ Min score
-      if (!isNaN(minScore)) {
-        filtered = filtered.filter((h) => h.votes_score >= minScore);
-      }
-
-      // 🗳 Min votes
-      if (!isNaN(minVotes)) {
-        filtered = filtered.filter((h) => h.votes_count >= minVotes);
-      }
-
-      // 🔃 Ordering
-      if (ordering === "-votes_score") {
-        filtered.sort((a, b) => b.votes_score - a.votes_score);
-      }
-
-      if (ordering === "-votes_count") {
-        filtered.sort((a, b) => b.votes_count - a.votes_count);
-      }
-
-      if (ordering === "-created_at") {
-        filtered.sort(
-          (a, b) =>
-            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-        );
-      }
-
-      // 📄 Pagination
-      const total = filtered.length;
-      const start = (page - 1) * pageSize;
-      const results = filtered.slice(start, start + pageSize);
-
-      return HttpResponse.json({
-        total,
-        page,
-        page_size: pageSize,
-        results,
-      });
+    // 🔍 Search
+    if (search) {
+      filtered = filtered.filter(
+        (h) =>
+          h.full_name.toLowerCase().includes(search.toLowerCase()) ||
+          h.email.toLowerCase().includes(search.toLowerCase())
+      );
     }
-  ),
 
-  // Providers Handlers
+    // ⭐ Min score
+    if (!isNaN(minScore)) {
+      filtered = filtered.filter((h) => h.votes_score >= minScore);
+    }
+
+    // 🗳 Min votes
+    if (!isNaN(minVotes)) {
+      filtered = filtered.filter((h) => h.votes_count >= minVotes);
+    }
+
+    // 🔃 Ordering
+    if (ordering === "-votes_score") {
+      filtered.sort((a, b) => b.votes_score - a.votes_score);
+    }
+
+    if (ordering === "-votes_count") {
+      filtered.sort((a, b) => b.votes_count - a.votes_count);
+    }
+
+    if (ordering === "-created_at") {
+      filtered.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    }
+
+    // 📄 Pagination
+    const total = filtered.length;
+    const start = (page - 1) * pageSize;
+    const results = filtered.slice(start, start + pageSize);
+
+    return HttpResponse.json({
+      total,
+      page,
+      page_size: pageSize,
+      results,
+    });
+  }),
+
+  // Providers Handler
   http.get(`${ENV.API_BASE_URL}/auth/providers`, async ({ request }) => {
-        const url = new URL(request.url);
+    const url = new URL(request.url);
 
-        const search = url.searchParams.get("search");
-        const minScore = Number(url.searchParams.get("min_score"));
-        const minVotes = Number(url.searchParams.get("min_votes"));
-        const ordering = url.searchParams.get("ordering");
-        const page = Number(url.searchParams.get("page") || 1);
-        const pageSize = Number(url.searchParams.get("page_size") || 10);
+    const search = url.searchParams.get("search");
+    const minScore = Number(url.searchParams.get("min_score"));
+    const minVotes = Number(url.searchParams.get("min_votes"));
+    const ordering = url.searchParams.get("ordering");
+    const page = Number(url.searchParams.get("page") || 1);
+    const pageSize = Number(url.searchParams.get("page_size") || 10);
 
-        let filtered = allHosts.filter((h) => h.role === "provider");
+    let filtered = allHosts.filter((h) => h.role === "provider");
 
-        // 🔍 Search
-        if (search) {
-          filtered = filtered.filter(
-              (h) =>
-                  h.full_name.toLowerCase().includes(search.toLowerCase()) ||
-                  h.email.toLowerCase().includes(search.toLowerCase())
-          );
-        }
+    // 🔍 Search
+    if (search) {
+      filtered = filtered.filter(
+        (h) =>
+          h.full_name.toLowerCase().includes(search.toLowerCase()) ||
+          h.email.toLowerCase().includes(search.toLowerCase())
+      );
+    }
 
-        // ⭐ Min score
-        if (!isNaN(minScore)) {
-          filtered = filtered.filter((h) => h.votes_score >= minScore);
-        }
+    // ⭐ Min score
+    if (!isNaN(minScore)) {
+      filtered = filtered.filter((h) => h.votes_score >= minScore);
+    }
 
-        // 🗳 Min votes
-        if (!isNaN(minVotes)) {
-          filtered = filtered.filter((h) => h.votes_count >= minVotes);
-        }
+    // 🗳 Min votes
+    if (!isNaN(minVotes)) {
+      filtered = filtered.filter((h) => h.votes_count >= minVotes);
+    }
 
-        // 🔃 Ordering
-        if (ordering === "-votes_score") {
-          filtered.sort((a, b) => b.votes_score - a.votes_score);
-        }
+    // 🔃 Ordering
+    if (ordering === "-votes_score") {
+      filtered.sort((a, b) => b.votes_score - a.votes_score);
+    }
 
-        if (ordering === "-votes_count") {
-          filtered.sort((a, b) => b.votes_count - a.votes_count);
-        }
+    if (ordering === "-votes_count") {
+      filtered.sort((a, b) => b.votes_count - a.votes_count);
+    }
 
-        if (ordering === "-created_at") {
-          filtered.sort(
-              (a, b) =>
-                  new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-          );
-        }
+    if (ordering === "-created_at") {
+      filtered.sort(
+        (a, b) =>
+          new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      );
+    }
 
-        // 📄 Pagination
-        const total = filtered.length;
-        const start = (page - 1) * pageSize;
-        const results = filtered.slice(start, start + pageSize);
+    // 📄 Pagination
+    const total = filtered.length;
+    const start = (page - 1) * pageSize;
+    const results = filtered.slice(start, start + pageSize);
 
-        return HttpResponse.json({
-          total,
-          page,
-          page_size: pageSize,
-          results,
-        });
-      }
-  ),
+    return HttpResponse.json({
+      total,
+      page,
+      page_size: pageSize,
+      results,
+    });
+  }),
 
-  // Votes Handlers
+  // Votes Handler
   http.post(`${ENV.API_BASE_URL}/general/votes`, async ({ request }) => {
     const body = (await request.json()) as {
       target_user: number;
       value: 1 | -1;
     };
 
-    const host =
-        allHosts.find((h) => h.id === body.target_user);
+    const host = allHosts.find((h) => h.id === body.target_user);
 
     if (!host) {
       return HttpResponse.json({ message: "Host not found" }, { status: 404 });
@@ -554,5 +732,213 @@ export const handlers = [
       value: body.value,
       created_at: new Date().toISOString(),
     });
+  }),
+
+  // Client Dashboard Stats Handler
+  http.get(`${ENV.API_BASE_URL}/dashboard/stats`, async () => {
+    return HttpResponse.json({
+      totalBookings: 1248,
+      registrations: 856,
+      venueRatings: 342,
+      eventRatings: 128,
+      eventOrganizers: 24,
+      venueProviders: 12,
+    });
+  }),
+
+  // Client Dashboard Recent Activity Handler
+  http.get(`${ENV.API_BASE_URL}/dashboard/recent-activity`, async () => {
+    return HttpResponse.json(recentActivity);
+  }),
+
+  // Get Bookings Handler
+  http.get(`${ENV.API_BASE_URL}/venues/bookings`, ({ request }) => {
+    const url = new URL(request.url);
+    const search = url.searchParams.get("search") || undefined;
+    const ordering = url.searchParams.get("ordering") || undefined;
+
+    const result = bookingApplySearchAndOrdering(bookings, search, ordering);
+
+    return HttpResponse.json(result);
+  }),
+
+  // Create Booking Handler
+  http.post(`${ENV.API_BASE_URL}/venues/bookings`, async ({ request }) => {
+    const body = (await request.json()) as CreateBookingPayload;
+
+    const newBooking = {
+      id: uuid(),
+      venue: {
+        id: body.venue,
+        name: "Main Conference Hall",
+        description: "Large indoor venue for conferences",
+      },
+      status: "pending",
+      created_at: new Date().toISOString(),
+      date: body.date,
+      start_time: body.start_time,
+      end_time: body.end_time,
+      notes: body.notes || "",
+    };
+
+    bookings.unshift(newBooking);
+
+    return HttpResponse.json(newBooking, { status: 201 });
+  }),
+
+  // Update Booking Handler
+  http.put(
+    `${ENV.API_BASE_URL}/venues/bookings/:id`,
+    async ({ params, request }) => {
+      const { id } = params as { id: string };
+      const body = (await request.json()) as UpdateBookingPayload;
+
+      const index = bookings.findIndex((b) => b.id === id);
+
+      if (index === -1) {
+        return HttpResponse.json(
+          { message: "Booking not found" },
+          { status: 404 }
+        );
+      }
+
+      const updatedBooking = {
+        ...bookings[index],
+        ...body,
+      };
+
+      if (typeof body.venue === "string") {
+        const venueObj = venues.find((v) => v.id === body.venue);
+
+        if (!venueObj) {
+          return HttpResponse.json(
+            { message: "Venue not found" },
+            { status: 400 }
+          );
+        }
+
+        updatedBooking.venue = venueObj;
+      }
+
+      bookings[index] = updatedBooking;
+
+      return HttpResponse.json(bookings[index]);
+    }
+  ),
+
+  // Delete Booking Handler
+  http.delete(`${ENV.API_BASE_URL}/venues/bookings/:id`, ({ params }) => {
+    const { id } = params as { id: string };
+
+    const exists = bookings.some((b) => b.id === id);
+
+    if (!exists) {
+      return HttpResponse.json(
+        { message: "Booking not found" },
+        { status: 404 }
+      );
+    }
+
+    bookings = bookings.filter((b) => b.id !== id);
+
+    return HttpResponse.json(null, { status: 204 });
+  }),
+
+  // Get Registrations Handler
+  http.get(`${ENV.API_BASE_URL}/events/registrations`, ({ request }) => {
+    const url = new URL(request.url);
+    const search = url.searchParams.get("search") || undefined;
+    const ordering = url.searchParams.get("ordering") || undefined;
+
+    const result = RegisterationApplySearchAndOrdering(
+      registrations,
+      search,
+      ordering
+    );
+
+    return HttpResponse.json(result);
+  }),
+
+  // Create Registration Handler
+  http.post(`${ENV.API_BASE_URL}/events/registrations`, async ({ request }) => {
+    const body = (await request.json()) as CreateRegistrationPayload;
+
+    const eventObj = events.find((e) => e.id === body.event);
+
+    if (!eventObj) {
+      return HttpResponse.json({ message: "Event not found" }, { status: 400 });
+    }
+
+    const newRegistration = {
+      id: uuid(),
+      event: eventObj,
+      status: "pending",
+      created_at: new Date().toISOString(),
+      date: body.date,
+      start_time: body.start_time,
+      end_time: body.end_time,
+      notes: body.notes || "",
+    };
+
+    registrations.unshift(newRegistration);
+
+    return HttpResponse.json(newRegistration, { status: 201 });
+  }),
+
+  // Update Registration Handler
+  http.put(`${ENV.API_BASE_URL}/events/registrations/:id`,
+    async ({ params, request }) => {
+      const { id } = params as { id: string };
+      const body = (await request.json()) as UpdateRegistrationPayload;
+
+      const index = registrations.findIndex((r) => r.id === id);
+
+      if (index === -1) {
+        return HttpResponse.json(
+          { message: "Registration not found" },
+          { status: 404 }
+        );
+      }
+
+      const updatedRegistration = {
+        ...registrations[index],
+        ...body,
+      };
+
+      if (typeof body.event === "string") {
+        const eventObj = events.find((e) => e.id === body.event);
+
+        if (!eventObj) {
+          return HttpResponse.json(
+            { message: "Event not found" },
+            { status: 400 }
+          );
+        }
+
+        updatedRegistration.event = eventObj;
+      }
+
+      registrations[index] = updatedRegistration;
+
+      return HttpResponse.json(registrations[index]);
+    }
+  ),
+
+  // Delete Registration Handler
+  http.delete(`${ENV.API_BASE_URL}/events/registrations/:id`, ({ params }) => {
+    const { id } = params as { id: string };
+
+    const exists = registrations.some((r) => r.id === id);
+
+    if (!exists) {
+      return HttpResponse.json(
+        { message: "Registration not found" },
+        { status: 404 }
+      );
+    }
+
+    registrations = registrations.filter((r) => r.id !== id);
+
+    return HttpResponse.json(null, { status: 204 });
   }),
 ];

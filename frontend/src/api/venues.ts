@@ -74,7 +74,7 @@ export const venuesApi = {
     if (filters.min_price) params.append("min_price", String(filters.min_price));
     if (filters.max_price) params.append("max_price", String(filters.max_price));
     if (filters.ordering) params.append("ordering", filters.ordering);
-    if (filters.provider) params.append("organizer", String(filters.provider));
+    if (filters.provider) params.append("provider", String(filters.provider));
 
     params.append("page", String(filters.page));
     params.append("page_size", String(filters.page_size));

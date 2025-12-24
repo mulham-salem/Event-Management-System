@@ -23,7 +23,7 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onSelect }) => {
       </h3>
 
       {/* Description */}
-      <p className="mb-4 line-clamp-2 font-nata-sans-rg text-sm text-gray-600">
+      <p className="mb-4 line-clamp-2 whitespace-nowrap font-nata-sans-rg text-sm text-gray-600">
         {event.description}
       </p>
 

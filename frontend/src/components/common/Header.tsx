@@ -34,7 +34,8 @@ export const Header: React.FC = () => {
 
     return (
         <header
-            className="fixed left-1/2 top-4 z-50 w-[90%] -translate-x-1/2 rounded-3xl border border-white/40 bg-white/70 shadow-xl backdrop-blur-xl">
+            className="fixed left-1/2 top-4 z-50 w-[90%] -translate-x-1/2 rounded-3xl border border-white/40 bg-white/70 shadow-xl backdrop-blur-xl"
+        >
             <div className="flex items-center justify-between px-6 py-3 font-nata-sans-md">
 
                 {/* LEFT — LOGO */}

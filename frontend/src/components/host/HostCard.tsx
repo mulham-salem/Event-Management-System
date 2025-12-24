@@ -6,6 +6,8 @@ import { toast } from "react-hot-toast";
 
 import { useVoteForHost } from "../../hooks/useHost";
 import type { Host } from "../../api/hosts";
+import { getToken } from "../../utils/authToken";
+import { getRole } from "../../utils/authRole";
 
 interface HostCardProps {
   host: Host;
@@ -17,8 +19,8 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
   /* ================= Auth check ================= */
   const canVote = useMemo(() => {
-    const token = localStorage.getItem("authToken");
-    const role = localStorage.getItem("currentRole");
+    const token = getToken();
+    const role = getRole();
     return Boolean(token && role === "client");
   }, []);
 
