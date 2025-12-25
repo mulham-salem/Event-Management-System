@@ -6,7 +6,6 @@ import {
   Edit,
   Trash2,
   ChevronRight,
-  FileText,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -58,7 +57,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
 
   const deleteMutation = useDeleteRegistration();
 
-  const { event, date, start_time, end_time, notes, status } = registration;
+  const { event, event_data, status } = registration;
 
   return (
     <motion.div
@@ -72,7 +71,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
       <div>
         <div className="mb-3 flex items-start justify-between gap-3">
           <h3 className="line-clamp-1 text-lg font-semibold text-gray-900">
-            {event.name}
+            {event_data.title}
           </h3>
 
           <span
@@ -84,33 +83,23 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
         </div>
 
         <p className="mb-4 line-clamp-2 text-sm text-gray-500">
-          {event.description}
+          {event_data.description}
         </p>
 
         {/* ===== Date & Time ===== */}
         <div className="flex flex-col gap-2 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4 text-gray-400" />
-            <span>{date}</span>
+            <span>{event_data.date}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <Clock className="h-4 w-4 text-gray-400" />
             <span>
-              {start_time} – {end_time}
+              {event_data.start_time} – {event_data.end_time}
             </span>
           </div>
         </div>
-
-        {/* ===== Notes ===== */}
-        {notes && (
-          <div className="mt-2 flex items-start gap-2 text-sm text-gray-500">
-            <FileText className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" />
-            <p className="line-clamp-2" title={notes}>
-              {notes}
-            </p>
-          </div>
-        )}
       </div>
 
       {/* ===== Actions ===== */}
@@ -139,7 +128,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
 
         <motion.button
           whileHover={{ x: 3 }}
-          onClick={() => onSelect?.(event.id)}
+          onClick={() => onSelect?.(event)}
           className="text-primary flex items-center gap-1
                      text-sm font-medium"
         >
@@ -232,7 +221,7 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
 
                 <RegistrationForm
                   registration={registration}
-                  eventId={event.id}
+                  eventId={event}
                   onClose={() => setOpenEdit(false)}
                 />
               </motion.div>

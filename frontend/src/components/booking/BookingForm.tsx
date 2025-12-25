@@ -56,7 +56,7 @@ export const BookingForm = ({ booking, venueId, onClose }: BookingFormProps) => 
 
   const onSubmit = (data: BookingFormData) => {
     const payload = {
-      venue: venueId!,
+      venue_id: venueId!,
       ...data,
     };
     if (isEdit) {

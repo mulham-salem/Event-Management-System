@@ -1,17 +1,17 @@
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
-import {Toaster} from "react-hot-toast";
-import {Home} from "./pages/Home";
-import {Login} from "./pages/Login";
-import {Signup} from "./pages/Signup";
-import {Events} from "./pages/Events";
-import {Venues} from "./pages/Venues";
-import {Hosts} from "./pages/Hosts";
-import {ClientDashboard} from "./pages/ClientDashboard";
-import {Bookings} from "./pages/Bookings";
-import {Registrations} from "./pages/Registrations";
-import {PrivateRoute} from "./components/common/PrivateRoute";
-import {PublicLayout} from "./layouts/PublicLayout";
-import {DashboardLayout} from "./layouts/DashboardLayout";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
+import { Home } from "./pages/Home";
+import { Login } from "./pages/Login";
+import { Signup } from "./pages/Signup";
+import { Events } from "./pages/Events";
+import { Venues } from "./pages/Venues";
+import { Hosts } from "./pages/Hosts";
+import { ClientDashboard } from "./pages/ClientDashboard";
+import { Bookings } from "./pages/Bookings";
+import { Registrations } from "./pages/Registrations";
+import { PrivateRoute } from "./components/common/PrivateRoute";
+import { PublicLayout } from "./layouts/PublicLayout";
+import { DashboardLayout } from "./layouts/DashboardLayout";
 
 function App() {
     return (

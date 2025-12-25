@@ -3,20 +3,20 @@ import axiosClient from "./axiosClient";
 export type EventRegistrationStatus  = "pending" | "confirmed" | "cancelled" | "completed";
 
 export interface Event {
-    id: string;
-    name: string;
+    id?: string,
+    title: string;
     description: string;
+    date: string; 
+    start_time: string; 
+    end_time: string; 
 }
 
 export interface Registration {
     id: string;
-    event: Event,
-    date: string; // ISO date
-    start_time: string; // HH:mm
-    end_time: string; // HH:mm
-    notes?: string;
+    event: string;
+    event_data: Event;
     status: EventRegistrationStatus;
-    created_at: string; // ISO datetime
+    created_at: string;
 }
 
 export interface GetRegistrationsParams {
@@ -26,10 +26,6 @@ export interface GetRegistrationsParams {
 
 export interface CreateRegistrationPayload {
     event: string; // event id
-    date: string;
-    start_time: string;
-    end_time: string;
-    notes?: string;
 }
 
 export type UpdateRegistrationPayload = Partial<CreateRegistrationPayload>;

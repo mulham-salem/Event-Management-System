@@ -5,7 +5,7 @@ import { toast } from "react-hot-toast";
 import { LogIn, AlertCircle, CheckCircle } from "lucide-react";
 import { getToken } from "../../utils/authToken";
 import { getRole } from "../../utils/authRole";
-import { RegistrationForm } from "../registration/RegistrationForm";
+import { useCreateRegistration } from "../../hooks/useRegistrations";
 import { ModalPortal } from "../common/ModalPortal";
 import type { EventDetails } from "../../api/events";
 
@@ -18,7 +18,7 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
   event,
   onBack,
 }) => {
-  const [openCreate, setOpenCreate] = useState(false);
+  const createMutation = useCreateRegistration();
 
   const coverImage =
     event.venue.images.find((img) => img.is_cover) ?? event.venue.images[0];
@@ -40,7 +40,18 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
       return;
     }
 
-    setOpenCreate(true);
+    createMutation.mutate(
+      { event: event.id },
+      {
+        onSuccess: () => {
+          toast.success("Successfully registered for the event!");
+        },
+        onError: (error) => {
+          toast.error("Failed to register. Please try again.");
+          console.error("Registration Error:", error);
+        },
+      }
+    );
   };
 
   return (
@@ -174,81 +185,68 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
         className="mt-10 flex justify-center"
       >
         <motion.button
-          whileHover={{ scale: 1.04 }}
-          whileTap={{ scale: 0.97 }}
+          whileHover={
+            isLoggedIn && isClient && !createMutation.isPending
+              ? { scale: 1.04 }
+              : {}
+          }
+          whileTap={
+            isLoggedIn && isClient && !createMutation.isPending
+              ? { scale: 0.97 }
+              : {}
+          }
           onClick={handleRegister}
-          disabled={isLoggedIn && !isClient}
+          disabled={(isLoggedIn && !isClient) || createMutation.isPending}
           className={`
             group inline-flex items-center gap-2 rounded-xl px-8 py-3
             font-nata-sans-md text-sm transition-all
             ${
               isLoggedIn && isClient
-                ? "bg-[#5a2ea6] text-white hover:bg-purple-800 active:scale-95"
+                ? "bg-[#5a2ea6] text-white hover:bg-purple-800 active:scale-95 disabled:opacity-70"
                 : "cursor-not-allowed bg-gray-200 text-gray-500"
             }
           `}
         >
-          {!isLoggedIn && (
+          {createMutation.isPending ? (
             <>
-              <LogIn size={18} className="transition group-hover:scale-110" />
-              Login to register
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              Processing...
             </>
-          )}
-
-          {isLoggedIn && !isClient && (
+          ) : (
             <>
-              <AlertCircle
-                size={18}
-                className="transition group-hover:scale-110"
-              />
-              Only clients can register
-            </>
-          )}
+              {!isLoggedIn && (
+                <>
+                  <LogIn
+                    size={18}
+                    className="transition group-hover:scale-110"
+                  />
+                  Login to register
+                </>
+              )}
 
-          {isLoggedIn && isClient && (
-            <>
-              <CheckCircle
-                size={18}
-                className="transition group-hover:scale-110"
-              />
-              Register for this event
+              {isLoggedIn && !isClient && (
+                <>
+                  <AlertCircle
+                    size={18}
+                    className="transition group-hover:scale-110"
+                  />
+                  Only clients can register
+                </>
+              )}
+
+              {isLoggedIn && isClient && (
+                <>
+                  <CheckCircle
+                    size={18}
+                    className="transition group-hover:scale-110"
+                  />
+                  Register for this event
+                </>
+              )}
             </>
           )}
         </motion.button>
       </motion.div>
-
-      {/* Creation Modal */}
-      <AnimatePresence>
-        {openCreate && (
-          <ModalPortal>
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              onClick={() => setOpenCreate(false)}
-              className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
-            >
-              <motion.div
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ duration: 0.2 }}
-                onClick={(e) => e.stopPropagation()}
-                className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl"
-              >
-                <h3 className="mb-4 text-lg font-semibold">
-                  Create New Registration
-                </h3>
-
-                <RegistrationForm
-                  eventId={event.id}
-                  onClose={() => setOpenCreate(false)}
-                />
-              </motion.div>
-            </motion.div>
-          </ModalPortal>
-        )}
-      </AnimatePresence>
     </motion.section>
   );
 };

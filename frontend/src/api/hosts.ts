@@ -53,9 +53,11 @@ export const hostsApi = {
 
         if (filters.search) params.append("search", filters.search);
 
-        if (filters.min_score) params.append("min_score", String(filters.min_score));
+        if (filters.min_score !== undefined)
+            params.append("min_score", String(filters.min_score));
 
-        if (filters.min_votes) params.append("min_votes", String(filters.min_votes));
+        if (filters.min_votes !== undefined)
+            params.append("min_votes", String(filters.min_votes));
 
         if (filters.ordering) params.append("ordering", filters.ordering);
 
