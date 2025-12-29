@@ -1,35 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useSignup } from "../hooks/useAuth";
 import { motion } from "framer-motion";
-import { Mail, Lock, Eye, EyeOff, User, Phone } from "lucide-react";
+import { Mail, Lock, User, Phone } from "lucide-react";
 import toast from "react-hot-toast";
+import { AuthForm, type AuthField } from "../components/common/AuthForm";
 
-const signupSchema = z.object({
+const SignupSchema = z.object({
   fullName: z.string().min(3, "Full name is too short"),
   email: z.string().email("Invalid email"),
   phone: z.string().min(8, "Invalid phone number"),
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-type SignupType = z.infer<typeof signupSchema>;
+type SignupType = z.infer<typeof SignupSchema>;
 
 interface SignupProps {
   role?: "client" | "provider" | "organizer";
 }
 
 export const Signup: React.FC<SignupProps> = ({ role = "client" }) => {
-  const [showPassword, setShowPassword] = useState(false);
   const [shake, setShake] = useState(false);
 
-  const { register, handleSubmit, formState: { errors } } = useForm<SignupType>({
-    resolver: zodResolver(signupSchema),
-  });
-
   const { mutate, isPending, isError, error } = useSignup();
+
+  const fields: AuthField[] = [
+    { name: "fullName", label: "Full Name", placeholder: "John Doe", icon: <User /> },
+    { name: "email", label: "Email", type: "email", placeholder: "example@email.com", icon: <Mail /> },
+    { name: "phone", label: "Phone Number", placeholder: "+1 234 567", icon: <Phone /> },
+    { name: "password", label: "Password", type: "password", placeholder: "********", icon: <Lock /> },
+  ];
 
   const submit = (data: SignupType) => {
     const toastId = toast.loading("Logging in...");
@@ -128,132 +129,17 @@ export const Signup: React.FC<SignupProps> = ({ role = "client" }) => {
             Fill in your details to register your account.
           </p>
 
-          <motion.div
-            animate={shake ? { x: [0, -8, 8, -8, 8, 0] } : { x: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <form
-              onSubmit={handleSubmit(submit)}
-              className="space-y-5 font-nata-sans-rg"
-            >
-              {/* FULL NAME */}
-              <div>
-                <label className="mb-1 flex items-center gap-2 font-medium">
-                  <User className="h-4 w-4" />
-                  Full Name
-                </label>
-                <input
-                  type="text"
-                  {...register("fullName")}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-violet-500 focus:ring-1"
-                  placeholder="John Doe"
-                />
-                {errors.fullName && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.fullName?.message}
-                  </p>
-                )}
-              </div>
-
-              {/* EMAIL */}
-              <div>
-                <label className="mb-1 flex items-center gap-2 font-medium">
-                  <Mail className="h-4 w-4" />
-                  Email
-                </label>
-                <input
-                  type="email"
-                  {...register("email")}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-violet-500 focus:ring-1"
-                  placeholder="example@mail.com"
-                />
-                {errors.email && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.email?.message}
-                  </p>
-                )}
-              </div>
-
-              {/* PHONE */}
-              <div>
-                <label className="mb-1 flex items-center gap-2 font-medium">
-                  <Phone className="h-4 w-4" />
-                  Phone Number
-                </label>
-                <input
-                  type="text"
-                  {...register("phone")}
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-violet-500 focus:ring-1"
-                  placeholder="+1 234 567 890"
-                />
-                {errors.phone && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.phone?.message}
-                  </p>
-                )}
-              </div>
-
-              {/* PASSWORD */}
-              <div>
-                <label className="mb-1 flex items-center gap-2 font-medium">
-                  <Lock className="h-4 w-4" />
-                  Password
-                </label>
-                <div className="relative">
-                  <input
-                    type={showPassword ? "text" : "password"}
-                    {...register("password")}
-                    className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:border-violet-500 focus:ring-1"
-                    placeholder="********"
-                  />
-
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-4 top-1/2 -translate-y-1/2 transform text-gray-500 hover:text-gray-700"
-                  >
-                    {showPassword ? (
-                      <EyeOff className="h-5 w-5" />
-                    ) : (
-                      <Eye className="h-5 w-5" />
-                    )}
-                  </button>
-                </div>
-
-                {errors.password && (
-                  <p className="mt-1 text-sm text-red-600">
-                    {errors.password?.message}
-                  </p>
-                )}
-              </div>
-
-              {/* Server error */}
-              {isError && (
-                <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                  {(error as any)?.response?.data?.message ||
-                    (error as any)?.response?.data?.error ||
-                    "Signup failed. Try again."}
-                </div>
-              )}
-
-              <motion.button
-                type="submit"
-                disabled={isPending}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.97 }}
-                className="w-full rounded-lg bg-black py-3 font-nata-sans-md font-semibold text-white shadow-lg transition hover:opacity-90"
-              >
-                {isPending ? (
-                  <div className="flex items-center justify-center gap-2">
-                    <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-                    Creating account...
-                  </div>
-                ) : (
-                  "Sign Up"
-                )}
-              </motion.button>
-            </form>
-          </motion.div>
+          <AuthForm
+            schema={SignupSchema}
+            fields={fields}
+            onSubmit={submit}
+            submitLabel="Sign Up"
+            isPending={isPending}
+            serverError={
+              isError ? (error as any)?.response?.data?.message : undefined
+            }
+            shake={shake}
+          />
 
           <p className="mt-6 text-center font-nata-sans-rg text-gray-600">
             Already have an account?{" "}

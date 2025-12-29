@@ -1,4 +1,5 @@
 import React from "react";
+import { Loader } from "../../common/Loader";
 import { useRecentActivity } from "../../../hooks/useClientDashboard";
 import type { RecentActivityItem } from "../../../api/clientDashboard";
 import { CalendarCheck, UserPlus, Star, Heart, Award, Trophy } from "lucide-react";
@@ -8,9 +9,7 @@ export const RecentActivity: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
-        <p className="text-sm text-gray-400">Loading activity...</p>
-      </div>
+        <Loader text={"Loading activity..."} />
     );
   }
 

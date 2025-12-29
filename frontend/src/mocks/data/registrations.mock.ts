@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { random, randomDate, randomTime } from "../helpers/random";
+import { random, randomDate, randomTime } from "../helpers/random.helpers";
 import { statuses } from "./bookings.mock";
 import type { Event, Registration } from "../../api/registrations";
 

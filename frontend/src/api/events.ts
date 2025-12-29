@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+import type { AverageRating } from "./venues.ts";
 
 // ===== Types =====
 export interface EventItem {
@@ -8,8 +9,8 @@ export interface EventItem {
   date: string;
   start_time: string;
   end_time: string;
-
   organizer: Organizer;
+  average_rating: AverageRating;
 }
 
 export interface EventsResponse {

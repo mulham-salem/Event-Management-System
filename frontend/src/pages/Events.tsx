@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
-import { useSearchParams, useOutletContext} from "react-router-dom";
-import type { LayoutContextType } from "../layouts/PublicLayout";
+import React, {useRef, useState} from "react";
+import {useSearchParams, useOutletContext} from "react-router-dom";
+import type {LayoutContextType} from "../layouts/PublicLayout";
 
-import { useEvents, useEvent } from "../hooks/useEvent";
+import {useEvents, useEvent} from "../hooks/useEvent";
 
 // Components
 import {EventsHeader} from "../components/event/EventsHeader";
@@ -10,6 +10,7 @@ import {EventsFilters} from "../components/event/EventsFilters";
 import {EventsGrid} from "../components/event/EventsGrid";
 import {EventCardDetails} from "../components/event/EventCardDetails";
 import {Pagination} from "../components/common/Pagination";
+import { Loader } from "../components/common/Loader";
 
 import {motion, AnimatePresence} from "framer-motion";
 
@@ -65,7 +66,7 @@ export const Events: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
             {/* Optional Hero */}
             {showHero && <EventsHeader/>}
 
-            <div ref={eventsGridTopRef} />
+            <div ref={eventsGridTopRef}/>
 
             {/* Filters */}
             <EventsFilters
@@ -78,23 +79,23 @@ export const Events: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
 
             {/* Loading States */}
             {(eventsLoading || singleLoading) && (
-                <div className="flex min-h-96 items-center justify-center pb-20 text-lg text-gray-600">
-                    {eventsLoading ? "Loading events..." : "Loading event..."}
-                </div>
+                <Loader text={eventsLoading ? "Loading events..." : "Loading event..."} />
             )}
 
-            {/* Error State */}
-            {eventsError && (
-                <div className="flex min-h-96 flex-col items-center justify-center pb-20 text-center">
-                    <p className="mb-4 text-red-600">Failed to load events. Try again.</p>
-                    <button
-                        onClick={() => refetchEvents()}
-                        className="rounded-lg bg-violet-700 px-6 py-2 text-white hover:bg-violet-800"
-                    >
-                        Retry
-                    </button>
-                </div>
-            )}
+            {/* Error State */
+            }
+            {
+                eventsError && (
+                    <div className="flex min-h-96 flex-col items-center justify-center pb-20 text-center">
+                        <p className="mb-4 text-red-600">Failed to load events. Try again.</p>
+                        <button
+                            onClick={() => refetchEvents()}
+                            className="rounded-lg bg-violet-700 px-6 py-2 text-white hover:bg-violet-800"
+                        >
+                            Retry
+                        </button>
+                    </div>
+                )}
 
             {singleError && (
                 <div className="flex min-h-96 flex-col items-center justify-center pb-20 text-center">

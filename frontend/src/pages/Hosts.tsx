@@ -9,6 +9,7 @@ import type {HostRole} from "../api/hosts";
 import {HostsSidebar} from "../components/host/HostsSidebar";
 import {HostsGrid} from "../components/host/HostsGrid";
 import {Pagination} from "../components/common/Pagination";
+import {Loader} from "../components/common/Loader";
 
 import {motion, AnimatePresence} from "framer-motion";
 
@@ -96,10 +97,7 @@ export const Hosts: React.FC<HostsProps> = ({role}) => {
                     <div className="w-full rounded-3xl bg-white pt-4 shadow-xl">
                         {/* Loading State */}
                         {isLoading && (
-                            <div
-                                className="flex h-96 items-center justify-center pt-14 text-center text-lg text-gray-600">
-                                Loading hosts...
-                            </div>
+                            <Loader text={"Loading hosts..."} />
                         )}
 
                         {/* Error State */}

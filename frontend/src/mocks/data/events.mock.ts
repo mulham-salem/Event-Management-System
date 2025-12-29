@@ -1,4 +1,4 @@
-import { random, randomDate, randomTime } from "../helpers/random";
+import { random, randomDate, randomTime } from "../helpers/random.helpers";
 import type { EventDetails, EventsResponse } from "../../api/events";
 
 // ===== EVENT LIST GENERATION =====
@@ -32,6 +32,10 @@ export const mockEvents: EventsResponse = {
             email: "",
             full_name: "",
             phone: "",
+        },
+        average_rating: {
+            average_rating: Math.round((Math.random() * 5) * 2) / 2,
+            count: Math.floor(Math.random() * 200),
         },
     })),
     total: 50,

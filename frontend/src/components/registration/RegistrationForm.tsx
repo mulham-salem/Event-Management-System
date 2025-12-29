@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -30,11 +30,11 @@ interface RegistrationFormProps {
 
 /* ================= Component ================= */
 
-export const RegistrationForm = ({
+export const RegistrationForm: React.FC<RegistrationFormProps> = ({
   registration,
   eventId,
   onClose,
-}: RegistrationFormProps) => {
+}) => {
   const isEdit = Boolean(registration);
 
   const createMutation = useCreateRegistration();
@@ -43,20 +43,13 @@ export const RegistrationForm = ({
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<RegistrationFormData>({
     resolver: zodResolver(registrationSchema),
+    defaultValues: {
+
+    },
   });
-
-  /* ===== Fill form on edit ===== */
-  useEffect(() => {
-    if (registration) {
-      reset({
-
-      });
-    }
-  }, [registration, reset]);
 
   /* ===== Submit ===== */
   const onSubmit = (data: RegistrationFormData) => {

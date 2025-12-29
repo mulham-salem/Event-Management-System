@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { Calendar, Clock, ArrowRight } from "lucide-react";
+import { Calendar, Clock, ArrowRight, Users } from "lucide-react";
+import { StarRating } from "../rating/StarRating";
 import type { EventItem } from "../../api/events";
 
 interface EventCardProps {
@@ -40,6 +41,23 @@ export const EventCard: React.FC<EventCardProps> = ({ event, onSelect }) => {
           {event.start_time} — {event.end_time}
         </span>
       </div>
+
+        {/* Rating */}
+        <div className="mb-4 flex items-center justify-between rounded-xl bg-[#f6f4fa] px-3 py-2 font-nata-sans-md shadow-sm">
+          {/* Stars + Value */}
+          <div className="flex items-center gap-2">
+            <StarRating
+              rating={event.average_rating.average_rating}
+              showValue={true}
+            />
+          </div>
+
+          {/* Participants */}
+          <div className="flex items-center gap-1 rounded-lg bg-[#f0e9fa] px-2 py-1 text-sm text-gray-500 shadow-inner">
+            <Users size={16} className="text-[#5a2ea6]" />
+            <span>{event.average_rating.count}</span>
+          </div>
+        </div>
 
       {/* Button */}
       <button

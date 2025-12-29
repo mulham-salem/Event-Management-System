@@ -25,7 +25,9 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
   const location = useLocation();
   let currentSection = location.pathname.split("/").pop();
   if (currentSection === "events") currentSection = "registrations";
-  if (currentSection === "venues") currentSection = "bookings";
+  else if (currentSection === "venues") currentSection = "bookings";
+  else if (currentSection === "event-ratings") currentSection = "eventsRatings";
+  else if (currentSection === "venue-ratings") currentSection = "venuesRatings";
 
   const { data: me, isLoading } = useMe();
 
@@ -57,13 +59,13 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
       name: "venuesRatings",
       label: "Venue Ratings",
       icon: <Star className="h-5 w-5 text-gray-500" />,
-      path: "/client/venues",
+      path: "/client/venue-ratings",
     },
     {
       name: "eventsRatings",
       label: "Event Ratings",
       icon: <Heart className="h-5 w-5 text-gray-500" />,
-      path: "/client/events",
+      path: "/client/event-ratings",
     },   
     {
       name: "providers",

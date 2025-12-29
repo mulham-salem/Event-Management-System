@@ -1,4 +1,5 @@
-import { useEffect } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -29,30 +30,29 @@ interface BookingFormProps {
 
 /* ================= Component ================= */
 
-export const BookingForm = ({ booking, venueId, onClose }: BookingFormProps) => {
-  const isEdit = Boolean(booking);
+export const BookingForm: React.FC<BookingFormProps> = ({
+  booking,
+  venueId,
+  onClose,
+}) => {
   const createMutation = useCreateBooking();
   const updateMutation = useUpdateBooking();
+  const navigate = useNavigate();
+  const isEdit = Boolean(booking);
 
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors },
   } = useForm<BookingFormData>({
     resolver: zodResolver(bookingSchema),
+    defaultValues: {
+      date: booking?.date || "",
+      start_time: booking?.start_time || "",
+      end_time: booking?.end_time || "",
+      notes: booking?.notes || "",
+    },
   });
-
-  useEffect(() => {
-    if (booking) {
-      reset({
-        date: booking.date,
-        start_time: booking.start_time,
-        end_time: booking.end_time,
-        notes: booking.notes,
-      });
-    }
-  }, [booking, reset]);
 
   const onSubmit = (data: BookingFormData) => {
     const payload = {
@@ -77,6 +77,9 @@ export const BookingForm = ({ booking, venueId, onClose }: BookingFormProps) => 
         onSuccess: () => {
           toast.success("Booking created successfully");
           onClose();
+          setTimeout(() => {
+            navigate("/client/bookings");
+          }, 1000);
         },
         onError: () => {
           toast.error("Failed to create booking");

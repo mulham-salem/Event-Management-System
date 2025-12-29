@@ -1,12 +1,13 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 import { ArrowLeft, Mail, MapPin, Users, Calendar, Phone } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { LogIn, AlertCircle, CheckCircle } from "lucide-react";
 import { getToken } from "../../utils/authToken";
 import { getRole } from "../../utils/authRole";
 import { useCreateRegistration } from "../../hooks/useRegistrations";
-import { ModalPortal } from "../common/ModalPortal";
+import { RatingsSection } from "../rating/RatingsSection";
 import type { EventDetails } from "../../api/events";
 
 interface EventCardDetailsProps {
@@ -19,6 +20,7 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
   onBack,
 }) => {
   const createMutation = useCreateRegistration();
+  const navigate = useNavigate();
 
   const coverImage =
     event.venue.images.find((img) => img.is_cover) ?? event.venue.images[0];
@@ -45,6 +47,9 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
       {
         onSuccess: () => {
           toast.success("Successfully registered for the event!");
+          setTimeout(() => {
+            navigate("/client/registrations");
+          }, 1000);
         },
         onError: (error) => {
           toast.error("Failed to register. Please try again.");
@@ -148,7 +153,7 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center text-sm text-[#5a2ea6] hover:underline"
+              className="flex items-center justify-center font-nata-sans-md text-sm text-[#5a2ea6] hover:underline"
             >
               Open in Google Maps
             </a>
@@ -175,6 +180,13 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
             ))}
           </div>
         </div>
+      )}
+
+      {isLoggedIn && (
+        <RatingsSection 
+          targetType="event"
+          targetId={event.id}
+        />
       )}
 
       {/* Action */}

@@ -1,4 +1,4 @@
-import { random, randomDate, randomTime } from "../helpers/random";
+import { random, randomDate, randomTime } from "../helpers/random.helpers";
 import type { VenueItem, VenueDetails } from "../../api/venues";
 
 // ===== VENUE LIST GENERATION =====
@@ -46,6 +46,10 @@ export const mockVenues: VenueItem[] = Array.from({length: 50}, (_, i) => ({
             is_cover: false,
         },
     ],
+    average_rating: {
+        average_rating: Math.round((Math.random() * 5) * 2) / 2,
+        count: Math.floor(Math.random() * 200),
+    },
 }));
 
 // ===== VENUE DETAILS GENERATOR =====

@@ -10,9 +10,9 @@ export interface VenueItem {
   price_per_hour: string;
   created_at: string;
   updated_at: string;
-
   provider: Provider;
   images: VenueImage[];
+  average_rating: AverageRating;
 }
 
 export interface VenuesResponse {
@@ -34,6 +34,11 @@ interface VenueImage {
   image_url: string;
   alt_text: string;
   is_cover: boolean;
+}
+
+export interface AverageRating {
+  average_rating: number;
+  count: number;
 }
 
 export interface VenueSchedule {

@@ -10,6 +10,7 @@ import {VenuesFilters} from "../components/venue/VenuesFilters";
 import {VenuesGrid} from "../components/venue/VenuesGrid";
 import {VenueCardDetails} from "../components/venue/VenueCardDetails";
 import {Pagination} from "../components/common/Pagination";
+import {Loader} from "../components/common/Loader";
 
 import {motion, AnimatePresence} from "framer-motion";
 
@@ -81,9 +82,7 @@ export const Venues: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
 
             {/* Loading */}
             {(venuesLoading || singleLoading) && (
-                <div className="flex min-h-96 items-center justify-center pb-20 text-lg text-gray-600">
-                    {venuesLoading ? "Loading venues..." : "Loading venue..."}
-                </div>
+                <Loader text={venuesLoading ? "Loading venues..." : "Loading venue..."} />
             )}
 
             {/* Error */}
@@ -169,16 +168,16 @@ export const Venues: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
                     lastPage={totalPages}
                     onPageChange={(page) => {
                         setFilters((prev) => ({...prev, page}));
-    
+
                         const container = scrollableNodeRef.current;
                         const target = venuesGridTopRef.current;
-    
+
                         if (container && target) {
                             const top =
                                 target.getBoundingClientRect().top -
                                 container.getBoundingClientRect().top +
                                 container.scrollTop + 90;
-    
+
                             container.scrollTo({
                                 top,
                                 behavior: "smooth",

@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Star, Users, ChevronUp, ChevronDown } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -14,6 +14,7 @@ interface HostCardProps {
 }
 
 export const HostCard: React.FC<HostCardProps> = ({ host }) => {
+  const [hasVoted, setHasVoted] = useState(false);
   const navigate = useNavigate();
   const voteMutation = useVoteForHost();
 
@@ -26,6 +27,10 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
   /* ================= Vote handlers ================= */
   const handleVote = (value: 1 | -1) => {
+    if (hasVoted) {
+      toast("You have already voted!", { icon: "⚠️" });
+      return;
+    }
     voteMutation.mutate(
       {
         target_user: host.id,
@@ -33,7 +38,8 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
       },
       {
         onSuccess: () => {
-          toast.success("Vote submitted successfully 🔥");
+          toast.success("Vote submitted successfully");
+          setHasVoted(true);
         },
         onError: (err: any) => {
           toast.error(err?.message || "Voting failed");
@@ -78,7 +84,7 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
         <div className="min-w-0">
           <div className="truncate font-nata-sans-bd">{host.full_name}</div>
           <div className="flex items-center gap-1 truncate text-sm text-gray-500">
-            <Mail size={14} />
+            <Mail size={14} className="my-1 shrink-0"/>
             {host.email}
           </div>
         </div>
@@ -96,7 +102,9 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 <button
                   onClick={() => handleVote(1)}
                   disabled={voteMutation.isPending}
-                  className="text-gray-400 transition hover:text-green-600"
+                  className={`text-gray-400 transition hover:text-green-600 ${
+                    hasVoted ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 >
                   <ChevronUp size={18} />
                 </button>
@@ -104,7 +112,9 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 <button
                   onClick={() => handleVote(-1)}
                   disabled={voteMutation.isPending}
-                  className="text-gray-400 transition hover:text-red-600"
+                  className={`text-gray-400 transition hover:text-red-600 ${
+                    hasVoted ? "cursor-not-allowed opacity-50" : ""
+                  }`}
                 >
                   <ChevronDown size={18} />
                 </button>

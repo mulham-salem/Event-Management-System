@@ -5,6 +5,7 @@ import { hostsHandlers } from "./handlers/hosts.handlers";
 import { clientDashboardHandlers } from "./handlers/clientDashboard.handlers";
 import { bookingsHandlers } from "./handlers/bookings.handlers";
 import { registrationsHandlers } from "./handlers/registrations.handlers";
+import { ratingsHandlers } from "./handlers/ratings.handlers";
 
 // ===== HANDLERS =====
 export const handlers = [
@@ -15,4 +16,5 @@ export const handlers = [
     ...clientDashboardHandlers,
     ...bookingsHandlers,
     ...registrationsHandlers,
+    ...ratingsHandlers,
 ];

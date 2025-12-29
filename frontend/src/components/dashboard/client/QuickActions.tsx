@@ -34,7 +34,7 @@ export const QuickActions: React.FC = () => {
       icon: Heart,
       iconBg: "bg-pink-100",
       iconColor: "text-pink-600",
-      path: "/events",
+      path: "/client/event-ratings",
     },
     {
       label: "Venue Providers",
@@ -58,7 +58,7 @@ export const QuickActions: React.FC = () => {
       icon: Star,
       iconBg: "bg-yellow-100",
       iconColor: "text-yellow-600",
-      path: "/venues",
+      path: "/client/venue-ratings",
     },
     {
       label: "Event Organizers",

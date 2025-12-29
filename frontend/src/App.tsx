@@ -7,11 +7,12 @@ import { Events } from "./pages/Events";
 import { Venues } from "./pages/Venues";
 import { Hosts } from "./pages/Hosts";
 import { ClientDashboard } from "./pages/ClientDashboard";
-import { Bookings } from "./pages/Bookings";
-import { Registrations } from "./pages/Registrations";
+import { Bookings } from "./pages/BookingsDashboard";
+import { Registrations } from "./pages/RegistrationsDashboard";
 import { PrivateRoute } from "./components/common/PrivateRoute";
 import { PublicLayout } from "./layouts/PublicLayout";
 import { DashboardLayout } from "./layouts/DashboardLayout";
+import { RatingsDashboard } from "./pages/RatingsDashboard";
 
 function App() {
     return (
@@ -44,8 +45,10 @@ function App() {
                             <Route path="/client/registrations" element={<Registrations />} />
                             <Route path="/client/venues" element={<Venues showHero={false}/>} />
                             <Route path="/client/bookings" element={<Bookings />} />
-                            <Route path="/client/providers" element={<Hosts role="provider"/>} />
-                            <Route path="/client/organizers" element={<Hosts role="organizer"/>} />
+                            <Route path="/client/event-ratings" element={<RatingsDashboard key="event" type="event"/>} />
+                            <Route path="/client/venue-ratings" element={<RatingsDashboard key="venue" type="venue"/>} />
+                            <Route path="/client/providers" element={<Hosts key="provider" role="provider"/>} />
+                            <Route path="/client/organizers" element={<Hosts key="organizer" role="organizer"/>} />
                         </Route>
                     </Route>
                 </Routes>
