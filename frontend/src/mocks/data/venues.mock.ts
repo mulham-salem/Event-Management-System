@@ -17,7 +17,11 @@ export const mockVenues: VenueItem[] = Array.from({length: 50}, (_, i) => ({
         "Perfect for cultural events.",
         "Historic charm with modern facilities.",
     ]),
-    location_geo: `${35 + Math.random()},${139 + Math.random()}`,
+    location_geo: {
+        location: `${35 + Math.random()},${139 + Math.random()}`,
+        area: "Tokyo",
+        city: "Shibuya",
+    },
     capacity: Math.floor(Math.random() * 300) + 50,
     price_per_hour: `${Math.floor(Math.random() * 200) + 50}`,
     created_at: new Date().toISOString(),
@@ -58,13 +62,11 @@ export const mockVenueDetails: Record<string, VenueDetails> = {};
 mockVenues.forEach((v) => {
     mockVenueDetails[v.id] = {
         ...v,
-        schedules: Array.from({length: 5}, (_, j) => ({
+        bookings: Array.from({length: 5}, (_, j) => ({
             id: `s${v.id}-${j + 1}`,
-            venue: v.id,
             date: randomDate(),
             start_time: randomTime(),
             end_time: randomTime(),
-            is_blocked: Math.random() > 0.5,
             created_at: new Date().toISOString(),
         })),
     };

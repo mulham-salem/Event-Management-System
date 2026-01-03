@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import type { EventItem } from "../../api/events";
 import { EventCard } from "./EventCard";
 import { ArrowLeft } from "lucide-react";
+import { getToken } from "../../utils/authToken";
 
 interface EventsGridProps {
   events?: EventItem[];
@@ -11,8 +12,17 @@ interface EventsGridProps {
 }
 
 export const EventsGrid: React.FC<EventsGridProps> = ({ events, onSelect }) => {
+
   const location = useLocation();
   const showLink = location.pathname === "/client/events";
+
+  const token = getToken();
+
+  const visibleEvents = events?.filter((event) => {
+    if (!token) return true;
+    return !event.is_registered;
+  })
+
   return (
     <>
       {/* Back */}
@@ -37,7 +47,7 @@ export const EventsGrid: React.FC<EventsGridProps> = ({ events, onSelect }) => {
         }}
         className="grid grid-cols-1 gap-6 px-4 pb-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       >
-        {events?.map((event) => (
+        {visibleEvents?.map((event) => (
           <motion.div
             key={event.id}
             variants={{

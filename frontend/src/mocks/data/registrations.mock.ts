@@ -1,7 +1,8 @@
 import { v4 as uuid } from "uuid";
 import { random, randomDate, randomTime } from "../helpers/random.helpers";
-import { statuses } from "./bookings.mock";
 import type { Event, Registration } from "../../api/registrations";
+
+export const statuses = ["pending", "approved", "rejected", "canceled"];
 
 // Mock Registrations
 export const mockEvents: Event[] = [
@@ -12,6 +13,7 @@ export const mockEvents: Event[] = [
     date: randomDate(),
     start_time: randomTime(),
     end_time: randomTime(),
+    is_registered: true,
   },
   {
     id: "e2",
@@ -20,6 +22,7 @@ export const mockEvents: Event[] = [
     date: randomDate(),
     start_time: randomTime(),
     end_time: randomTime(),
+    is_registered: true,
   },
   {
     id: "e3",
@@ -28,12 +31,13 @@ export const mockEvents: Event[] = [
     date: randomDate(),
     start_time: randomTime(),
     end_time: randomTime(),
+    is_registered: true,
   },
 ];
 
 export const eventsId = ["e1", "e2", "e3"];
 
-export const registrations: Registration[] = Array.from({ length: 10 }).map(() => {
+export const registrations: Registration[] = Array.from({ length: 6 }).map(() => {
   const selectedEvent = random(mockEvents);
   return {
     id: uuid(),

@@ -1,7 +1,15 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ArrowLeft, Mail, MapPin, Users, Calendar, Phone } from "lucide-react";
+import {
+  ArrowLeft,
+  Mail,
+  MapPin,
+  Users,
+  Phone,
+  Notebook,
+  Heart,
+} from "lucide-react";
 import { toast } from "react-hot-toast";
 import { LogIn, AlertCircle, CheckCircle } from "lucide-react";
 import { getToken } from "../../utils/authToken";
@@ -9,6 +17,7 @@ import { getRole } from "../../utils/authRole";
 import { useCreateRegistration } from "../../hooks/useRegistrations";
 import { RatingsSection } from "../rating/RatingsSection";
 import type { EventDetails } from "../../api/events";
+import { StarRating } from "../rating/StarRating";
 
 interface EventCardDetailsProps {
   event: EventDetails;
@@ -30,6 +39,8 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
 
   const isLoggedIn = Boolean(accessToken);
   const isClient = role === "client";
+
+  const isRegistered = event.is_registered;
 
   const handleRegister = () => {
     if (!isLoggedIn) {
@@ -113,11 +124,13 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
 
       {/* Venue */}
       <div className="mb-8">
-        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">Venue</h3>
+        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">
+          Venue Details
+        </h3>
 
         <div className="mb-4 flex flex-wrap gap-6 text-sm text-gray-700">
           <div className="flex items-center gap-2">
-            <MapPin size={16} className="text-[#5a2ea6]" />
+            <Notebook size={16} className="text-[#5a2ea6]" />
             <span>{event.venue.name}</span>
           </div>
 
@@ -127,9 +140,23 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
           </div>
 
           <div className="flex items-center gap-2">
-            <Calendar size={16} className="text-[#5a2ea6]" />
+            <MapPin size={16} className="text-[#5a2ea6]" />
             <span>
-              Created at: {new Date(event.created_at).toLocaleDateString()}
+              Location: {event.venue.location_geo.area},{" "}
+              {event.venue.location_geo.city}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Heart size={16} className="text-[#5a2ea6]" />
+            Rating:{" "}
+            <StarRating
+              rating={event.venue.average_rating.average_rating}
+              showValue={true}
+              size={14}
+            />
+            <span className="font-nata-sans-rg">
+              ({event.venue.average_rating.count})
             </span>
           </div>
         </div>
@@ -141,7 +168,7 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
               <iframe
                 title="Venue location"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  event.venue.location_geo
+                  event.venue.location_geo.location
                 )}&output=embed`}
                 className="h-[300px] w-full border-0"
                 loading="lazy"
@@ -149,7 +176,7 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
             </div>
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                event.venue.location_geo
+                event.venue.location_geo.location
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -182,34 +209,31 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
         </div>
       )}
 
-      {isLoggedIn && (
-        <RatingsSection 
-          targetType="event"
-          targetId={event.id}
-        />
-      )}
+      {isLoggedIn && <RatingsSection targetType="event" targetId={event.id} />}
 
-      {/* Action */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-        className="mt-10 flex justify-center"
-      >
-        <motion.button
-          whileHover={
-            isLoggedIn && isClient && !createMutation.isPending
-              ? { scale: 1.04 }
-              : {}
-          }
-          whileTap={
-            isLoggedIn && isClient && !createMutation.isPending
-              ? { scale: 0.97 }
-              : {}
-          }
-          onClick={handleRegister}
-          disabled={(isLoggedIn && !isClient) || createMutation.isPending}
-          className={`
+      {!isRegistered && (
+        <>
+          {/* Action */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25 }}
+            className="mt-10 flex justify-center"
+          >
+            <motion.button
+              whileHover={
+                isLoggedIn && isClient && !createMutation.isPending
+                  ? { scale: 1.04 }
+                  : {}
+              }
+              whileTap={
+                isLoggedIn && isClient && !createMutation.isPending
+                  ? { scale: 0.97 }
+                  : {}
+              }
+              onClick={handleRegister}
+              disabled={(isLoggedIn && !isClient) || createMutation.isPending}
+              className={`
             group inline-flex items-center gap-2 rounded-xl px-8 py-3
             font-nata-sans-md text-sm transition-all
             ${
@@ -218,47 +242,49 @@ export const EventCardDetails: React.FC<EventCardDetailsProps> = ({
                 : "cursor-not-allowed bg-gray-200 text-gray-500"
             }
           `}
-        >
-          {createMutation.isPending ? (
-            <>
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              Processing...
-            </>
-          ) : (
-            <>
-              {!isLoggedIn && (
+            >
+              {createMutation.isPending ? (
                 <>
-                  <LogIn
-                    size={18}
-                    className="transition group-hover:scale-110"
-                  />
-                  Login to register
+                  <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                  Processing...
                 </>
-              )}
+              ) : (
+                <>
+                  {!isLoggedIn && (
+                    <>
+                      <LogIn
+                        size={18}
+                        className="transition group-hover:scale-110"
+                      />
+                      Login to register
+                    </>
+                  )}
 
-              {isLoggedIn && !isClient && (
-                <>
-                  <AlertCircle
-                    size={18}
-                    className="transition group-hover:scale-110"
-                  />
-                  Only clients can register
-                </>
-              )}
+                  {isLoggedIn && !isClient && (
+                    <>
+                      <AlertCircle
+                        size={18}
+                        className="transition group-hover:scale-110"
+                      />
+                      Only clients can register
+                    </>
+                  )}
 
-              {isLoggedIn && isClient && (
-                <>
-                  <CheckCircle
-                    size={18}
-                    className="transition group-hover:scale-110"
-                  />
-                  Register for this event
+                  {isLoggedIn && isClient && (
+                    <>
+                      <CheckCircle
+                        size={18}
+                        className="transition group-hover:scale-110"
+                      />
+                      Register for this event
+                    </>
+                  )}
                 </>
               )}
-            </>
-          )}
-        </motion.button>
-      </motion.div>
+            </motion.button>
+          </motion.div>
+        </>
+      )}
     </motion.section>
   );
 };

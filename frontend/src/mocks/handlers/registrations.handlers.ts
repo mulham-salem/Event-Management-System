@@ -26,6 +26,7 @@ export const registrationsHandlers = [
     const body = (await request.json()) as CreateRegistrationPayload;
 
     const eventObj = mockEvents.find((e) => e.id === body.event);
+    eventObj!.is_registered  = true;
 
     if (!eventObj) {
       return HttpResponse.json({ message: "Event not found" }, { status: 400 });

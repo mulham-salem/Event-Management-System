@@ -1,6 +1,6 @@
-import React, {useState} from "react";
-import {motion, AnimatePresence} from "framer-motion";
-import {Search, ChevronDown, ChevronUp} from "lucide-react";
+import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Search, ChevronDown, ChevronUp } from "lucide-react";
 
 type RatingFilterProps = {
     search: string;

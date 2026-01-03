@@ -1,39 +1,39 @@
-import React, {useState} from "react";
-import {motion} from "framer-motion";
-import {Plus, Calendar} from "lucide-react";
-import {useNavigate} from "react-router-dom";
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { Plus, Calendar } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
-import {useRegistrations} from "../hooks/useRegistrations";
-import {useEvent} from "../hooks/useEvent";
+import { useBookings } from "../../hooks/useBookings";
+import { useVenue } from "../../hooks/useVenue";
 
-import {RegistrationsFilter} from "../components/registration/RegistrationsFilter";
-import {RegistrationsGrid} from "../components/registration/RegistrationsGrid";
-import {EventCardDetails} from "../components/event/EventCardDetails";
-import {Loader} from "../components/common/Loader";
+import { BookingsFilter } from "../../components/booking/BookingsFilter";
+import { BookingsGrid } from "../../components/booking/BookingsGrid";
+import { VenueCardDetails } from "../../components/venue/VenueCardDetails";
 
-import type {Registration} from "../api/registrations";
+import type { Booking } from "../../api/bookings";
+import { Loader } from "../../components/common/Loader";
 
-export const Registrations: React.FC = () => {
+export const Bookings: React.FC = () => {
     const navigate = useNavigate();
 
     const [search, setSearch] = useState("");
     const [ordering, setOrdering] = useState("-created_at");
-    const [selectedEventId, setSelectedEventId] = useState<string | null>(null);
+    const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
 
     const {
-        data: registrations,
+        data: bookings,
         isLoading,
         isError,
         error,
-    } = useRegistrations({
+    } = useBookings({
         search,
         ordering,
     });
 
-    const {data: eventDetails} = useEvent(selectedEventId);
+    const {data: venueDetails} = useVenue(selectedVenueId);
 
-    const handleBrowseEvents = () => {
-        navigate("/client/events");
+    const handleCreateBooking = () => {
+        navigate("/client/venues");
     };
 
     return (
@@ -42,31 +42,31 @@ export const Registrations: React.FC = () => {
             <div className="mb-8 flex items-center justify-between">
                 <div>
                     <h1 className="flex items-center gap-2 text-2xl font-semibold text-gray-900">
-                        <Calendar className="h-6 w-6"/>
-                        Registrations
+                        <Calendar className="text-primary h-6 w-6"/>
+                        Bookings
                     </h1>
                     <p className="mt-1 text-sm text-gray-500">
-                        Manage your event registrations
+                        Manage your event bookings
                     </p>
                 </div>
 
-                {/* Browse Events Button */}
+                {/* Create Booking Button */}
                 <motion.button
                     whileHover={{scale: 1.04}}
                     whileTap={{scale: 0.97}}
-                    onClick={handleBrowseEvents}
+                    onClick={handleCreateBooking}
                     className="flex items-center gap-2 rounded-xl
                      bg-violet-500 px-5 py-2.5 font-nata-sans-md
                      text-white shadow-sm transition
                      hover:bg-violet-600 hover:shadow-md"
                 >
                     <Plus className="h-5 w-5"/>
-                    Browse Events
+                    New Booking
                 </motion.button>
             </div>
 
             {/* ===== Filters ===== */}
-            <RegistrationsFilter
+            <BookingsFilter
                 search={search}
                 ordering={ordering}
                 onSearchChange={setSearch}
@@ -76,7 +76,7 @@ export const Registrations: React.FC = () => {
             {/* ===== Content ===== */}
             <div className="mt-8">
                 {isLoading && (
-                    <Loader text={"Loading registrations..."} />
+                    <Loader text={"Loading bookings..."} />
                 )}
 
                 {isError && (
@@ -85,31 +85,31 @@ export const Registrations: React.FC = () => {
                     </div>
                 )}
 
-                {!isLoading && registrations && !selectedEventId && (
+                {!isLoading && bookings && !selectedVenueId && (
                     <motion.div
                         initial={{opacity: 0, y: 10}}
                         animate={{opacity: 1, y: 0}}
                         transition={{duration: 0.4}}
                     >
-                        <RegistrationsGrid
-                            key={search + "-" + ordering + "-" + registrations}
-                            registrations={registrations as Registration[]}
-                            onSelect={(id: string) => setSelectedEventId(id)}
+                        <BookingsGrid
+                            key={search + "-" + ordering + "-" + bookings}
+                            bookings={bookings as Booking[]}
+                            onSelect={(id: string) => setSelectedVenueId(id)}
                         />
                     </motion.div>
                 )}
 
-                {/* Single Event */}
-                {selectedEventId && eventDetails && (
-                    <EventCardDetails
-                        event={eventDetails}
-                        onBack={() => setSelectedEventId(null)}
+                {/* Single Venue */}
+                {selectedVenueId && venueDetails && (
+                    <VenueCardDetails
+                        venue={venueDetails}
+                        onBack={() => setSelectedVenueId(null)}
                     />
                 )}
 
-                {!isLoading && registrations?.length === 0 && (
+                {!isLoading && bookings?.length === 0 && (
                     <div className="py-20 text-center text-gray-500">
-                        No registrations found
+                        No bookings found
                     </div>
                 )}
             </div>

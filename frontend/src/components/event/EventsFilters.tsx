@@ -28,6 +28,7 @@ export const EventsFilters: React.FC<EventsFiltersProps> = ({
       className="mx-auto my-5 flex w-full max-w-4xl flex-col gap-4 rounded-3xl bg-white p-5 shadow-md sm:flex-row"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.3 }}
       transition={{ duration: 0.8 }}
     >
       {/* Search */}

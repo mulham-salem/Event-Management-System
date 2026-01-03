@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-export type BookingStatus = "pending" | "confirmed" | "cancelled" | "completed";
+export type BookingStatus = "pending" | "approved" | "rejected" | "canceled";
 
 export interface Venue {
   id: string;

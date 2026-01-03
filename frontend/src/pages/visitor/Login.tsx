@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useLogin } from "../hooks/useAuth";
+import { useLogin } from "../../hooks/useAuth";
 import { motion } from "framer-motion";
 import { Mail, Lock, Facebook, Apple, Chrome } from "lucide-react";
 import toast from "react-hot-toast";
-import { AuthForm, type AuthField } from "../components/common/AuthForm";
+import { AuthForm, type AuthField } from "../../components/common/AuthForm";
+import { getRedirectPathByRole } from "../../utils/roleRedirect";
+import { getRole } from "../../utils/authRole";
 
 const LoginSchema = z.object({
   email: z.string().email("Invalid email format"),
@@ -16,7 +18,7 @@ type LoginType = z.infer<typeof LoginSchema>;
 
 export const Login: React.FC = () => {
   const [shake, setShake] = useState(false);
-
+  const navigate = useNavigate();
   const { mutate, isPending, isError, error } = useLogin();
 
   const fields: AuthField[] = [
@@ -29,6 +31,10 @@ export const Login: React.FC = () => {
     mutate(data, {
       onSuccess: () => {
         toast.success("Welcome back 👋", { id: toastId });
+        const role = getRole();
+        if (!role) return;
+        const path = getRedirectPathByRole(role);
+        navigate(path, { replace: true });
       },
       onError: (error: any) => {
         toast.error(

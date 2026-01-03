@@ -1,33 +1,33 @@
-import js from '@eslint/js'
-import globals from 'globals'
-import reactHooks from 'eslint-plugin-react-hooks'
-import reactRefresh from 'eslint-plugin-react-refresh'
-import tseslint from 'typescript-eslint'
-import tailwind from 'eslint-plugin-tailwindcss'
-import {defineConfig, globalIgnores} from 'eslint/config'
+import js from "@eslint/js";
+import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+import tseslint from "typescript-eslint";
+import tailwind from "eslint-plugin-tailwindcss";
+import { defineConfig, globalIgnores } from "eslint/config";
 
 export default defineConfig([
   {
-    ...globalIgnores(['dist'])
+    ...globalIgnores(["dist"]),
   },
 
   {
-    files: ['**/*.{ts,tsx}'],
+    files: ["**/*.{ts,tsx}"],
 
     extends: [
-        js.configs.recommended,
-        ...tseslint.configs.recommended,
-        reactHooks.configs.flat.recommended,
-        reactRefresh.configs.vite,
+      js.configs.recommended,
+      ...tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
     ],
 
     languageOptions: {
-        ecmaVersion: 2020,
-        globals: globals.browser,
+      ecmaVersion: 2020,
+      globals: globals.browser,
     },
 
     plugins: {
-        tailwindcss: tailwind,
+      tailwindcss: tailwind,
     },
 
     rules: {
@@ -36,10 +36,13 @@ export default defineConfig([
       "react/react-in-jsx-scope": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-unused-vars": [
-          "warn",
-          {argsIgnorePattern: "^_", varsIgnorePattern: "^_"},
+        "warn",
+        {
+          argsIgnorePattern: "^_",
+          varsIgnorePattern: "^_",
+          // caughtErrorsIgnorePattern: "^_",
+        },
       ],
-    }
+    },
   },
 ]);
-

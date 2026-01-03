@@ -1,9 +1,9 @@
 import React from "react";
-import {motion} from "framer-motion";
-import type {VenueItem} from "../../api/venues";
-import {VenueCard} from "./VenueCard";
-import {ArrowLeft} from "lucide-react";
-import {Link, useLocation} from "react-router-dom";
+import { motion } from "framer-motion";
+import type { VenueItem } from "../../api/venues";
+import { VenueCard } from "./VenueCard";
+import { ArrowLeft } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 interface VenuesGridProps {
     venues?: VenueItem[];

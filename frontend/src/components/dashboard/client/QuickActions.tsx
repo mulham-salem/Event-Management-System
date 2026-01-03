@@ -15,6 +15,8 @@ type Action = {
   icon: React.ElementType;
   iconBg: string;
   iconColor: string;
+  hoverBorder: string;
+  hoverBg: string;
   path: string;
 };
 
@@ -26,6 +28,8 @@ export const QuickActions: React.FC = () => {
       icon: UserPlus,
       iconBg: "bg-blue-100",
       iconColor: "text-blue-600",
+      hoverBorder: "group hover:border-blue-300",
+      hoverBg: "group hover:bg-blue-50/30",
       path: "/client/events",
     },
     {
@@ -34,6 +38,8 @@ export const QuickActions: React.FC = () => {
       icon: Heart,
       iconBg: "bg-pink-100",
       iconColor: "text-pink-600",
+      hoverBorder: "group hover:border-pink-300",
+      hoverBg: "group hover:bg-pink-50/30",
       path: "/client/event-ratings",
     },
     {
@@ -42,6 +48,8 @@ export const QuickActions: React.FC = () => {
       icon: Building2,
       iconBg: "bg-emerald-100",
       iconColor: "text-emerald-600",
+      hoverBorder: "group hover:border-emerald-300",
+      hoverBg: "group hover:bg-emerald-50/30",
       path: "/client/providers",
     },
     {
@@ -50,6 +58,8 @@ export const QuickActions: React.FC = () => {
       icon: PlusCircle,
       iconBg: "bg-violet-100",
       iconColor: "text-violet-600",
+      hoverBorder: "group hover:border-violet-300",
+      hoverBg: "group hover:bg-violet-50/30",
       path: "/client/venues",
     },
     {
@@ -58,6 +68,8 @@ export const QuickActions: React.FC = () => {
       icon: Star,
       iconBg: "bg-yellow-100",
       iconColor: "text-yellow-600",
+      hoverBorder: "group hover:border-yellow-300",
+      hoverBg: "group hover:bg-yellow-50/30",
       path: "/client/venue-ratings",
     },
     {
@@ -66,6 +78,8 @@ export const QuickActions: React.FC = () => {
       icon: CalendarDays,
       iconBg: "bg-indigo-100",
       iconColor: "text-indigo-600",
+      hoverBorder: "group hover:border-indigo-300",
+      hoverBg: "group hover:bg-indigo-50/30",
       path: "/client/organizers",
     },
   ];
@@ -77,8 +91,8 @@ export const QuickActions: React.FC = () => {
       </h3>
 
       <div
-        className="grid gap-4 
-                  [grid-template-columns:repeat(auto-fit,minmax(290px,1fr))]"
+        className="grid gap-4
+                   [grid-template-columns:repeat(auto-fit,minmax(290px,1fr))]"
       >
         {actions.map((action) => {
           const Icon = action.icon;
@@ -87,16 +101,28 @@ export const QuickActions: React.FC = () => {
             <Link
               key={action.label}
               to={action.path}
-              className="flex items-center justify-center gap-4 rounded-xl
-                         border-2 border-dashed border-gray-200 p-6
-                         text-left transition hover:bg-gray-50"
+              className={`
+                group flex items-center justify-center gap-4 rounded-xl
+                border-2 border-dashed border-gray-200 p-6 text-left
+                transition-all duration-200
+                hover:shadow-sm
+                ${action.hoverBg}
+                ${action.hoverBorder}
+              `}
             >
+              {/* Icon */}
               <div
-                className={`flex h-12 w-12 items-center justify-center rounded-lg ${action.iconBg}`}
+                className={`
+                  flex h-12 w-12 items-center justify-center rounded-lg
+                  transition-transform duration-200
+                  ${action.iconBg}
+                  group-hover:scale-105
+                `}
               >
                 <Icon className={`h-8 w-12 ${action.iconColor}`} />
               </div>
 
+              {/* Text */}
               <div>
                 <p className="font-nata-sans-md text-gray-800">
                   {action.label}

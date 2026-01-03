@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, Edit, Trash2, ChevronRight, FileText } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  Edit,
+  Trash2,
+  ChevronRight,
+  FileText,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 import { useDeleteBooking } from "../../hooks/useBookings";
@@ -26,17 +33,17 @@ const statusStyles: Record<
     label: "Pending",
     className: "bg-yellow-100 text-yellow-700",
   },
-  confirmed: {
-    label: "Confirmed",
+  approved: {
+    label: "Approved",
     className: "bg-green-100 text-green-700",
   },
-  cancelled: {
-    label: "Cancelled",
+  rejected: {
+    label: "Rejected",
     className: "bg-red-100 text-red-700",
   },
-  completed: {
-    label: "Completed",
-    className: "bg-blue-100 text-blue-700",
+  canceled: {
+    label: "Canceled",
+    className: "bg-red-100 text-red-700",
   },
 };
 
@@ -98,10 +105,12 @@ export const BookingCard: React.FC<BookingCardProps> = ({
 
         {/* ===== Notes ===== */}
         {notes && (
-            <div className="mt-2 flex items-start gap-2 text-sm text-gray-500">
-              <FileText className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" />
-              <p className="line-clamp-2" title={notes}>{notes}</p>
-            </div>
+          <div className="mt-2 flex items-start gap-2 text-sm text-gray-500">
+            <FileText className="mt-0.5 h-4 w-4 flex-shrink-0 text-gray-400" />
+            <p className="line-clamp-2" title={notes}>
+              {notes}
+            </p>
+          </div>
         )}
       </div>
 

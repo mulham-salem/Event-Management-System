@@ -3,7 +3,7 @@ import { random, randomDate, randomTime } from "../helpers/random.helpers";
 import type { Venue } from "../../api/bookings";
 
 // Mock bookings
-export const statuses = ["pending", "confirmed", "cancelled", "completed"];
+export const statuses = ["pending", "approved", "rejected", "canceled"];
 
 export const venues: Venue[] = [
     {
@@ -33,7 +33,7 @@ export const venues: Venue[] = [
     },
 ];
 
-export const bookings = Array.from({length: 10}).map(() => ({
+export const bookings = Array.from({length: 5}).map(() => ({
     id: uuid(),
     venue: random(venues),
     date: randomDate(),

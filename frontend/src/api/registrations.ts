@@ -1,6 +1,6 @@
 import axiosClient from "./axiosClient";
 
-export type EventRegistrationStatus  = "pending" | "confirmed" | "cancelled" | "completed";
+export type EventRegistrationStatus  = "pending" | "approved" | "rejected" | "canceled";
 
 export interface Event {
     id?: string,
@@ -9,6 +9,7 @@ export interface Event {
     date: string; 
     start_time: string; 
     end_time: string; 
+    is_registered: boolean;
 }
 
 export interface Registration {

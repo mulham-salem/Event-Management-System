@@ -4,12 +4,6 @@ import { motion } from "framer-motion";
 import { BookingCard } from "./BookingCard";
 import type { Booking } from "../../api/bookings";
 
-
-interface BookingsGridProps {
-  bookings: Booking[];
-  onSelect?: (id: string) => void;
-}
-
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -28,6 +22,12 @@ const itemVariants = {
     transition: { duration: 0.35 },
   },
 };
+
+interface BookingsGridProps {
+  bookings: Booking[];
+  onSelect?: (id: string) => void;
+}
+
 
 export const BookingsGrid: React.FC<BookingsGridProps> = ({ bookings, onSelect }) => {
   return (

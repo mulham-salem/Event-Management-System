@@ -1,0 +1,130 @@
+import React from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Check, X, AlertTriangle } from "lucide-react";
+
+/* =======================
+   Types
+======================= */
+
+type BookingAction = "accept" | "reject" | "cancel";
+
+interface BookingActionModalProps {
+  open: boolean;
+  action: BookingAction;
+  loading?: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}
+
+/* =======================
+   Config
+======================= */
+
+const actionConfig = {
+  accept: {
+    title: "Accept Booking",
+    description:
+      "Are you sure you want to accept this booking? The client will be notified immediately.",
+    icon: Check,
+    iconBg: "bg-emerald-100",
+    iconColor: "text-emerald-600",
+    confirmBtn: "bg-emerald-600 hover:bg-emerald-700",
+    confirmText: "Accept Booking",
+  },
+  reject: {
+    title: "Reject Booking",
+    description:
+      "Are you sure you want to reject this booking? This action cannot be undone.",
+    icon: X,
+    iconBg: "bg-red-100",
+    iconColor: "text-red-600",
+    confirmBtn: "bg-red-600 hover:bg-red-700",
+    confirmText: "Reject Booking",
+  },
+  cancel: {
+    title: "Cancel booking",
+    description: "Are you sure you want to cancel this booking?",
+    icon: AlertTriangle,
+    iconBg: "bg-orange-100",
+    iconColor: "text-orange-600",
+    confirmBtn: "bg-orange-600 hover:bg-orange-700",
+    confirmText: "Cancel Booking",
+  },
+};
+
+/* =======================
+   Component
+======================= */
+
+export const BookingActionModal: React.FC<BookingActionModalProps> = ({
+  open,
+  action,
+  loading,
+  onClose,
+  onConfirm,
+}) => {
+  const config = actionConfig[action];
+  const Icon = config?.icon;
+
+  return (
+    <AnimatePresence>
+      {open && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          onClick={onClose}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4 backdrop-blur-sm"
+        >
+          <motion.div
+            onClick={(e) => e.stopPropagation()}
+            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96, y: 10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="w-full max-w-md rounded-2xl bg-white p-6 font-nata-sans-rg shadow-xl"
+          >
+            {/* ---------- Icon ---------- */}
+            <div
+              className={`mx-auto mb-4 flex h-12 w-12 items-center justify-center
+                          rounded-full ${config.iconBg}`}
+            >
+              <Icon className={`h-6 w-6 ${config.iconColor}`} />
+            </div>
+
+            {/* ---------- Content ---------- */}
+            <div className="text-center">
+              <h3 className="font-nata-sans-bd text-lg text-gray-800">
+                {config.title}
+              </h3>
+              <p className="mt-2 text-sm text-gray-500">{config.description}</p>
+            </div>
+
+            {/* ---------- Actions ---------- */}
+            <div className="mt-6 flex gap-3">
+              <button
+                onClick={onClose}
+                disabled={loading}
+                className="flex-1 rounded-xl border px-4 py-2 text-sm
+                           text-gray-600 transition
+                           hover:bg-gray-50 disabled:opacity-50"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={onConfirm}
+                disabled={loading}
+                className={`flex-1 rounded-xl px-4 py-2 text-sm text-white
+                            transition disabled:opacity-50
+                            ${config.confirmBtn}`}
+              >
+                {loading ? "Processing..." : config.confirmText}
+              </button>
+            </div>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};

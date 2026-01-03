@@ -13,6 +13,7 @@ import {
   CheckCircle,
   Phone,
   User,
+  Notebook,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import { getToken } from "../../utils/authToken";
@@ -116,8 +117,8 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
         <div className="mb-4 flex flex-wrap gap-6 text-sm text-gray-700">
           <div className="flex items-center gap-2">
-            <MapPin size={16} className="text-[#5a2ea6]" />
-            <span>Location: {venue.location_geo}</span>
+            <Notebook size={16} className="text-[#5a2ea6]" />
+            <span>{venue.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -129,6 +130,13 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
             <DollarSign size={17} className="text-[#5a2ea6]" />
             <span>Price: {venue.price_per_hour} / hour</span>
           </div>
+
+          <div className="flex items-center gap-2">
+            <MapPin size={16} className="text-[#5a2ea6]" />
+            <span>
+              Location: {venue.location_geo.area}, {venue.location_geo.city}
+            </span>
+          </div>
         </div>
 
         {/* Map */}
@@ -138,7 +146,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
               <iframe
                 title="Venue location"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  venue.location_geo
+                  venue.location_geo.location
                 )}&output=embed`}
                 className="h-[300px] w-full border-0"
                 loading="lazy"
@@ -147,7 +155,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                venue.location_geo
+                venue.location_geo.location
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -180,40 +188,34 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
         )}
       </div>
 
-      {/* Schedule */}
+      {/* Booking */}
       <div className="mb-10">
         <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">
-          Availability Schedule
+          Availability Booking
         </h3>
 
-        {venue.schedules.length === 0 ? (
+        {venue.bookings.length === 0 ? (
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <AlertCircle size={16} />
-            No schedules available
+            No bookings available
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {venue.schedules.map((s) => (
+            {venue.bookings.map((booking) => (
               <div
-                key={s.id}
-                className={`
-                  rounded-xl border p-4 text-sm
-                  ${
-                    s.is_blocked
-                      ? "border-red-200 bg-red-50 text-red-600"
-                      : "border-green-200 bg-green-50 text-green-700"
-                  }
-                `}
+                key={booking.id}
+                className="rounded-xl border border-red-200 
+                         bg-red-50 p-4 text-sm text-red-600"
               >
                 <div className="mb-2 flex items-center gap-2">
                   <Calendar size={15} />
-                  <span>{s.date}</span>
+                  <span>{booking.date}</span>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <Clock size={15} />
                   <span>
-                    {s.start_time} — {s.end_time}
+                    {booking.start_time} — {booking.end_time}
                   </span>
                 </div>
               </div>
@@ -222,12 +224,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
         )}
       </div>
 
-      {isLoggedIn && (
-        <RatingsSection 
-          targetType="venue"
-          targetId={venue.id}
-        />
-      )}
+      {isLoggedIn && <RatingsSection targetType="venue" targetId={venue.id} />}
 
       {/* Action */}
       <motion.div

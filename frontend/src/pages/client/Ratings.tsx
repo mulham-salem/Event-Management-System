@@ -1,32 +1,32 @@
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
-import {motion, AnimatePresence} from "framer-motion";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 
 import {
     useUserEventReviews,
     useUserVenueReviews,
     useDeleteReview,
-} from "../hooks/useRatings";
+} from "../../hooks/useRatings";
 
 import type {
     UserEventReview,
     UserVenueReview,
     RatingTargetType,
     Review,
-} from "../api/ratings";
+} from "../../api/ratings";
 
-import {RatingList} from "../components/rating/RatingList";
-import {RatingForm} from "../components/rating/RatingForm";
-import {RatingFilter} from "../components/rating/RatingFilter";
-import {ModalPortal} from "../components/common/ModalPortal";
-import {Star} from "lucide-react";
+import { RatingList } from "../../components/rating/RatingList";
+import { RatingForm } from "../../components/rating/RatingForm";
+import { RatingFilter } from "../../components/rating/RatingFilter";
+import { ModalPortal } from "../../components/common/ModalPortal";
+import { Heart, Star } from "lucide-react";
 
 type RatingsDashboardProps = {
     type: RatingTargetType; // "event" | "venue"
 };
 
-export const RatingsDashboard: React.FC<RatingsDashboardProps> = ({type}) => {
+export const Ratings: React.FC<RatingsDashboardProps> = ({type}) => {
     /* ===============================
           State
     ================================ */
@@ -154,7 +154,7 @@ export const RatingsDashboard: React.FC<RatingsDashboardProps> = ({type}) => {
             {/* ===== Header ===== */}
             <div className="mb-8 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
                 <h2 className="flex items-center gap-2 font-nata-sans-bd text-2xl text-gray-900">
-                    <Star className="h-6 w-6"/>
+                    {type === "venue" ? <Star className="h-6 w-6"/> : <Heart className="h-6 w-6"/>}
                     {type === "event" ? "Rating Events" : "Rating Venues"}
                 </h2>
 

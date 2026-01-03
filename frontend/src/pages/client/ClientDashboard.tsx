@@ -1,10 +1,10 @@
 import React from "react";
-import {motion, type Variants} from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 
 // Dashboard Components
-import {Stats} from "../components/dashboard/client/Stats";
-import {QuickActions} from "../components/dashboard/client/QuickActions";
-import {RecentActivity} from "../components/dashboard/client/RecentActivity";
+import { Stats } from "../../components/dashboard/client/Stats";
+import { QuickActions } from "../../components/dashboard/client/QuickActions";
+import { RecentActivity } from "../../components/dashboard/client/RecentActivity";
 
 const containerVariants: Variants = {
     hidden: {},

@@ -37,20 +37,34 @@
   transform-origin: center;
 }
 
+.custom-scrollbar-provider .simplebar-scrollbar::before {
+  background: linear-gradient(to bottom, #74dda5, #44cf85);
+  border-radius: 6px;
+  transition: background 0.25s ease, box-shadow 0.25s ease;
+  transform: scaleY(0.8); /* تقصير */
+  transform-origin: center;
+}
+
 .custom-scrollbar .simplebar-scrollbar:hover::before {
   background: linear-gradient(to bottom, #6112c2, #380e6b);
   box-shadow: 0 0 14px rgb(65 0 255 / 70%);
 }
 
-.custom-scrollbar .simplebar-scrollbar {
+.custom-scrollbar-provider .simplebar-scrollbar:hover::before {
+  background: linear-gradient(to bottom, #3f8861, #114f2e);
+  box-shadow: 0 0 14px rgb(124 211 124 / 70%);
+}
+
+.custom-scrollbar .simplebar-scrollbar, .custom-scrollbar-provider .simplebar-scrollbar {
   width: 10px;
 }
 
-.custom-scrollbar .simplebar-track.simplebar-vertical {
+.custom-scrollbar .simplebar-track.simplebar-vertical, .custom-scrollbar-provider .simplebar-track.simplebar-vertical {
   background: rgb(0 0 0 / 0%);
   width: 10px;
   border-radius: 20px;
 }
+
 
 /* ====== Custom CSS Animation ====== */
 

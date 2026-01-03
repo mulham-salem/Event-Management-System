@@ -29,6 +29,7 @@ export const VenuesFilters: React.FC<VenuesFiltersProps> = ({ filters, onChange 
             className="mx-auto my-5 w-full max-w-5xl rounded-3xl bg-white p-5 shadow-md"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8 }}
         >
             {/* Search - Full width on top */}

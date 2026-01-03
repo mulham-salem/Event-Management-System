@@ -1,18 +1,18 @@
-import React, {useRef, useState} from "react";
-import {useSearchParams, useOutletContext} from "react-router-dom";
-import type {LayoutContextType} from "../layouts/PublicLayout";
+import React, { useRef, useState } from "react";
+import { useSearchParams, useOutletContext } from "react-router-dom";
+import type { LayoutContextType } from "../../layouts/PublicLayout";
 
-import {useEvents, useEvent} from "../hooks/useEvent";
+import { useEvents, useEvent } from "../../hooks/useEvent";
 
 // Components
-import {EventsHeader} from "../components/event/EventsHeader";
-import {EventsFilters} from "../components/event/EventsFilters";
-import {EventsGrid} from "../components/event/EventsGrid";
-import {EventCardDetails} from "../components/event/EventCardDetails";
-import {Pagination} from "../components/common/Pagination";
-import { Loader } from "../components/common/Loader";
+import { EventsHeader } from "../../components/event/EventsHeader";
+import { EventsFilters } from "../../components/event/EventsFilters";
+import { EventsGrid } from "../../components/event/EventsGrid";
+import { EventCardDetails } from "../../components/event/EventCardDetails";
+import { Pagination } from "../../components/common/Pagination";
+import { Loader } from "../../components/common/Loader";
 
-import {motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Events: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
     const {scrollableNodeRef} = useOutletContext<LayoutContextType>();

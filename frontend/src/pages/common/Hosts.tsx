@@ -1,17 +1,17 @@
-import React, {useMemo, useRef, useState} from "react";
-import {useOutletContext} from "react-router-dom";
-import type {LayoutContextType} from "../layouts/PublicLayout";
+import React, { useMemo, useRef, useState } from "react";
+import { useOutletContext } from "react-router-dom";
+import type { LayoutContextType } from "../../layouts/PublicLayout";
 
-import {useHosts} from "../hooks/useHost";
-import type {HostRole} from "../api/hosts";
+import { useHosts } from "../../hooks/useHost";
+import type { HostRole } from "../../api/hosts";
 
 // Components
-import {HostsSidebar} from "../components/host/HostsSidebar";
-import {HostsGrid} from "../components/host/HostsGrid";
-import {Pagination} from "../components/common/Pagination";
-import {Loader} from "../components/common/Loader";
+import { HostsSidebar } from "../../components/host/HostsSidebar";
+import { HostsGrid } from "../../components/host/HostsGrid";
+import { Pagination } from "../../components/common/Pagination";
+import { Loader } from "../../components/common/Loader";
 
-import {motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface HostsProps {
     role: HostRole; // "provider" | "organizer"

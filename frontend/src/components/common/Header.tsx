@@ -1,7 +1,7 @@
-import React, {useState} from "react";
-import {Link} from "react-router-dom";
-import {useLocation} from "react-router-dom";
-import {ChevronDown} from "lucide-react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { ChevronDown } from "lucide-react";
 
 export const Header: React.FC = () => {
     const [languageOpen, setLanguageOpen] = useState(false);

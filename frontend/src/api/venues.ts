@@ -1,11 +1,12 @@
 import axiosClient from "./axiosClient";
+import type { VenueLocation } from "./venuesManage";
 
 // ===== Types =====
 export interface VenueItem {
   id: string;
   name: string;
   description: string;
-  location_geo: string;
+  location_geo: VenueLocation;
   capacity: number;
   price_per_hour: string;
   created_at: string;
@@ -41,18 +42,16 @@ export interface AverageRating {
   count: number;
 }
 
-export interface VenueSchedule {
+export interface VenueBooking {
   id: string;
-  venue: string;
   date: string; // YYYY-MM-DD
   start_time: string; // HH:MM:SS
   end_time: string; // HH:MM:SS
-  is_blocked: boolean;
   created_at: string;
 }
 
 export interface VenueDetails extends VenueItem {
-  schedules: VenueSchedule[];
+  bookings: VenueBooking[];
 }
 
 // ===== Params =====

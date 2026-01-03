@@ -19,11 +19,11 @@ export interface RecentActivityItem {
 
 export const clientDashboardApi = {
   getStats: async (): Promise<DashboardStatsResponse> => {
-    const res = await axiosClient.get("/dashboard/stats");
+    const res = await axiosClient.get("/client/dashboard/stats");
     return res.data;
   },
   getRecentActivity: async (): Promise<RecentActivityItem[]> => {
-    const res = await axiosClient.get("/dashboard/recent-activity");
+    const res = await axiosClient.get("/client/dashboard/recent-activity");
     return res.data;
   },
 };

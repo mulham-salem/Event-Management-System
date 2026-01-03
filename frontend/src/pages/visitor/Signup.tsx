@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { z } from "zod";
-import { useSignup } from "../hooks/useAuth";
+import { useSignup } from "../../hooks/useAuth";
 import { motion } from "framer-motion";
 import { Mail, Lock, User, Phone } from "lucide-react";
 import toast from "react-hot-toast";
-import { AuthForm, type AuthField } from "../components/common/AuthForm";
+import { AuthForm, type AuthField } from "../../components/common/AuthForm";
+import { getRedirectPathByRole } from "../../utils/roleRedirect";
+import { getRole } from "../../utils/authRole";
 
 const SignupSchema = z.object({
   fullName: z.string().min(3, "Full name is too short"),
@@ -22,14 +24,37 @@ interface SignupProps {
 
 export const Signup: React.FC<SignupProps> = ({ role = "client" }) => {
   const [shake, setShake] = useState(false);
+  const navigate = useNavigate();
 
   const { mutate, isPending, isError, error } = useSignup();
 
   const fields: AuthField[] = [
-    { name: "fullName", label: "Full Name", placeholder: "John Doe", icon: <User /> },
-    { name: "email", label: "Email", type: "email", placeholder: "example@email.com", icon: <Mail /> },
-    { name: "phone", label: "Phone Number", placeholder: "+1 234 567", icon: <Phone /> },
-    { name: "password", label: "Password", type: "password", placeholder: "********", icon: <Lock /> },
+    {
+      name: "fullName",
+      label: "Full Name",
+      placeholder: "John Doe",
+      icon: <User />,
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+      placeholder: "example@email.com",
+      icon: <Mail />,
+    },
+    {
+      name: "phone",
+      label: "Phone Number",
+      placeholder: "+1 234 567",
+      icon: <Phone />,
+    },
+    {
+      name: "password",
+      label: "Password",
+      type: "password",
+      placeholder: "********",
+      icon: <Lock />,
+    },
   ];
 
   const submit = (data: SignupType) => {
@@ -45,6 +70,10 @@ export const Signup: React.FC<SignupProps> = ({ role = "client" }) => {
       {
         onSuccess: () => {
           toast.success("Account created successfully 🎉", { id: toastId });
+          const role = getRole();
+          if (!role) return;
+          const path = getRedirectPathByRole(role);
+          navigate(path, { replace: true });
         },
         onError: (error: any) => {
           toast.error(

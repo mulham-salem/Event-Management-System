@@ -1,18 +1,18 @@
-import React, {useRef, useState} from "react";
-import {useSearchParams, useOutletContext} from "react-router-dom";
-import type {LayoutContextType} from "../layouts/PublicLayout";
+import React, { useRef, useState } from "react";
+import { useSearchParams, useOutletContext } from "react-router-dom";
+import type { LayoutContextType } from "../../layouts/PublicLayout";
 
-import {useVenues, useVenue} from "../hooks/useVenue";
+import { useVenues, useVenue } from "../../hooks/useVenue";
 
 // Components
-import {VenuesHeader} from "../components/venue/VenuesHeader";
-import {VenuesFilters} from "../components/venue/VenuesFilters";
-import {VenuesGrid} from "../components/venue/VenuesGrid";
-import {VenueCardDetails} from "../components/venue/VenueCardDetails";
-import {Pagination} from "../components/common/Pagination";
-import {Loader} from "../components/common/Loader";
+import { VenuesHeader } from "../../components/venue/VenuesHeader";
+import { VenuesFilters } from "../../components/venue/VenuesFilters";
+import { VenuesGrid } from "../../components/venue/VenuesGrid";
+import { VenueCardDetails } from "../../components/venue/VenueCardDetails";
+import { Pagination } from "../../components/common/Pagination";
+import { Loader } from "../../components/common/Loader";
 
-import {motion, AnimatePresence} from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 
 export const Venues: React.FC<{ showHero?: boolean }> = ({showHero = true}) => {
     const {scrollableNodeRef} = useOutletContext<LayoutContextType>();

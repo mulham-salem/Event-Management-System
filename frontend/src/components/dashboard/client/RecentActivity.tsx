@@ -2,15 +2,20 @@ import React from "react";
 import { Loader } from "../../common/Loader";
 import { useRecentActivity } from "../../../hooks/useClientDashboard";
 import type { RecentActivityItem } from "../../../api/clientDashboard";
-import { CalendarCheck, UserPlus, Star, Heart, Award, Trophy } from "lucide-react";
+import {
+  CalendarCheck,
+  UserPlus,
+  Star,
+  Heart,
+  Award,
+  Trophy,
+} from "lucide-react";
 
 export const RecentActivity: React.FC = () => {
   const { data, isLoading } = useRecentActivity();
 
   if (isLoading) {
-    return (
-        <Loader text={"Loading activity..."} />
-    );
+    return <Loader text={"Loading activity..."} />;
   }
 
   const activityIconMap = {
@@ -58,7 +63,10 @@ export const RecentActivity: React.FC = () => {
           const Icon = config.icon;
 
           return (
-            <li key={activity.id} className="flex items-start gap-4">
+            <li
+              key={activity.id}
+              className="flex items-start gap-4 rounded-xl p-2 transition-all duration-200 hover:bg-gray-50"
+            >
               <div
                 className={`flex h-10 w-10 items-center justify-center rounded-xl ${config.iconBg}`}
               >

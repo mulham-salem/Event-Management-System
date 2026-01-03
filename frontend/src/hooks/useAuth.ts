@@ -1,11 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
 import { authApi, type LoginPayload, type SignupPayload } from "../api/auth";
 import { setToken, removeToken } from "../utils/authToken";
 import { setRole, removeRole } from "../utils/authRole";
 
 export const useLogin = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -16,13 +14,11 @@ export const useLogin = () => {
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
       if (data.role) setRole(data.role);
-      navigate("/client/dashboard", { replace: true });
     },
   });
 };
 
 export const useSignup = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   return useMutation({
@@ -33,7 +29,6 @@ export const useSignup = () => {
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
       if (data.role) setRole(data.role);;
-      navigate("/client/dashboard", { replace: true });
     },
   });
 };
@@ -48,15 +43,12 @@ export const useMe = () => {
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   const logout = () => {
     removeToken();
     removeRole();
 
     queryClient.removeQueries({ queryKey: ["me"] });
-
-    navigate("/", { replace: true });
   };
 
   return { logout };

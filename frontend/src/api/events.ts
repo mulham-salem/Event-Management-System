@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+import type { VenueLocation } from "./venuesManage.ts";
 import type { AverageRating } from "./venues.ts";
 
 // ===== Types =====
@@ -11,6 +12,7 @@ export interface EventItem {
   end_time: string;
   organizer: Organizer;
   average_rating: AverageRating;
+  is_registered: boolean;
 }
 
 export interface EventsResponse {
@@ -37,15 +39,17 @@ interface VenueImage {
 interface Venue {
   id: string;
   name: string;
-  location_geo: string;
+  location_geo: VenueLocation;
   capacity: number;
   images: VenueImage[];
+  average_rating: AverageRating;
 }
 
 export interface EventDetails {
   id: string;
   organizer: Organizer;
   venue: Venue;
+  is_registered: boolean;
   created_at: string;
 }
 

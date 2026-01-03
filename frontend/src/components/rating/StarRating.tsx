@@ -89,7 +89,7 @@ export const StarRating: React.FC<StarRatingProps> = ({
       })}
 
       {showValue && (
-        <span className="ml-2 text-sm text-gray-500">{rating.toFixed(1)}</span>
+        <span className="ml-2 text-sm text-gray-500">{rating}</span>
       )}
     </div>
   );

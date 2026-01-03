@@ -32,17 +32,17 @@ const statusStyles: Record<
     label: "Pending",
     className: "bg-yellow-100 text-yellow-700",
   },
-  confirmed: {
-    label: "Confirmed",
+  approved: {
+    label: "Approved",
     className: "bg-green-100 text-green-700",
   },
-  cancelled: {
-    label: "Cancelled",
+  rejected: {
+    label: "Rejected",
     className: "bg-red-100 text-red-700",
   },
-  completed: {
-    label: "Completed",
-    className: "bg-blue-100 text-blue-700",
+  canceled: {
+    label: "Canceled",
+    className: "bg-red-100 text-red-700",
   },
 };
 

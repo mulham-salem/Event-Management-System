@@ -66,7 +66,7 @@ export const Stats: React.FC = () => {
     return (
       <div
         key={stat.label}
-        className="rounded-2xl border border-gray-200 bg-white p-8 shadow-sm"
+        className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm hover:shadow-md"
       >
         <div className="flex items-center justify-between">
           <div>

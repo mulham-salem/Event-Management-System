@@ -59,6 +59,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
       venue_id: venueId!,
       ...data,
     };
+    
     if (isEdit) {
       updateMutation.mutate(
         { id: booking!.id, data },
