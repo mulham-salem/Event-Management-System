@@ -71,7 +71,7 @@ export const VenuesManage: React.FC = () => {
         <div>
           <h1 className="flex items-center gap-2 text-xl font-semibold text-gray-900">
             <Building />
-            Venues Management
+             Venues Management
           </h1>
           <p className="pt-1 text-sm text-gray-500">
             Manage and control your venues
@@ -125,8 +125,8 @@ export const VenuesManage: React.FC = () => {
       </AnimatePresence>
 
       {/* =======================
-              Delete Confirmation Modal
-             ======================= */}
+          Delete Confirmation Modal
+         ======================= */}
       <AnimatePresence>
         {venueToDelete && (
           <ModalPortal>
@@ -144,7 +144,7 @@ export const VenuesManage: React.FC = () => {
                 transition={{ type: "spring", damping: 20 }}
               >
                 <h3 className="mb-2 font-nata-sans-bd text-lg">Delete Venue</h3>
-                <p className="mb-6 text-sm text-gray-600">
+                <p className="mb-6 font-nata-sans-rg text-sm text-gray-600">
                   Are you sure you want to delete{" "}
                   <span className="font-nata-sans-md">
                     {venueToDelete.name}
@@ -152,22 +152,22 @@ export const VenuesManage: React.FC = () => {
                   ?
                 </p>
 
-                <div className="flex justify-end gap-3">
+                <div className="flex justify-end gap-3 font-nata-sans-md text-sm">
                   <motion.button
-                    onClick={() => setVenueToDelete(null)}
-                    className="rounded-lg border px-4 py-2 text-gray-600"
-                    whileHover={{ backgroundColor: "#f3f4f6" }}
-                    whileTap={{ scale: 0.98 }}
+                      onClick={() => setVenueToDelete(null)}
+                      className="rounded-lg border px-4 py-2 text-gray-600"
+                      whileHover={{backgroundColor: "#f3f4f6"}}
+                      whileTap={{scale: 0.98}}
                   >
                     Cancel
                   </motion.button>
 
                   <motion.button
-                    onClick={handleDeleteConfirm}
-                    disabled={deleteVenueMutation.isPending}
-                    className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
-                    whileHover={{ backgroundColor: "#dc2626" }}
-                    whileTap={{ scale: 0.98 }}
+                      onClick={handleDeleteConfirm}
+                      disabled={deleteVenueMutation.isPending}
+                      className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-700"
+                      whileHover={{backgroundColor: "#dc2626"}}
+                      whileTap={{scale: 0.98}}
                   >
                     Delete
                   </motion.button>

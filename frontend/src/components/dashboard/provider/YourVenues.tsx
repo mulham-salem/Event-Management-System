@@ -34,7 +34,7 @@ export const YourVenues: React.FC = () => {
             <span className="font-nata-sans-md text-sm">Loading...</span>
           </div>
         ) : data.length > 0 ? (
-          data.map((venue) => (
+          data.slice(0, 5).map((venue) => (
             <div
               key={venue.id}
               className="rounded-xl border border-gray-100 p-6 transition-all hover:border-emerald-200 hover:bg-emerald-50/30"
@@ -69,11 +69,17 @@ export const YourVenues: React.FC = () => {
             </div>
           ))
         ) : (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 py-8">
+          <div className="col-span-full flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 py-12">
             <Store className="mb-2 h-6 w-6 text-gray-300" />
             <p className="font-nata-sans-md text-sm text-gray-500">
               No venues available
             </p>
+            <button 
+              onClick={() => setIsCreateOpen(true)}
+              className="mt-3 text-xs text-emerald-600 underline"
+            >
+              Start by Add one
+            </button>
           </div>
         )}
       </div>

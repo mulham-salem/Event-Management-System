@@ -10,8 +10,8 @@ export const applySearchAndOrdering = (
     if (search) {
         result = result.filter(
             (r) =>
-                r.event.title.toLowerCase().includes(search.toLowerCase()) ||
-                r.event.description.toLowerCase().includes(search.toLowerCase())
+                r.event_data.title.toLowerCase().includes(search.toLowerCase()) ||
+                r.event_data.description.toLowerCase().includes(search.toLowerCase())
         );
     }
 

@@ -17,6 +17,9 @@ import { ProviderDashboard } from "./pages/provider/ProviderDashboard";
 import { VenuesManage } from "./pages/provider/VenuesManage";
 import { VenuesArchive } from "./pages/provider/VenuesArchive";
 import { BookingsManage } from "./pages/provider/BookingsManage";
+import { OrganizerDashboard } from "./pages/organizer/OrganizerDashboard";
+import { EventsManage } from "./pages/organizer/EventsManage";
+import { EventsArchive } from "./pages/organizer/EventsArchive.tsx";
 
 function App() {
   return (
@@ -63,10 +66,21 @@ function App() {
               <Route path="/provider/dashboard" element={<ProviderDashboard />} />
               <Route path="/provider/my-venues" element={<VenuesManage />} />
               <Route path="/provider/archived-venues" element={<VenuesArchive />} />
-              <Route path="/provider/bookings" element={<BookingsManage />} />
+              <Route path="/provider/manage-bookings" element={<BookingsManage />} />
             </Route>
           </Route>
 
+          {/* ===== ORGANIZER DASHBOARD ===== */}
+          <Route element={<PrivateRoute requiredRole="organizer" />}>
+            <Route element={<DashboardLayout />}>
+              <Route path="/organizer/dashboard" element={<OrganizerDashboard />} />
+              <Route path="/organizer/bookings" element={<Bookings />} />
+              <Route path="/organizer/venues" element={<Venues showHero={false} />} />
+              <Route path="/organizer/my-events" element={<EventsManage />} />
+              <Route path="/organizer/archived-events" element={<EventsArchive />} />
+            </Route>
+          </Route>
+          
         </Routes>
       </Router>
     </>

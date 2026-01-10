@@ -7,13 +7,29 @@ export interface EventItem {
   id: string;
   title: string;
   description: string;
+  type: EventType;
   date: string;
   start_time: string;
   end_time: string;
+  capacity: number;
+  attendance_count: number;
   organizer: Organizer;
   average_rating: AverageRating;
   is_registered: boolean;
 }
+
+export type EventType =
+  | "seminar"
+  | "workshop"
+  | "lecture"
+  | "panel"
+  | "roundedTable"
+  | "networking"
+  | "webinar"
+  | "training"
+  | "discussion"
+  | "exhibition"
+  | "conference";
 
 export interface EventsResponse {
   results: EventItem[];
@@ -66,7 +82,6 @@ export interface FetchEventsParams {
 
 // ===== API =====
 export const eventsApi = {
-
   fetchEvents: async (filters: FetchEventsParams): Promise<EventsResponse> => {
     const params = new URLSearchParams();
 
@@ -74,15 +89,15 @@ export const eventsApi = {
     if (filters.min_date) params.append("min_date", filters.min_date);
     if (filters.max_date) params.append("max_date", filters.max_date);
     if (filters.ordering) params.append("ordering", filters.ordering);
-    if (filters.organizer) params.append("organizer", String(filters.organizer));
+    if (filters.organizer)
+      params.append("organizer", String(filters.organizer));
 
     params.append("page", String(filters.page));
     params.append("page_size", String(filters.page_size));
 
-    const res = await axiosClient.get(
-      `/events/public?${params.toString()}`,
-      { skipAuth: true }
-    );
+    const res = await axiosClient.get(`/events/public?${params.toString()}`, {
+      skipAuth: true,
+    });
 
     return res.data;
   },

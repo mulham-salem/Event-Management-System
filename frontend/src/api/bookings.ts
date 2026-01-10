@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+import type { VenueLocation } from "./venuesManage";
 
 export type BookingStatus = "pending" | "approved" | "rejected" | "canceled";
 
@@ -6,6 +7,9 @@ export interface Venue {
   id: string;
   name: string;
   description: string;
+  capacity?: number;
+  price_per_hour?: string;
+  location_geo?: VenueLocation;
 }
 
 export interface Booking {

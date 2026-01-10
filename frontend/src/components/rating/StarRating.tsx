@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Star } from "lucide-react";
 import { motion } from "framer-motion";
+import {useLocation} from "react-router-dom";
 
 const starVariants = {
   initial: { scale: 1 },
@@ -28,6 +29,9 @@ export const StarRating: React.FC<StarRatingProps> = ({
   interactive = false,
   onChange,
 }) => {
+  const location = useLocation();
+  const isOrganizer = location.pathname === "/organizer/venues" || location.pathname === "/organizer/my-events";
+
   const [hoverValue, setHoverValue] = useState<number | null>(null);
 
   const displayRating = hoverValue ?? rating;
@@ -75,14 +79,14 @@ export const StarRating: React.FC<StarRatingProps> = ({
             <Star size={size} className="text-gray-300" />
 
             <motion.div
-              className="absolute inset-0 overflow-hidden"
               custom={fillPercentage}
               variants={fillVariants}
               initial={{ width: 0 }}
               animate="animate"
               transition={{ duration: 0.25, ease: "easeOut" }}
+              className="absolute inset-0 overflow-hidden"
             >
-              <Star size={size} className="fill-[#5a2ea6] text-[#5a2ea6]" />
+              <Star size={size} className={`${isOrganizer ? "fill-amber-600 text-amber-600" : "fill-[#5a2ea6] text-[#5a2ea6]"}`} />
             </motion.div>
           </motion.div>
         );

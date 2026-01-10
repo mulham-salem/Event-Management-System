@@ -10,6 +10,7 @@ import type { Bookings } from "../../api/bookingsManage";
 
 interface BookingRowProps {
   booking: Bookings;
+  index: number;
   onAccept: (id: string) => void;
   onReject: (id: string) => void;
   onCancel: (id: string) => void;
@@ -44,6 +45,7 @@ const statusStyles: Record<Bookings["status"], { bg: string; text: string }> = {
 
 export const BookingRow: React.FC<BookingRowProps> = ({
   booking,
+  index,
   onAccept,
   onReject,
   onCancel,
@@ -63,7 +65,7 @@ export const BookingRow: React.FC<BookingRowProps> = ({
       <td className="px-6 py-4 text-left">
         <div>
           <span className="font-nata-sans-md text-gray-800">
-            #{booking.id.toString().padStart(4, "0")}
+            #BK-{(index + 1).toString().padStart(4, "0")}
           </span>
           <p className="text-sm text-gray-500">Booking request</p>
         </div>

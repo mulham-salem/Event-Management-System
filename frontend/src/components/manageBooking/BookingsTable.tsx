@@ -1,5 +1,5 @@
 import React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { Loader2 } from "lucide-react";
 
 import type { Bookings } from "../../api/bookingsManage";
@@ -60,13 +60,12 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
 
         <tbody className="divide-y divide-gray-100 text-center">
           {/* ---------- Loading ---------- */}
-          <AnimatePresence>
             {isLoading && (
               <motion.tr
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="transition-colors duration-200 hover:bg-emerald-50/30"
+                transition={{ ease: "easeIn", duration: 0.4 }}
+                className="h-60 transition-colors duration-200 hover:bg-emerald-50/30"
 
               >
                 <td colSpan={7} className="py-16">
@@ -79,7 +78,6 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
                 </td>
               </motion.tr>
             )}
-          </AnimatePresence>
 
           {/* ---------- Empty ---------- */}
           {!isLoading && bookings.length === 0 && (
@@ -93,18 +91,17 @@ export const BookingsTable: React.FC<BookingsTableProps> = ({
           )}
 
           {/* ---------- Rows ---------- */}
-          <AnimatePresence>
             {!isLoading &&
-              bookings.map((booking) => (
+              bookings.map((booking, index) => (
                 <BookingRow
                   key={booking.id}
                   booking={booking}
+                  index={index}
                   onAccept={onAccept}
                   onReject={onReject}
                   onCancel={onCancel}
                 />
               ))}
-          </AnimatePresence>
         </tbody>
       </table>
     </div>

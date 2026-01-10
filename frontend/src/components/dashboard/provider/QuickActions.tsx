@@ -22,18 +22,18 @@ export const QuickActions: React.FC = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-amber-100 transition-colors group-hover:bg-amber-200">
             <Plus className="h-5 w-5 text-amber-600" />
           </div>
-          <span className="font-nata-sans-md text-gray-600">Add New Venue</span>
+          <span className="font-nata-sans-md text-gray-600 transition-colors group-hover:text-amber-700">Add New Venue</span>
         </button>
 
         {/* ===== View Pending Bookings ===== */}
         <Link
-          to="/provider/bookings"
+          to="/provider/manage-bookings"
           className="group flex w-full items-center gap-3 rounded-xl border-2 border-dashed border-gray-200 p-3 transition-all hover:border-blue-400 hover:bg-blue-50/30"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-100 transition-colors group-hover:bg-blue-200">
             <ClipboardList className="h-5 w-5 text-blue-600" />
           </div>
-          <span className="font-nata-sans-md text-gray-600">
+          <span className="font-nata-sans-md text-gray-600 transition-colors group-hover:text-blue-700">
             View Pending Bookings
           </span>
         </Link>
@@ -46,7 +46,7 @@ export const QuickActions: React.FC = () => {
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 transition-colors group-hover:bg-green-200">
             <Calendar className="h-5 w-5 text-green-600" />
           </div>
-          <span className="font-nata-sans-md text-gray-600">Open Calendar</span>
+          <span className="font-nata-sans-md text-gray-600 transition-colors group-hover:text-green-700">Open Calendar</span>
         </button>
       </div>
       

@@ -1,9 +1,9 @@
 import React from "react";
-import { motion } from "framer-motion";
-import type { VenueItem } from "../../api/venues";
-import { VenueCard } from "./VenueCard";
-import { ArrowLeft } from "lucide-react";
-import { Link, useLocation } from "react-router-dom";
+import {motion} from "framer-motion";
+import type {VenueItem} from "../../api/venues";
+import {VenueCard} from "./VenueCard";
+import {ArrowLeft} from "lucide-react";
+import {Link, useLocation} from "react-router-dom";
 
 interface VenuesGridProps {
     venues?: VenueItem[];
@@ -12,15 +12,20 @@ interface VenuesGridProps {
 
 export const VenuesGrid: React.FC<VenuesGridProps> = ({venues, onSelect}) => {
     const location = useLocation();
-    const showLink = location.pathname === "/client/venues";
+    const isClient = location.pathname === "/client/venues";
+    const isOrganizer = location.pathname === "/organizer/venues";
+    const showLink = isClient || isOrganizer;
+    const destinationLink = isClient ? "/client/bookings" : "/organizer/bookings";
 
     return (
         <>
             {/* Back */}
             {showLink && (
                 <Link
-                    to="/client/bookings"
-                    className="mb-6 inline-flex items-center gap-2 font-nata-sans-md text-sm text-[#5a2ea6] hover:text-purple-700"
+                    to={destinationLink}
+                    className={`mb-6 inline-flex items-center gap-2 font-nata-sans-md text-sm 
+                               ${isOrganizer ? "text-amber-600 hover:text-amber-700" 
+                                             : "text-[#5a2ea6] hover:text-purple-700"}`}
                 >
                     <ArrowLeft size={18} className="transition hover:translate-x-1"/>
                     Back to bookings

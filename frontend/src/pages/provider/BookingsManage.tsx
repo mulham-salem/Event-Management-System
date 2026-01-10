@@ -11,10 +11,11 @@ import {
 
 import type { BookingStatus } from "../../api/bookings";
 
-import { BookingFilter } from "../../components/manageBooking/bookingFilter";
+import { BookingFilter } from "../../components/manageBooking/BookingFilter";
 import { BookingsTable } from "../../components/manageBooking/BookingsTable";
 import { BookingActionModal } from "../../components/manageBooking/BookingActionModal";
-import { ModalPortal } from "../../components/common/ModalPortal";
+import { ModalPortal } from "../../components/common/ModalPortal"
+
 import { CalendarCheck } from "lucide-react";
 
 /* =======================

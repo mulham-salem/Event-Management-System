@@ -28,7 +28,11 @@ export const DashboardLayout: React.FC = () => {
   else if (current === "venue-ratings") current = "venuesRatings";
   else if (current === "my-venues") current = "myVenues";
   else if (current === "archived-venues") current = "archivedVenues";
-  else if (current === "bookings") current = "manageBookings";
+  else if (current === "manage-bookings") current = "manageBookings";
+  else if (current === "my-events") current = "myEvents";
+  else if (current === "archived-events") current = "archivedEvents";
+
+
 
   const titles: Record<string, { title: string; subtitle: string }> = {
     // Client Link
@@ -65,35 +69,60 @@ export const DashboardLayout: React.FC = () => {
       title: "Statistics",
       subtitle: "Analyze your venues performance and key metrics.",
     },
-
     myVenues: {
       title: "My Venues",
       subtitle: "View and manage all venues you provide.",
     },
-
     archivedVenues: {
       title: "Archived Venues",
       subtitle: "Access venues that are no longer active or published.",
     },
-
     manageBookings: {
       title: "Manage Bookings",
       subtitle: "Handle and track bookings for your venues.",
     },
-
     calendar: {
       title: "Calendar",
       subtitle: "View venue availability and scheduled bookings.",
     },
-
     filesAndImages: {
       title: "Files & Images",
       subtitle: "Upload and manage images for your venues.",
+    },
+    // Organizer Link
+    reports: {
+      title: "Reports & Analytics",
+      subtitle: "Track your event performance.",
+    },
+    myEvents: {
+      title: "My Events",
+      subtitle: "Manage your event listings.",
+    },
+    archivedEvents: {
+      title: "Archived Events",
+      subtitle: "View and restore completed events.",
+    },
+    eventTickets: {
+      title: "Event Tickets",
+      subtitle: "Manage ticket types and pricing.",
+    },
+    manageRegistrations: {
+      title: "Manage Registrations",
+      subtitle: "View and manage attendee registrations.",
+    },
+    invitations: {
+      title: "Invitations",
+      subtitle: "Generate and send QR-coded e-tickets.",
+    },
+    e_tickets: {
+      title: "E-Tickets",
+      subtitle: "View all generated electronic tickets.",
     },
   };
 
   const role = getRole();
   const isProvider = role === "provider";
+  const isOrganizer = role === "organizer";
 
   return (
     <>
@@ -114,10 +143,10 @@ export const DashboardLayout: React.FC = () => {
           <SimpleBar
             scrollableNodeProps={{ ref: scrollableNodeRef }}
             style={{ maxHeight: "90vh" }}
-            className={isProvider ? `custom-scrollbar-provider` : `custom-scrollbar`}
+            className={isProvider ? `custom-scrollbar-provider` : isOrganizer ? `custom-scrollbar-organizer` : `custom-scrollbar`}
           >
             {/* Page Content */}
-            <main className="flex-1 p-4">
+            <main className="min-h-screen flex-1 p-4">
               <Outlet
                 context={{ scrollableNodeRef } satisfies LayoutContextType}
               />

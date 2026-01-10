@@ -1,4 +1,5 @@
 import axiosClient from "./axiosClient";
+import type {EventType} from "./events.ts";
 
 export type EventRegistrationStatus  = "pending" | "approved" | "rejected" | "canceled";
 
@@ -8,7 +9,10 @@ export interface Event {
     description: string;
     date: string; 
     start_time: string; 
-    end_time: string; 
+    end_time: string;
+    type: EventType;
+    capacity: number;
+    attendance_count: number;
     is_registered: boolean;
 }
 

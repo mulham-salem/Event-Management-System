@@ -42,7 +42,7 @@ export const useProviderStats = () => {
 
 /**
  * Recent booking requests
- * Used in <RecentBookingRequest />
+ * Used in <RecentBookingsRequests />
  */
 export const useRecentBookingRequests = () => {
   return useQuery<RecentBooking[]>({

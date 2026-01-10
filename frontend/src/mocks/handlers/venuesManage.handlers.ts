@@ -19,7 +19,7 @@ import type { CreateVenuePayload, UpdateVenuePayload } from "../../api/venuesMan
 
 export const venuesManageHandlers = [
   /* -------- GET -------- */
-  http.get(`${ENV.API_BASE_URL}/venues`, ({ request }) => {
+  http.get(`${ENV.API_BASE_URL}/venues/`, ({ request }) => {
     const url = new URL(request.url);
 
     const search = url.searchParams.get("search") ?? undefined;

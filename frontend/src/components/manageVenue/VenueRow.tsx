@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { AnimatePresence } from "framer-motion";
-import { Edit, Archive, Trash2 } from "lucide-react";
+import {Edit, Archive, Trash2, Building2} from "lucide-react";
 import { toast } from "react-hot-toast";
 
 import type { Venue } from "../../api/venuesManage";
@@ -57,9 +57,7 @@ export const VenueRow: React.FC<VenueRowProps> = ({ venue, onDelete }) => {
       <td className="px-6 py-4 text-left">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-100">
-            <span className="font-nata-sans-bd text-emerald-700">
-              {venue.name.charAt(0)}
-            </span>
+            <Building2 className="text-emerald-700" />
           </div>
 
           <div>

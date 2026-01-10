@@ -49,6 +49,7 @@ export const useLogout = () => {
     removeRole();
 
     queryClient.removeQueries({ queryKey: ["me"] });
+    sessionStorage.removeItem("venue-hover-hint");
   };
 
   return { logout };

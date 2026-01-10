@@ -53,7 +53,7 @@ export const venueManageApi = {
     search?: string;
     ordering?: string;
   }): Promise<Venue[]> => {
-    const res = await axiosClient.get("/venues", {
+    const res = await axiosClient.get("/venues/", {
       params: {
         ...(query?.search && { search: query.search }),
         ...(query?.ordering && { ordering: query.ordering }),

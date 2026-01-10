@@ -6,6 +6,8 @@ import {
   Edit,
   Trash2,
   ChevronRight,
+  Users,
+  Tag,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
@@ -59,6 +61,20 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
 
   const { event, event_data, status } = registration;
 
+  const attendanceRatio =
+      event_data.capacity > 0
+          ? event_data.attendance_count / event_data.capacity
+          : 0;
+
+  const attendancePercent = Math.min(attendanceRatio * 100, 100);
+
+  const attendanceColor =
+      attendanceRatio >= 1
+          ? "bg-red-500"
+          : attendanceRatio >= 0.7
+              ? "bg-amber-500"
+              : "bg-[#5a2ea6]";
+
   return (
     <motion.div
       whileHover={{ y: -4 }}
@@ -80,11 +96,18 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
           >
             {statusStyles[status].label}
           </span>
+
         </div>
 
         <p className="mb-4 line-clamp-2 text-sm text-gray-500">
           {event_data.description}
         </p>
+
+        {/* Event Type */}
+        <div className="mb-2 flex items-center gap-2 text-sm text-gray-600">
+          <Tag className="h-4 w-4 text-gray-400" />
+          <span className="capitalize">{event_data.type}</span>
+        </div>
 
         {/* ===== Date & Time ===== */}
         <div className="flex flex-col gap-2 text-sm text-gray-600">
@@ -98,6 +121,30 @@ export const RegistrationCard: React.FC<RegistrationCardProps> = ({
             <span>
               {event_data.start_time} – {event_data.end_time}
             </span>
+          </div>
+        </div>
+
+        {/* ===== Attendance ===== */}
+        <div className="mt-4 space-y-1">
+          <div className="flex items-center justify-between text-sm text-gray-600">
+          <span className="flex items-center gap-1">
+            <Users className="h-4 w-4 text-gray-400" />
+            Attendance
+          </span>
+
+            <span className="font-nata-sans-md text-gray-800">
+              {event_data.attendance_count} / {event_data.capacity}
+            </span>
+          </div>
+
+          {/* Progress bar */}
+          <div className="h-1.5 w-full overflow-hidden rounded-full bg-purple-100">
+            <motion.div
+                initial={{ width: 0 }}
+                animate={{ width: `${attendancePercent}%` }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className={`h-full rounded-full ${attendanceColor}`}
+            />
           </div>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -35,6 +35,9 @@ export const BookingForm: React.FC<BookingFormProps> = ({
   venueId,
   onClose,
 }) => {
+  const location = useLocation();
+  const isOrganizer = location.pathname === "/organizer/venues" || location.pathname === "/organizer/bookings";
+
   const createMutation = useCreateBooking();
   const updateMutation = useUpdateBooking();
   const navigate = useNavigate();
@@ -79,7 +82,8 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           toast.success("Booking created successfully");
           onClose();
           setTimeout(() => {
-            navigate("/client/bookings");
+            if (!isOrganizer) navigate("/client/bookings");
+            else navigate("/organizer/bookings")
           }, 1000);
         },
         onError: () => {
@@ -104,9 +108,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
         <input
           type="date"
           {...register("date")}
-          className="w-full rounded-xl border border-gray-300 px-4 py-2.5
-                 text-sm focus:border-violet-400 focus:outline-none
-                 focus:ring-2 focus:ring-violet-200"
+          className={`w-full rounded-xl border border-gray-300 px-4 py-2.5
+                        text-sm focus:outline-none
+                        ${isOrganizer ? "focus:border-amber-400"
+                                      : "focus:border-violet-400"}
+                    `}
         />
       </div>
 
@@ -117,9 +123,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           <input
             type="time"
             {...register("start_time")}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5
-                   text-sm focus:border-violet-400 focus:outline-none
-                   focus:ring-2 focus:ring-violet-200"
+            className={`w-full rounded-xl border border-gray-300 px-4 py-2.5
+                        text-sm focus:outline-none
+                        ${isOrganizer ? "focus:border-amber-400"
+                                      : "focus:border-violet-400"}
+                       `}
           />
         </div>
 
@@ -128,9 +136,11 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           <input
             type="time"
             {...register("end_time")}
-            className="w-full rounded-xl border border-gray-300 px-4 py-2.5
-                   text-sm focus:border-violet-400 focus:outline-none
-                   focus:ring-2 focus:ring-violet-200"
+            className={`w-full rounded-xl border border-gray-300 px-4 py-2.5
+                        text-sm focus:outline-none
+                        ${isOrganizer ? "focus:border-amber-400"
+                                      : "focus:border-violet-400"}
+                       `}
           />
         </div>
       </div>
@@ -142,19 +152,21 @@ export const BookingForm: React.FC<BookingFormProps> = ({
           {...register("notes")}
           rows={3}
           placeholder="Optional notes..."
-          className="w-full resize-none rounded-xl border border-gray-300 px-4 py-2.5
-                 text-sm focus:border-violet-400 focus:outline-none
-                 focus:ring-2 focus:ring-violet-200"
+          className={`w-full resize-none rounded-xl border border-gray-300 px-4 py-2.5
+                      text-sm focus:outline-none
+                      ${isOrganizer ? "focus:border-amber-400" 
+                                    : "focus:border-violet-400"}
+          `}
         />
       </div>
 
       {/* Submit */}
       <button
         type="submit"
-        className="w-full rounded-xl bg-indigo-500 py-2.5
-               font-nata-sans-md text-white
-               transition hover:bg-indigo-600
-               active:scale-[0.98]"
+        className={`w-full rounded-xl py-2.5
+                  ${isOrganizer ? "bg-amber-600 hover:bg-amber-700"
+                                : "bg-indigo-500 hover:bg-indigo-600"}
+                  font-nata-sans-md text-white transition active:scale-[0.98]`}
       >
         {isEdit ? "Update Booking" : "Create Booking"}
       </button>

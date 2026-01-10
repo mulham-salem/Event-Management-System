@@ -16,7 +16,7 @@ export const useVenuesQuery = (query?: {
   ordering?: string;
 }) => {
   return useQuery<Venue[]>({
-    queryKey: ["venues", query],
+    queryKey: ["manage-venues", query],
     queryFn: () => venueManageApi.getVenues(query),
     staleTime: 1000 * 60,
   });
@@ -45,7 +45,7 @@ export const useCreateVenue = () => {
     mutationFn: (payload: CreateVenuePayload) =>
       venueManageApi.createVenue(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["venues"] });
+      queryClient.invalidateQueries({ queryKey: ["manage-venues"] });
     },
   });
 };
@@ -58,7 +58,7 @@ export const useUpdateVenue = () => {
     mutationFn: (payload: UpdateVenuePayload) =>
       venueManageApi.updateVenue(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["venues"] });
+      queryClient.invalidateQueries({ queryKey: ["manage-venues"] });
     },
   });
 };
@@ -70,7 +70,7 @@ export const useArchiveVenue = () => {
   return useMutation({
     mutationFn: (id: string) => venueManageApi.archiveVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["venues"] });
+      queryClient.invalidateQueries({ queryKey: ["manage-venues"] });
       queryClient.invalidateQueries({ queryKey: ["archived-venues"] });
     },
   });
@@ -82,7 +82,7 @@ export const useUnArchiveVenue = () => {
   return useMutation({
     mutationFn: (id: string) => venueManageApi.unArchiveVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["venues"] });
+      queryClient.invalidateQueries({ queryKey: ["manage-venues"] });
       queryClient.invalidateQueries({ queryKey: ["archived-venues"] });
     },
   });
@@ -95,7 +95,7 @@ export const useDeleteVenue = () => {
   return useMutation({
     mutationFn: (id: string) => venueManageApi.deleteVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["venues"] });
+      queryClient.invalidateQueries({ queryKey: ["manage-venues"] });
     },
   });
 };

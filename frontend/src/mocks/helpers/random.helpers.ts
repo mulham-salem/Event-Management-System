@@ -14,3 +14,7 @@ export const randomTime = () => {
     const m = ["00", "15", "30", "45"][Math.floor(Math.random() * 4)];
     return `${h}:${m}`;
 };
+
+export const getRandomInt = (min: number, max: number) => {
+    return Math.floor(Math.random() * (max - min)) + min;
+};

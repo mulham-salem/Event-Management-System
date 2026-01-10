@@ -1,20 +1,23 @@
-import React, { useState } from "react";
-import { motion } from "framer-motion";
-import { Plus, Calendar } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import {motion} from "framer-motion";
+import {Plus, Calendar} from "lucide-react";
+import {useLocation, useNavigate} from "react-router-dom";
 
-import { useBookings } from "../../hooks/useBookings";
-import { useVenue } from "../../hooks/useVenue";
+import {useBookings} from "../../hooks/useBookings";
+import {useVenue} from "../../hooks/useVenue";
 
-import { BookingsFilter } from "../../components/booking/BookingsFilter";
-import { BookingsGrid } from "../../components/booking/BookingsGrid";
-import { VenueCardDetails } from "../../components/venue/VenueCardDetails";
+import {BookingsFilter} from "../../components/booking/BookingsFilter";
+import {BookingsGrid} from "../../components/booking/BookingsGrid";
+import {VenueCardDetails} from "../../components/venue/VenueCardDetails";
 
-import type { Booking } from "../../api/bookings";
-import { Loader } from "../../components/common/Loader";
+import type {Booking} from "../../api/bookings";
+import {Loader} from "../../components/common/Loader";
 
 export const Bookings: React.FC = () => {
     const navigate = useNavigate();
+
+    const location = useLocation();
+    const isOrganizer = location.pathname === "/organizer/bookings";
 
     const [search, setSearch] = useState("");
     const [ordering, setOrdering] = useState("-created_at");
@@ -33,7 +36,11 @@ export const Bookings: React.FC = () => {
     const {data: venueDetails} = useVenue(selectedVenueId);
 
     const handleCreateBooking = () => {
-        navigate("/client/venues");
+        if (!isOrganizer) {
+            navigate("/client/venues");
+        } else {
+            navigate("/organizer/venues");
+        }
     };
 
     return (
@@ -55,10 +62,9 @@ export const Bookings: React.FC = () => {
                     whileHover={{scale: 1.04}}
                     whileTap={{scale: 0.97}}
                     onClick={handleCreateBooking}
-                    className="flex items-center gap-2 rounded-xl
-                     bg-violet-500 px-5 py-2.5 font-nata-sans-md
-                     text-white shadow-sm transition
-                     hover:bg-violet-600 hover:shadow-md"
+                    className={`flex items-center gap-2 rounded-xl
+                     ${isOrganizer ? "bg-amber-500 hover:bg-amber-600" : "bg-violet-500 hover:bg-violet-600"} 
+                     px-5 py-2.5 font-nata-sans-md text-white shadow-sm transition hover:shadow-md`}
                 >
                     <Plus className="h-5 w-5"/>
                     New Booking
@@ -76,7 +82,7 @@ export const Bookings: React.FC = () => {
             {/* ===== Content ===== */}
             <div className="mt-8">
                 {isLoading && (
-                    <Loader text={"Loading bookings..."} />
+                    <Loader text={"Loading bookings..."}/>
                 )}
 
                 {isError && (

@@ -1,5 +1,5 @@
 import React from "react";
-import { ArchiveRestore } from "lucide-react";
+import {ArchiveRestore, Building2} from "lucide-react";
 import { toast } from "react-hot-toast";
 
 import type { Venue } from "../../api/venuesManage";
@@ -45,9 +45,7 @@ export const VenueArchiveRow: React.FC<VenueRowArchiveProps> = ({ venue }) => {
       <td className="px-6 py-4 text-left">
         <div className="flex items-center gap-3">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100">
-            <span className="font-nata-sans-bd text-gray-700">
-              {venue.name.charAt(0)}
-            </span>
+              <Building2 className="text-gray-700" />
           </div>
 
           <div>

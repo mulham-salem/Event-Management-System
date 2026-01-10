@@ -1,6 +1,7 @@
 import React from "react";
 import { ChevronLeft, ChevronRight, MoreHorizontal } from "lucide-react";
 import { motion } from "framer-motion";
+import {useLocation} from "react-router-dom";
 
 interface PaginationProps {
   page: number;
@@ -13,6 +14,10 @@ export const Pagination: React.FC<PaginationProps> = ({
   lastPage = 1,
   onPageChange,
 }) => {
+
+  const location = useLocation();
+  const isOrganizer = location.pathname === "/organizer/venues";
+
   if (lastPage <= 1) return null;
 
   const MAX_PAGES_TO_SHOW = 5;
@@ -49,18 +54,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page === 1}
-        className="
-      flex items-center justify-center
-      rounded-xl border border-violet-300
-      bg-white p-2
-      text-violet-600
-      shadow-sm
-      transition
-      hover:bg-violet-50
-      hover:shadow-md
-      disabled:cursor-not-allowed
-      disabled:opacity-40
-    "
+        className={`
+          flex items-center justify-center rounded-xl border 
+          ${isOrganizer ? "border-amber-300 text-amber-600  hover:bg-amber-50" : "border-violet-300 text-violet-600  hover:bg-violet-50"} 
+          bg-white p-2 shadow-sm transition hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40
+        `}
       >
         <ChevronLeft size={18} />
       </button>
@@ -72,9 +70,9 @@ export const Pagination: React.FC<PaginationProps> = ({
             <span
               key={idx}
               className="
-            flex h-10 w-10 items-center justify-center
-            text-neutral-400
-          "
+                flex h-10 w-10 items-center justify-center
+                text-neutral-400
+              "
             >
               <MoreHorizontal size={18} />
             </span>
@@ -90,19 +88,14 @@ export const Pagination: React.FC<PaginationProps> = ({
             ${
               p === page
                 ? `
-                  scale-105
-                  border border-violet-300
-                  bg-gradient-to-br from-violet-100 to-indigo-100
-                  text-violet-700
-                  shadow-md
+                  border scale-105 shadow-md
+                  ${isOrganizer ? "bg-gradient-to-br from-amber-100 to-yellow-100 border-amber-200 text-amber-700" 
+                                : "bg-gradient-to-br from-violet-100 to-indigo-100 border-violet-300 text-violet-700"} 
                 `
                 : `
-                  border border-transparent
-                  bg-gradient-to-br from-violet-500 to-indigo-500
-                  text-white
-                  shadow-sm
-                  hover:from-violet-600
-                  hover:to-indigo-600
+                  border border-transparent text-white shadow-sm
+                  ${isOrganizer ? "bg-gradient-to-br from-amber-500 to-yellow-600 text-amber-700 hover:from-amber-500 hover:to-amber-500"
+                                : "bg-gradient-to-br from-violet-500 to-indigo-500 text-violet-700 hover:from-violet-600 hover:to-indigo-600"} 
                 `
             }
           `}
@@ -117,18 +110,11 @@ export const Pagination: React.FC<PaginationProps> = ({
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page === lastPage}
-        className="
-      flex items-center justify-center
-      rounded-xl border border-violet-300
-      bg-white p-2
-      text-violet-600
-      shadow-sm
-      transition
-      hover:bg-violet-50
-      hover:shadow-md
-      disabled:cursor-not-allowed
-      disabled:opacity-40
-    "
+        className={`
+          flex items-center justify-center rounded-xl border
+          ${isOrganizer ? "border-amber-300 text-amber-600  hover:bg-amber-50" : "border-violet-300 text-violet-600  hover:bg-violet-50"}
+          bg-white p-2 shadow-sm transition hover:shadow-md disabled:cursor-not-allowed disabled:opacity-40
+        `}
       >
         <ChevronRight size={18} />
       </button>

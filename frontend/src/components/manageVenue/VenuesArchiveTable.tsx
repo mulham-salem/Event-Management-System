@@ -1,8 +1,8 @@
 import React from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { VenueArchiveRow } from "./VenuesArchiveRow";
-import type { Venue } from "../../api/venuesManage.ts";
-import { Loader } from "../common/Loader.tsx";
+import { VenueArchiveRow } from "./VenueArchiveRow";
+import type { Venue } from "../../api/venuesManage";
+import { Loader } from "../common/Loader";
 
 /* =======================
    Props

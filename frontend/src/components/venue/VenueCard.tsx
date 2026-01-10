@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Users, DollarSign, ArrowRight } from "lucide-react";
 import { StarRating } from "../rating/StarRating";
 import type { VenueItem } from "../../api/venues";
+import {useLocation} from "react-router-dom";
 
 interface VenueCardProps {
   venue: VenueItem;
@@ -10,6 +11,9 @@ interface VenueCardProps {
 }
 
 export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
+  const location = useLocation();
+  const isOrganizer = location.pathname === "/organizer/venues";
+
   // get cover image only
   const coverImage = venue.images.find((img) => img.is_cover);
 
@@ -19,11 +23,10 @@ export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 15 }}
       transition={{ duration: 0.2, ease: "easeOut" }}
-      className="
-        group overflow-hidden rounded-2xl
-        border border-gray-200 bg-white shadow-sm
-        transition-all hover:border-[#5a2ea6] hover:shadow-md
-      "
+      className={`group overflow-hidden rounded-2xl
+        border border-gray-200 bg-white shadow-sm 
+        transition-all ${isOrganizer ? "hover:border-amber-400" 
+        : "hover:border-[#5a2ea6]"}  hover:shadow-md`}
     >
       {/* Image */}
       <div className="relative h-40 w-full overflow-hidden bg-gray-100">
@@ -48,11 +51,11 @@ export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
       <div className="p-5">
         {/* Name */}
         <h3
-          className="
+          className={`
             mb-2 line-clamp-1
-            font-nata-sans-bd text-lg text-gray-800
-            transition group-hover:text-[#5a2ea6]
-          "
+            font-nata-sans-bd text-lg text-gray-800 transition 
+            ${isOrganizer ? "group-hover:text-amber-600" : "group-hover:text-[#5a2ea6]"}
+          `}
         >
           {venue.name}
         </h3>
@@ -64,18 +67,21 @@ export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
 
         {/* Capacity */}
         <div className="mb-2 flex items-center gap-2 font-nata-sans-md text-sm text-gray-500">
-          <Users size={17} className="text-[#5a2ea6]" />
+          <Users size={17} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
           <span>{venue.capacity} people</span>
         </div>
 
         {/* Price */}
         <div className="mb-4 flex items-center gap-2 font-nata-sans-md text-sm text-gray-500">
-          <DollarSign size={17} className="text-[#5a2ea6]" />
+          <DollarSign size={17} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
           <span>{venue.price_per_hour} / hour</span>
         </div>
 
         {/* Rating */}
-        <div className="mb-4 flex items-center justify-between rounded-xl bg-[#f6f4fa] px-3 py-2 font-nata-sans-md shadow-sm">
+        <div className={`mb-4 flex items-center justify-between rounded-xl 
+                        ${isOrganizer ? "bg-amber-50/50" : "bg-[#f6f4fa]"} 
+                         px-3 py-2 font-nata-sans-md shadow-sm`}
+        >
           {/* Stars + Value */}
           <div className="flex items-center gap-2">
             <StarRating
@@ -85,8 +91,9 @@ export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
           </div>
 
           {/* Participants */}
-          <div className="flex items-center gap-1 rounded-lg bg-[#f0e9fa] px-2 py-1 text-sm text-gray-500 shadow-inner">
-            <Users size={16} className="text-[#5a2ea6]" />
+          <div className={`flex items-center gap-1 rounded-lg 
+           ${isOrganizer ? "bg-amber-100/50" : "bg-[#f0e9fa]"} px-2 py-1 text-sm text-gray-500 shadow-inner`}>
+            <Users size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
             <span>{venue.average_rating.count}</span>
           </div>
         </div>
@@ -94,11 +101,11 @@ export const VenueCard: React.FC<VenueCardProps> = ({ venue, onSelect }) => {
         {/* Button */}
         <button
           onClick={() => onSelect?.(venue.id)}
-          className="
+          className={`
             inline-flex items-center gap-1
-            font-nata-sans-md text-sm text-[#5a2ea6]
-            transition hover:text-purple-700
-          "
+            font-nata-sans-md text-sm ${isOrganizer ? "text-amber-600 hover:text-amber-700" : "text-[#5a2ea6] hover:text-purple-700"}
+            transition 
+          `}
         >
           View Details
           <ArrowRight

@@ -42,6 +42,9 @@ export const useAcceptBooking = () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
       });
+      queryClient.invalidateQueries({
+        queryKey: ["my-bookings"],
+      });
     },
   });
 };
@@ -57,6 +60,9 @@ export const useRejectBooking = () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
       });
+      queryClient.invalidateQueries({
+        queryKey: ["my-bookings"],
+      });
     },
   });
 };
@@ -71,6 +77,9 @@ export const useCancelBookingByProvider = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["my-bookings"],
       });
     },
   });

@@ -4,7 +4,7 @@ import { motion, type Variants } from "framer-motion";
 // Dashboard Components
 import { Stats } from "../../components/dashboard/provider/Stats";
 import { QuickActions } from "../../components/dashboard/provider/QuickActions";
-import { RecentBookingRequest } from "../../components/dashboard/provider/RecentBookingRequest";
+import { RecentBookingsRequests } from "../../components/dashboard/provider/RecentBookingsRequests.tsx";
 import { YourVenues } from "../../components/dashboard/provider/YourVenues";
 
 
@@ -63,7 +63,7 @@ export const ProviderDashboard: React.FC = () => {
           className="flex flex-col gap-4"
           variants={itemVariants}
         >
-          <RecentBookingRequest />
+          <RecentBookingsRequests />
         </motion.div>
       </div>
 

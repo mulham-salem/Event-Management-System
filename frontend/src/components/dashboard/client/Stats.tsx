@@ -66,7 +66,7 @@ export const Stats: React.FC = () => {
     return (
       <div
         key={stat.label}
-        className="rounded-2xl border border-gray-100 bg-white p-8 shadow-sm hover:shadow-md"
+        className="group rounded-2xl border border-gray-100 bg-white p-8 shadow-sm transition-all duration-300 hover:border-violet-300 hover:shadow-md"
       >
         <div className="flex items-center justify-between">
           <div>
@@ -78,7 +78,7 @@ export const Stats: React.FC = () => {
             </p>
           </div>
           <div
-            className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconBg}`}
+            className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconBg} transition-transform group-hover:scale-110`}
           >
             <Icon className={`h-8 w-8 ${stat.iconColor}`} />
           </div>

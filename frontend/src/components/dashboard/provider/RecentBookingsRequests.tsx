@@ -3,7 +3,7 @@ import { useRecentBookingRequests } from "../../../hooks/useProviderDashboard";
 import { ChevronRight, CalendarDays, Loader2 } from "lucide-react";
 import { Link } from "react-router-dom";
 
-export const RecentBookingRequest: React.FC = () => {
+export const RecentBookingsRequests: React.FC = () => {
   const { data = [], isLoading } = useRecentBookingRequests();
 
   return (
@@ -15,7 +15,7 @@ export const RecentBookingRequest: React.FC = () => {
         </h3>
 
         <Link
-          to="/provider/bookings"
+          to="/provider/manage-bookings"
           className="flex items-center gap-1 font-nata-sans-md text-sm text-emerald-600  transition-colors hover:text-emerald-800"
         >
           View All
@@ -75,7 +75,7 @@ export const RecentBookingRequest: React.FC = () => {
                     : booking.status === "approved"
                     ? `bg-green-100 text-green-600`
                     : `bg-red-100 text-red-600`
-                } px-2 py-1 font-nata-sans-md text-xs `}
+                } px-2 py-1 font-nata-sans-md text-[10px] uppercase`}
               >
                 {booking.status}
               </span>
