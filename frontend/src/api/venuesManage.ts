@@ -47,7 +47,7 @@ export interface UpdateVenuePayload {
    API
 ======================= */
 
-export const venueManageApi = {
+export const venuesManageApi = {
   /* -------- GET -------- */
   getVenues: async (query?: {
     search?: string;

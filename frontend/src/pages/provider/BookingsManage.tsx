@@ -13,7 +13,7 @@ import type { BookingStatus } from "../../api/bookings";
 
 import { BookingFilter } from "../../components/manageBooking/BookingFilter";
 import { BookingsTable } from "../../components/manageBooking/BookingsTable";
-import { BookingActionModal } from "../../components/manageBooking/BookingActionModal";
+import { ActionConfirmModal } from "../../components/common/ActionConfirmModal";
 import { ModalPortal } from "../../components/common/ModalPortal"
 
 import { CalendarCheck } from "lucide-react";
@@ -143,9 +143,10 @@ export const BookingsManage: React.FC = () => {
       />
 
       <ModalPortal>
-        <BookingActionModal
+        <ActionConfirmModal
           open={modal.open}
           action={modal.action!}
+          target="booking"
           loading={
             acceptMutation.isPending ||
             rejectMutation.isPending ||

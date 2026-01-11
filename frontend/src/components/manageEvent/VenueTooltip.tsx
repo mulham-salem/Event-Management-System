@@ -50,7 +50,7 @@ export const VenueTooltip: React.FC<VenueTooltipProps> = ({
   return (
     <>
       <span
-        className="flex cursor-pointer items-center gap-1 font-nata-sans-md text-gray-800"
+        className="flex cursor-pointer items-center justify-center gap-1 font-nata-sans-md text-gray-800"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >

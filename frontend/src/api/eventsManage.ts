@@ -77,7 +77,7 @@ export interface FetchEventsParams {
    API
 ======================= */
 
-export const eventManageApi = {
+export const eventsManageApi = {
     getEvents: async (filters: FetchEventsParams): Promise<Event[]> => {
         const params = new URLSearchParams();
 

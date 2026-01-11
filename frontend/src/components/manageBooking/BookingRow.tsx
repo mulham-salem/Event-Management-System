@@ -135,6 +135,14 @@ export const BookingRow: React.FC<BookingRowProps> = ({
               >
                 <X className="h-4 w-4" />
               </button>
+
+              <button
+                onClick={() => onCancel(booking.id)}
+                title="Cancel"
+                className="rounded-lg p-2 text-orange-600 transition hover:bg-orange-100"
+              >
+                <Ban className="h-3.5 w-3.5" />
+              </button>
             </>
           )}
 

@@ -19,7 +19,8 @@ import { VenuesArchive } from "./pages/provider/VenuesArchive";
 import { BookingsManage } from "./pages/provider/BookingsManage";
 import { OrganizerDashboard } from "./pages/organizer/OrganizerDashboard";
 import { EventsManage } from "./pages/organizer/EventsManage";
-import { EventsArchive } from "./pages/organizer/EventsArchive.tsx";
+import { EventsArchive } from "./pages/organizer/EventsArchive";
+import { RegistrationsManage } from "./pages/organizer/RegistrationsManage";
 
 function App() {
   return (
@@ -78,6 +79,7 @@ function App() {
               <Route path="/organizer/venues" element={<Venues showHero={false} />} />
               <Route path="/organizer/my-events" element={<EventsManage />} />
               <Route path="/organizer/archived-events" element={<EventsArchive />} />
+              <Route path="/organizer/registrations" element={<RegistrationsManage />} />
             </Route>
           </Route>
           

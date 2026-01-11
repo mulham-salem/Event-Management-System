@@ -22,10 +22,10 @@ interface EventsArchiveTableProps {
 ======================= */
 
 export const EventsArchiveTable: React.FC<EventsArchiveTableProps> = ({
-                                                                          events,
-                                                                          isLoading,
-                                                                          isError,
-                                                                      }) => {
+    events,
+    isLoading,
+    isError,
+}) => {
     /* ---------- Loading ---------- */
     if (isLoading) {
         return <Loader text={"Loading events..."} />;
@@ -72,7 +72,7 @@ export const EventsArchiveTable: React.FC<EventsArchiveTableProps> = ({
                     <th className="px-6 py-4 font-nata-sans-md text-xs uppercase tracking-wider text-gray-500">
                         Status
                     </th>
-                    <th className="px-6 py-4 font-nata-sans-md text-xs uppercase tracking-wider text-gray-500">
+                    <th className="whitespace-nowrap px-6 py-4 font-nata-sans-md text-xs uppercase tracking-wider text-gray-500">
                         Archived Date
                     </th>
                     <th className="px-6 py-4 font-nata-sans-md text-xs uppercase tracking-wider text-gray-500">

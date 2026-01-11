@@ -3,7 +3,7 @@ import { eventsApi, type EventsResponse, type EventDetails, type FetchEventsPara
 
 export const useEvents = (filters: FetchEventsParams) => {
   return useQuery<EventsResponse>({
-    queryKey: ["events", filters],
+    queryKey: ["client-events", filters],
     queryFn: () => eventsApi.fetchEvents(filters),
     staleTime: 1000 * 60 * 5,
     placeholderData: keepPreviousData,
@@ -12,7 +12,7 @@ export const useEvents = (filters: FetchEventsParams) => {
 
 export const useEvent = (eventId: string | null) => {
   return useQuery<EventDetails>({
-    queryKey: ["event", eventId],
+    queryKey: ["client-event", eventId],
     queryFn: () => eventsApi.fetchEventById(eventId!),
     enabled: !!eventId,
     staleTime: 1000 * 60 * 5,

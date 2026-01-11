@@ -3,7 +3,7 @@ import { venuesApi, type VenuesResponse, type VenueDetails, type FetchVenuesPara
 
 export const useVenues = (filters: FetchVenuesParams) => {
   return useQuery<VenuesResponse>({
-    queryKey: ["venues", filters],
+    queryKey: ["client-venues", filters],
     queryFn: () => venuesApi.fetchVenues(filters),
     staleTime: 1000 * 60 * 5,
     placeholderData: keepPreviousData,
@@ -12,7 +12,7 @@ export const useVenues = (filters: FetchVenuesParams) => {
 
 export const useVenue = (venueId: string | null) => {
   return useQuery<VenueDetails>({
-    queryKey: ["venue", venueId],
+    queryKey: ["client-venue", venueId],
     queryFn: () => venuesApi.fetchVenueById(venueId!),
     enabled: !!venueId,
     staleTime: 1000 * 60 * 5,

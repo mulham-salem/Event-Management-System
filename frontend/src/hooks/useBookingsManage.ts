@@ -7,7 +7,7 @@ import { bookingsManageApi } from "../api/bookingsManage";
 ======================= */
 
 export const bookingsManageKeys = {
-  all: ["provider-bookings"] as const,
+  all: ["provider-bookings-manage"] as const,
 
   list: (query?: { search?: string; ordering?: string }) =>
     [...bookingsManageKeys.all, query] as const,
@@ -35,15 +35,17 @@ export const useAcceptBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      bookingsManageApi.acceptBooking(id),
+    mutationFn: (id: string) => bookingsManageApi.acceptBooking(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
       });
       queryClient.invalidateQueries({
-        queryKey: ["my-bookings"],
+        queryKey: ["client-bookings"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["organizer-bookings"],
       });
     },
   });
@@ -53,15 +55,17 @@ export const useRejectBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      bookingsManageApi.rejectBooking(id),
+    mutationFn: (id: string) => bookingsManageApi.rejectBooking(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
       });
       queryClient.invalidateQueries({
-        queryKey: ["my-bookings"],
+        queryKey: ["client-bookings"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["organizer-bookings"],
       });
     },
   });
@@ -71,15 +75,17 @@ export const useCancelBookingByProvider = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (id: string) =>
-      bookingsManageApi.canceledBooking(id),
+    mutationFn: (id: string) => bookingsManageApi.canceledBooking(id),
 
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: bookingsManageKeys.all,
       });
       queryClient.invalidateQueries({
-        queryKey: ["my-bookings"],
+        queryKey: ["client-bookings"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["organizer-bookings"],
       });
     },
   });

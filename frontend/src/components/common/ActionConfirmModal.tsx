@@ -6,11 +6,13 @@ import { Check, X, AlertTriangle } from "lucide-react";
    Types
 ======================= */
 
-type BookingAction = "accept" | "reject" | "cancel";
+type ActionType = "accept" | "reject" | "cancel";
+type TargetType = "booking" | "registration";
 
 interface BookingActionModalProps {
   open: boolean;
-  action: BookingAction;
+  action: ActionType;
+  target: TargetType;
   loading?: boolean;
   onClose: () => void;
   onConfirm: () => void;
@@ -20,35 +22,78 @@ interface BookingActionModalProps {
    Config
 ======================= */
 
-const actionConfig = {
-  accept: {
-    title: "Accept Booking",
-    description:
-      "Are you sure you want to accept this booking? The client will be notified immediately.",
-    icon: Check,
-    iconBg: "bg-emerald-100",
-    iconColor: "text-emerald-600",
-    confirmBtn: "bg-emerald-600 hover:bg-emerald-700",
-    confirmText: "Accept Booking",
+const actionConfig: Record<
+  TargetType,
+  Record<ActionType,
+    {
+      title: string;
+      description: string;
+      confirmText: string;
+      icon: any;
+      iconBg: string;
+      iconColor: string;
+      confirmBtn: string;
+    }
+  >
+> = {
+  booking: {
+    accept: {
+      title: "Accept Booking",
+      description: "Are you sure you want to accept this booking?",
+      confirmText: "Accept Booking",
+      icon: Check,
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-600",
+      confirmBtn: "bg-emerald-600 hover:bg-emerald-700",
+    },
+    reject: {
+      title: "Reject Booking",
+      description: "Are you sure you want to reject this booking?",
+      confirmText: "Reject Booking",
+      icon: X,
+      iconBg: "bg-red-100",
+      iconColor: "text-red-600",
+      confirmBtn: "bg-red-600 hover:bg-red-700",
+    },
+    cancel: {
+      title: "Cancel Booking",
+      description: "Are you sure you want to cancel this booking?",
+      confirmText: "Cancel Booking",
+      icon: AlertTriangle,
+      iconBg: "bg-orange-100",
+      iconColor: "text-orange-600",
+      confirmBtn: "bg-orange-600 hover:bg-orange-700",
+    },
   },
-  reject: {
-    title: "Reject Booking",
-    description:
-      "Are you sure you want to reject this booking? This action cannot be undone.",
-    icon: X,
-    iconBg: "bg-red-100",
-    iconColor: "text-red-600",
-    confirmBtn: "bg-red-600 hover:bg-red-700",
-    confirmText: "Reject Booking",
-  },
-  cancel: {
-    title: "Cancel booking",
-    description: "Are you sure you want to cancel this booking?",
-    icon: AlertTriangle,
-    iconBg: "bg-orange-100",
-    iconColor: "text-orange-600",
-    confirmBtn: "bg-orange-600 hover:bg-orange-700",
-    confirmText: "Cancel Booking",
+
+  registration: {
+    accept: {
+      title: "Accept Registration",
+      description: "Are you sure you want to accept this registration?",
+      confirmText: "Accept Registration",
+      icon: Check,
+      iconBg: "bg-emerald-100",
+      iconColor: "text-emerald-600",
+      confirmBtn: "bg-emerald-600 hover:bg-emerald-700",
+    },
+    reject: {
+      title: "Reject Registration",
+      description: "Are you sure you want to reject this registration?",
+      confirmText: "Reject Registration",
+      icon: X,
+      iconBg: "bg-red-100",
+      iconColor: "text-red-600",
+      confirmBtn: "bg-red-600 hover:bg-red-700",
+    },
+    cancel: {
+      title: "Cancel Registration",
+      description: "Are you sure you want to cancel this registration?",
+      confirmText: "Cancel Registration",
+      icon: AlertTriangle,
+      iconBg: "bg-orange-100",
+      iconColor: "text-orange-600",
+      confirmBtn: "bg-orange-600 hover:bg-orange-700",
+    },
   },
 };
 
@@ -56,14 +101,15 @@ const actionConfig = {
    Component
 ======================= */
 
-export const BookingActionModal: React.FC<BookingActionModalProps> = ({
+export const ActionConfirmModal: React.FC<BookingActionModalProps> = ({
   open,
   action,
+  target,
   loading,
   onClose,
   onConfirm,
 }) => {
-  const config = actionConfig[action];
+  const config = actionConfig[target][action];
   const Icon = config?.icon;
 
   return (

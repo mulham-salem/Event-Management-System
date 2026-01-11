@@ -97,6 +97,8 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
   else if (currentSection === "manage-bookings") currentSection = "manageBookings";
   else if (currentSection === "my-events") currentSection = "myEvents";
   else if (currentSection === "archived-events") currentSection = "archivedEvents";
+  else if (currentSection === "registrations") currentSection = "manageRegistrations";
+
 
   /* =========================================================
           ================ CLIENT MENU =================
@@ -151,13 +153,13 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
     { name: "myEvents", label: "My Events", icon: <Layers />, path: "/organizer/my-events" },
     { name: "archivedEvents", label: "Archived", icon: <Archive />, path: "/organizer/archived-events" },
     { name: "bookings", label: "Venue Bookings", icon: <Calendar />, path: "/organizer/bookings" },
-    { name: "eventTickets", label: "Event Tickets", icon: <Ticket />, path: "/organizer/event-tickets" },
+    // { name: "eventTickets", label: "Event Tickets", icon: <Ticket />, path: "/organizer/event-tickets" },
   ];
 
   const organizerAttendeeItems: SidebarItem[] = [
     { name: "manageRegistrations", label: "Registrations", icon: <Users />, path: "/organizer/registrations" },
     { name: "invitations", label: "Invitations", icon: <Mail />, path: "/organizer/invitations",  isNew: true, badge: "QR" },
-    { name: "e_tickets", label: "View E-Tickets", icon: <QrCode />, path: "/organizer/e-tickets" },
+    // { name: "e_tickets", label: "View E-Tickets", icon: <QrCode />, path: "/organizer/e-tickets" },
   ];
 
   const MotionLink = motion(Link);

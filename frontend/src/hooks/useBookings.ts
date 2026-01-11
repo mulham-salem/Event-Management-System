@@ -9,7 +9,7 @@ import {
 
 export const useBookings = (params?: GetBookingsParams) => {
   return useQuery<Booking[]>({
-    queryKey: ["bookings", params],
+    queryKey: ["client-bookings", params],
     queryFn: () => bookingsApi.getBookings(params),
     staleTime: 1000 * 60 * 2,
   });
@@ -23,7 +23,7 @@ export const useCreateBooking = () => {
       bookingsApi.createBooking(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["bookings"],
+        queryKey: ["client-bookings"],
       });
     },
   });
@@ -37,7 +37,7 @@ export const useUpdateBooking = () => {
       bookingsApi.updateBooking(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["bookings"],
+        queryKey: ["client-bookings"],
       });
     },
   });
@@ -50,7 +50,7 @@ export const useDeleteBooking = () => {
     mutationFn: (id: string) => bookingsApi.deleteBooking(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["bookings"],
+        queryKey: ["client-bookings"],
       });
     },
   });

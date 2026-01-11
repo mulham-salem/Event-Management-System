@@ -9,7 +9,7 @@ import {
 
 export const useRegistrations = (params?: GetRegistrationsParams) => {
   return useQuery<Registration[]>({
-    queryKey: ["registrations", params],
+    queryKey: ["client-registrations", params],
     queryFn: () => registrationsApi.getRegistrations(params),
     staleTime: 1000 * 60 * 2,
   });
@@ -23,7 +23,7 @@ export const useCreateRegistration = () => {
       registrationsApi.createRegistration(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["registrations"],
+        queryKey: ["client-registrations"],
       });
     },
   });
@@ -42,7 +42,7 @@ export const useUpdateRegistration = () => {
     }) => registrationsApi.updateRegistration(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["registrations"],
+        queryKey: ["client-registrations"],
       });
     },
   });
@@ -55,7 +55,7 @@ export const useDeleteRegistration = () => {
     mutationFn: (id: string) => registrationsApi.deleteRegistration(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["registrations"],
+        queryKey: ["client-registrations"],
       });
     },
   });
