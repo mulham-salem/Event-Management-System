@@ -22,7 +22,7 @@ import { BookingForm } from "../booking/BookingForm";
 import { ModalPortal } from "../common/ModalPortal";
 import { RatingsSection } from "../rating/RatingsSection";
 import type { VenueDetails } from "../../api/venues";
-import {useLocation} from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 interface VenueCardDetailsProps {
   venue: VenueDetails;
@@ -34,7 +34,9 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
   onBack,
 }) => {
   const location = useLocation();
-  const isOrganizer = location.pathname === "/organizer/venues";
+  const isOrganizer =
+    location.pathname === "/organizer/venues" ||
+    location.pathname === "/organizer/bookings";
 
   const [openCreate, setOpenCreate] = useState(false);
 
@@ -73,8 +75,11 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
       <button
         onClick={onBack}
         className={`mb-6 inline-flex items-center gap-2 font-nata-sans-md text-sm
-                    ${isOrganizer ? "text-amber-600 hover:text-amber-700"
-                                  : "text-[#5a2ea6] hover:text-purple-700"}`}
+                    ${
+                      isOrganizer
+                        ? "text-amber-600 hover:text-amber-700"
+                        : "text-[#5a2ea6] hover:text-purple-700"
+                    }`}
       >
         <ArrowLeft size={18} className="transition hover:translate-x-1" />
         Back to venues
@@ -92,8 +97,16 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
       )}
 
       {/* Provider */}
-      <div className={`mb-6 rounded-2xl ${isOrganizer ? "bg-amber-50/50" : "bg-[#f6f1ff]"} p-5`}>
-        <h3 className={`mb-3 font-nata-sans-bd text-lg ${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}>
+      <div
+        className={`mb-6 rounded-2xl ${
+          isOrganizer ? "bg-amber-50/50" : "bg-[#f6f1ff]"
+        } p-5`}
+      >
+        <h3
+          className={`mb-3 font-nata-sans-bd text-lg ${
+            isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"
+          }`}
+        >
           Provider
         </h3>
 
@@ -123,22 +136,34 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
         <div className="mb-4 flex flex-wrap gap-6 text-sm text-gray-700">
           <div className="flex items-center gap-2">
-            <Notebook size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
+            <Notebook
+              size={16}
+              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
+            />
             <span>{venue.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Users size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
+            <Users
+              size={16}
+              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
+            />
             <span>Capacity: {venue.capacity}</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <DollarSign size={17} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}/>
+            <DollarSign
+              size={17}
+              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
+            />
             <span>Price: {venue.price_per_hour} / hour</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <MapPin size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
+            <MapPin
+              size={16}
+              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
+            />
             <span>
               Location: {venue.location_geo.area}, {venue.location_geo.city}
             </span>
@@ -165,7 +190,9 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
               )}`}
               target="_blank"
               rel="noopener noreferrer"
-              className={`flex items-center justify-center font-nata-sans-md text-sm ${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"} hover:underline`}
+              className={`flex items-center justify-center font-nata-sans-md text-sm ${
+                isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"
+              } hover:underline`}
             >
               Open in Google Maps
             </a>
@@ -249,7 +276,11 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
             font-nata-sans-md text-sm transition-all
             ${
               isLoggedIn && isAllowed
-                ? `${isOrganizer ? "bg-amber-600 hover:bg-amber-700" : "bg-[#5a2ea6] hover:bg-purple-800"} text-white active:scale-95`
+                ? `${
+                    isOrganizer
+                      ? "bg-amber-500 hover:bg-amber-600"
+                      : "bg-[#5a2ea6] hover:bg-purple-800"
+                  } text-white active:scale-95`
                 : "cursor-not-allowed bg-gray-200 text-gray-500"
             }
           `}

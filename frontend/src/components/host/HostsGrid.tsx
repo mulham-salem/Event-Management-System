@@ -28,7 +28,7 @@ export const HostsGrid: React.FC<HostsGridProps> = ({ hosts }) => {
             visible: { opacity: 1, y: 0 },
           }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="w-full"
+          className="mx-auto w-80"
         >
           <HostCard host={host} /> 
         </motion.div>

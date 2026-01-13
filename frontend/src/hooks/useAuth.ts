@@ -28,7 +28,7 @@ export const useSignup = () => {
         setToken(data.access);
         queryClient.invalidateQueries({ queryKey: ["me"] });
       }
-      if (data.role) setRole(data.role);;
+      if (data.role) setRole(data.role);
     },
   });
 };

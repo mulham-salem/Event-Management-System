@@ -21,6 +21,7 @@ import { RatingList } from "./RatingList";
 import { RatingForm } from "./RatingForm";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const fadeSlide = {
   hidden: { opacity: 0, y: 15 },
@@ -69,6 +70,11 @@ export const RatingsSection: React.FC<RatingsSectionProps> = ({
     reviewToDelete ?? ""
   );
 
+  const location = useLocation();
+  const isOrganizer =
+    location.pathname === "/organizer/venues" ||
+    location.pathname === "/organizer/bookings";
+
   const handleDeleteReview = () => {
     if (!reviewToDelete) return;
 
@@ -114,8 +120,12 @@ export const RatingsSection: React.FC<RatingsSectionProps> = ({
         {/* CTA */}
         <button
           onClick={() => setShowForm((prev) => !prev)}
-          className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#5a2ea6]
-                     px-5 py-2.5 font-nata-sans-md text-sm text-white transition hover:opacity-90"
+          className={`${
+            isOrganizer
+              ? "bg-amber-500 hover:bg-amber-600"
+              : "bg-[#5a2ea6] hover:bg-purple-800"
+          } inline-flex items-center justify-center gap-2 rounded-xl
+                     px-5 py-2.5 font-nata-sans-md text-sm text-white transition hover:opacity-90`}
         >
           <MessageSquarePlus className="h-4 w-4" />
           Write a review
@@ -131,7 +141,11 @@ export const RatingsSection: React.FC<RatingsSectionProps> = ({
             animate="visible"
             exit="exit"
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="mb-10 rounded-2xl border border-violet-300 bg-violet-200/50 p-6"
+            className={`${
+              isOrganizer
+                ? "border-amber-300 bg-amber-50/70"
+                : "border-violet-300 bg-violet-100/70"
+            } mb-10 rounded-2xl border p-6`}
           >
             <RatingForm
               targetId={targetId}
@@ -171,8 +185,9 @@ export const RatingsSection: React.FC<RatingsSectionProps> = ({
             onClick={() => setShowAll((prev) => !prev)}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-2 font-nata-sans-md
-                       text-sm text-[#5a2ea6] hover:underline "
+            className={`inline-flex items-center gap-2 font-nata-sans-md
+                       text-sm hover:underline
+                       ${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
           >
             {showAll ? (
               <>
@@ -205,7 +220,7 @@ export const RatingsSection: React.FC<RatingsSectionProps> = ({
                   animate="visible"
                   exit="exit"
                   transition={{ duration: 0.2 }}
-                  className="w-full max-w-sm rounded-2xl bg-violet-50 p-6"
+                  className="w-full max-w-sm rounded-2xl bg-white p-6"
                 >
                   <h4 className="font-nata-sans-md text-lg text-gray-900">
                     Delete review?

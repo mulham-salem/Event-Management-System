@@ -27,13 +27,12 @@ export const RatingList: React.FC<RatingListProps> = ({
   onEdit,
   onDelete,
 }) => {
+
   /* =======================
        Loading
     ======================= */
   if (isLoading) {
-    return (
-      <Loader text={"Loading reviews..."} />
-    );
+    return <Loader text={"Loading reviews..."} />;
   }
 
   /* =======================

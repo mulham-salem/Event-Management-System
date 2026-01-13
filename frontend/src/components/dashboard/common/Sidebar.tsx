@@ -253,7 +253,7 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
                   List
                 </span>{" "}
                 <span className={`bg-gradient-to-r ${
-                  isProvider ? "from-emerald-600 to-teal-400" : isOrganizer ? "from-amber-500 to-orange-300" : "from-violet-600 to-pink-500"
+                  isProvider ? "from-emerald-600 to-teal-400" : isOrganizer ? "from-amber-600 to-yellow-400" : "from-violet-600 to-pink-400"
                 } bg-clip-text text-transparent`}>
                   EMO
                 </span>

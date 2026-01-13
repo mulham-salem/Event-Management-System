@@ -17,6 +17,7 @@ import { StarRating } from "./StarRating";
 import toast from "react-hot-toast";
 
 import { motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
 
 const formVariants = {
   hidden: { opacity: 0, y: 15, scale: 0.97 },
@@ -47,6 +48,11 @@ export const RatingForm: React.FC<RatingFormProps> = ({
   initialReview,
   onClose,
 }) => {
+  const location = useLocation();
+  const isOrganizer =
+    location.pathname === "/organizer/venues" ||
+    location.pathname === "/organizer/bookings";
+
   const isEditMode = !!initialReview;
 
   /* =========================
@@ -124,13 +130,18 @@ export const RatingForm: React.FC<RatingFormProps> = ({
       {/* Close */}
       <button
         onClick={onClose}
-        className="absolute right-4 top-0 rounded-lg p-1.5
-                  text-violet-800 transition hover:bg-gray-50"
+        className={`absolute right-4 top-0 rounded-lg p-1.5
+                  ${isOrganizer ? "text-amber-800" : "text-violet-800"}
+                  text-violet-800 transition hover:bg-gray-50`}
       >
         <X className="h-4 w-4" />
       </button>
       {/* Title */}
-      <h4 className="mb-4 font-nata-sans-bd text-lg text-violet-950">
+      <h4
+        className={`${
+          isOrganizer ? "text-amber-900" : "text-violet-900"
+        } mb-4 font-nata-sans-bd text-lg`}
+      >
         {isEditMode ? "Edit your review" : "Write a review"}
       </h4>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -172,9 +183,14 @@ export const RatingForm: React.FC<RatingFormProps> = ({
                 {...field}
                 rows={4}
                 placeholder="Share your experience..."
-                className="w-full rounded-xl border border-violet-300
-                           bg-white/80 px-4 py-3 font-nata-sans-rg text-sm text-violet-800
-                           placeholder-violet-300 focus:outline-none focus:ring-1 focus:ring-[#5a2ea6]/40"
+                className={`w-full rounded-xl border 
+                  ${
+                    isOrganizer
+                      ? "border-amber-300 text-amber-800 placeholder-amber-400 focus:ring-amber-600/40"
+                      : "border-violet-300 text-violet-800 placeholder-violet-300 focus:ring-[#5a2ea6]/40"
+                  }
+                           bg-white/80 px-4 py-3 font-nata-sans-rg text-sm 
+                           focus:outline-none focus:ring-1`}
               />
             )}
           />
@@ -205,9 +221,10 @@ export const RatingForm: React.FC<RatingFormProps> = ({
             whileTap={{ scale: 0.97 }}
             type="submit"
             disabled={isSubmitting}
-            className="inline-flex items-center gap-2 rounded-lg bg-[#5a2ea6]
+            className={`inline-flex items-center gap-2 rounded-lg 
+              ${isOrganizer ? "bg-amber-500" : "bg-[#5a2ea6]"}
                        px-5 py-2 font-nata-sans-md text-sm text-white
-                       transition hover:opacity-90 disabled:opacity-50"
+                       transition hover:opacity-90 disabled:opacity-50`}
           >
             <Send className="h-4 w-4" />
             {isEditMode ? "Save changes" : "Submit review"}

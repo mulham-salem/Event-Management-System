@@ -1,6 +1,15 @@
 import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { Mail, Star, Users, ChevronUp, ChevronDown } from "lucide-react";
+import {
+  Mail,
+  Star,
+  Users,
+  ChevronUp,
+  ChevronDown,
+  Eye,
+  Calendar,
+  MapPin,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
@@ -57,92 +66,189 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
     }
   };
 
+  /* ================= Get initials ================= */
+  const getInitials = (name: string) => {
+    return name
+      .split(" ")
+      .map((n) => n[0])
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
+  };
+
+  /* ================= Role badge styles ================= */
+  const getRoleBadgeStyles = () => {
+    if (host.role === "organizer") {
+      return "bg-violet-100 text-violet-700";
+    }
+    return "bg-blue-100 text-blue-700";
+  };
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 15 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      whileHover={{ y: -6 }}
-      exit={{ opacity: 0, y: 15 }}
-      transition={{ duration: 0.2, ease: "easeOut" }}
-      className="flex flex-col rounded-[18px] bg-white p-6 shadow-[0_20px_40px_rgba(124,58,237,0.12)]"
+      whileHover={{
+        y: -4,
+        boxShadow: "0 12px 24px -8px rgba(124, 58, 237, 0.15)",
+      }}
+      exit={{ opacity: 0, y: 20 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className="group relative flex flex-col overflow-hidden rounded-3xl border border-violet-200 bg-white transition-all duration-300"
+      style={{
+        background: "linear-gradient(135deg, #ffffff 0%, #f5f3ff 100%)",
+      }}
     >
-      {/* Role */}
-      <span className="mb-3 self-start rounded-full bg-violet-100 px-3 py-1 font-nata-sans-eb text-[11px] text-violet-600">
-        {host.role.toUpperCase()}
-      </span>
+      {/* Gradient Header */}
+      <div
+        className="relative h-20 w-full"
+        style={{
+          background:
+            "linear-gradient(135deg, #7c3aed 0%, #a855f7 50%, #7c3aed 100%)",
+        }}
+      >
+        {/* Decorative circles */}
+        <div className="absolute -right-4 -top-4 h-16 w-16 rounded-full bg-white/10" />
+        <div className="absolute -left-2 bottom-0 h-10 w-10 rounded-full bg-white/10" />
 
-      {/* Top */}
-      <div className="mb-5 flex gap-4">
-        <div className="flex h-14 w-14 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-indigo-500 font-nata-sans-eb text-white">
-          {host.full_name
-            .split(" ")
-            .map((n) => n[0])
-            .slice(0, 2)
-            .join("")}
-        </div>
-
-        <div className="min-w-0">
-          <div className="truncate font-nata-sans-bd">{host.full_name}</div>
-          <div className="flex items-center gap-1 truncate text-sm text-gray-500">
-            <Mail size={14} className="my-1 shrink-0"/>
-            {host.email}
-          </div>
+        {/* Role Badge */}
+        <div className="absolute right-4 top-4">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 font-nata-sans-bd text-xs ${getRoleBadgeStyles()} shadow-sm`}
+          >
+            {host.role === "organizer" ? (
+              <Calendar size={12} />
+            ) : (
+              <MapPin size={12} />
+            )}
+            {host.role.charAt(0).toUpperCase() + host.role.slice(1)}
+          </span>
         </div>
       </div>
 
-      {/* Score + Voting */}
-      <div className="mt-auto border-t border-gray-200 pt-4">
-        <div className="flex items-center justify-between">
-          <span className="font-nata-sans-md text-sm">Total Score</span>
+      {/* Avatar - Positioned between header and content */}
+      <div className="relative z-10 -mt-10 mb-4 flex justify-center">
+        <div
+          className="flex h-20 w-20 items-center justify-center rounded-2xl border-4 border-white font-nata-sans-bd text-xl font-bold text-white shadow-lg"
+          style={{
+            background: "linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)",
+          }}
+        >
+          {getInitials(host.full_name)}
+        </div>
+      </div>
 
-          <div className="flex items-center gap-2">
-            {/* Voting arrows */}
-            {canVote && (
-              <div className="flex flex-col items-center">
-                <button
-                  onClick={() => handleVote(1)}
-                  disabled={voteMutation.isPending}
-                  className={`text-gray-400 transition hover:text-green-600 ${
-                    hasVoted ? "cursor-not-allowed opacity-50" : ""
-                  }`}
-                >
-                  <ChevronUp size={18} />
-                </button>
+      {/* Content */}
+      <div className="flex flex-1 flex-col px-6 pb-6">
+        {/* Name & Email */}
+        <div className="mb-4 text-center">
+          <h3 className="mb-1 truncate font-nata-sans-bd text-lg text-gray-800">
+            {host.full_name}
+          </h3>
+          <div className="flex items-center justify-center gap-1.5 font-nata-sans-md text-sm text-gray-500">
+            <Mail size={14} className="shrink-0 text-violet-500" />
+            <span className="truncate">{host.email}</span>
+          </div>
+        </div>
 
-                <button
-                  onClick={() => handleVote(-1)}
-                  disabled={voteMutation.isPending}
-                  className={`text-gray-400 transition hover:text-red-600 ${
-                    hasVoted ? "cursor-not-allowed opacity-50" : ""
-                  }`}
-                >
-                  <ChevronDown size={18} />
-                </button>
-              </div>
+        {/* Stats Row */}
+        <div className="mb-4 flex items-center justify-center gap-6">
+          {/* Score */}
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1">
+              <Star size={18} className="fill-amber-400 text-amber-400" />
+              <span className="font-nata-sans-bd text-2xl text-gray-800">
+                {host.votes_score.toFixed(1)}
+              </span>
+            </div>
+            <span className="font-nata-sans-md text-xs text-gray-500">Score</span>
+          </div>
+
+          {/* Divider */}
+          <div className="h-10 w-px bg-gray-200" />
+
+          {/* Votes */}
+          <div className="flex flex-col items-center">
+            <div className="flex items-center gap-1">
+              <Users size={16} className="text-violet-500" />
+              <span className="font-nata-sans-bd text-2xl text-gray-800">
+                {host.votes_count}
+              </span>
+            </div>
+            <span className="font-nata-sans-md text-xs text-gray-500">Votes</span>
+          </div>
+        </div>
+
+        {/* Voting Section - Only for clients */}
+        {canVote && (
+          <div className="mb-4 flex items-center justify-center gap-3 rounded-xl border border-gray-100 bg-gray-50 p-3">
+            <span className="font-nata-sans-md text-sm text-gray-600">
+              Rate this host:
+            </span>
+            <div className="flex items-center gap-2">
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleVote(1)}
+                disabled={voteMutation.isPending || hasVoted}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+                  hasVoted
+                    ? "cursor-not-allowed bg-gray-100 text-gray-400"
+                    : "bg-green-100 text-green-600 hover:bg-green-200 hover:shadow-md"
+                }`}
+              >
+                <ChevronUp size={20} />
+              </motion.button>
+
+              <motion.button
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => handleVote(-1)}
+                disabled={voteMutation.isPending || hasVoted}
+                className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
+                  hasVoted
+                    ? "cursor-not-allowed bg-gray-100 text-gray-400"
+                    : "bg-red-100 text-red-600 hover:bg-red-200 hover:shadow-md"
+                }`}
+              >
+                <ChevronDown size={20} />
+              </motion.button>
+            </div>
+            {hasVoted && (
+              <span className="font-nata-sans-md text-xs text-green-600">✓ Voted</span>
             )}
+          </div>
+        )}
 
-            <span className="flex items-center gap-1 font-nata-sans-eb text-2xl text-blue-600">
-              <Star size={18} />
-              {host.votes_score.toFixed(1)}
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Action Button */}
+        <motion.button
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          onClick={handleViewProfile}
+          className="flex w-full items-center justify-center gap-2 rounded-xl py-3 font-nata-sans-md text-white shadow-lg transition-all hover:shadow-xl"
+          style={{
+            background: "linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%)",
+          }}
+        >
+          <Eye size={18} />
+          {host.role === "provider" ? "View Venues" : "View Events" }
+        </motion.button>
+      </div>
+
+      {/* Loading Overlay */}
+      {voteMutation.isPending && (
+        <div className="absolute inset-0 flex items-center justify-center rounded-2xl bg-white/80 backdrop-blur-sm">
+          <div className="flex flex-col items-center gap-2">
+            <div className="h-8 w-8 animate-spin rounded-full border-4 border-violet-200 border-t-violet-600" />
+            <span className="font-nata-sans-md text-sm text-violet-600">
+              Submitting vote...
             </span>
           </div>
         </div>
-
-        <div className="mt-1 flex items-center gap-1 text-xs text-gray-500">
-          <Users size={14} />
-          Votes: {host.votes_count}
-        </div>
-      </div>
-
-      {/* Action */}
-      <button
-        onClick={handleViewProfile}
-        className="mt-4 w-full rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 
-                   py-2.5 font-nata-sans-bd text-white 
-                   transition hover:opacity-90"
-      >
-        View Profile
-      </button>
+      )}
     </motion.div>
   );
 };

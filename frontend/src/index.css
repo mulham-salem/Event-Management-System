@@ -5,143 +5,161 @@
 /* ====== Custom Font Faces ====== */
 
 @font-face {
-  font-family: NataSans-ExtraBold;
-  src: url("assets/fonts/Nata_Sans/static/NataSans-ExtraBold.ttf")
-    format("truetype");
+    font-family: NataSans-ExtraBold;
+    src: url("assets/fonts/Nata_Sans/static/NataSans-ExtraBold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: NataSans-Bold;
-  src: url("assets/fonts/Nata_Sans/static/NataSans-Bold.ttf") format("truetype");
+    font-family: NataSans-Bold;
+    src: url("assets/fonts/Nata_Sans/static/NataSans-Bold.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: NataSans-Medium;
-  src: url("assets/fonts/Nata_Sans/static/NataSans-Medium.ttf")
-    format("truetype");
+    font-family: NataSans-Medium;
+    src: url("assets/fonts/Nata_Sans/static/NataSans-Medium.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: NataSans-Regular;
-  src: url("assets/fonts/Nata_Sans/static/NataSans-Regular.ttf")
-    format("truetype");
+    font-family: NataSans-Regular;
+    src: url("assets/fonts/Nata_Sans/static/NataSans-Regular.ttf") format("truetype");
 }
 
 /* ====== Custom SimpleBar Style ====== */
 
 .custom-scrollbar .simplebar-scrollbar::before {
-  background: linear-gradient(to bottom, #5021fc, #380d80);
-  border-radius: 6px;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-  transform: scaleY(0.8); /* تقصير */
-  transform-origin: center;
+    background: linear-gradient(to bottom, #5021fc, #380d80);
+    border-radius: 6px;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    transform: scaleY(0.8); /* تقصير */
+    transform-origin: center;
 }
 
 .custom-scrollbar-provider .simplebar-scrollbar::before {
-  background: linear-gradient(to bottom, #74dda5, #44cf85);
-  border-radius: 6px;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-  transform: scaleY(0.8); /* تقصير */
-  transform-origin: center;
+    background: linear-gradient(to bottom, #74dda5, #44cf85);
+    border-radius: 6px;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    transform: scaleY(0.8); /* تقصير */
+    transform-origin: center;
 }
 
 .custom-scrollbar-organizer .simplebar-scrollbar::before {
-  background: linear-gradient(to bottom, #ffd058, #ffee96);
-  border-radius: 6px;
-  transition: background 0.25s ease, box-shadow 0.25s ease;
-  transform: scaleY(0.8); /* تقصير */
-  transform-origin: center;
+    background: linear-gradient(to bottom, #ffd058, #ffee96);
+    border-radius: 6px;
+    transition: background 0.25s ease, box-shadow 0.25s ease;
+    transform: scaleY(0.8); /* تقصير */
+    transform-origin: center;
 }
 
 .custom-scrollbar .simplebar-scrollbar:hover::before {
-  background: linear-gradient(to bottom, #6112c2, #380e6b);
-  box-shadow: 0 0 14px rgb(65 0 255 / 70%);
+    background: linear-gradient(to bottom, #6112c2, #380e6b);
+    box-shadow: 0 0 14px rgb(65 0 255 / 70%);
 }
 
 .custom-scrollbar-provider .simplebar-scrollbar:hover::before {
-  background: linear-gradient(to bottom, #3f8861, #114f2e);
-  box-shadow: 0 0 14px rgb(124 211 124 / 70%);
+    background: linear-gradient(to bottom, #3f8861, #114f2e);
+    box-shadow: 0 0 14px rgb(124 211 124 / 70%);
 }
 
 .custom-scrollbar-organizer .simplebar-scrollbar:hover::before {
-  background: linear-gradient(to bottom, #e8c900, #c29200);
-  box-shadow: 0 0 14px rgb(224 186 18 / 80%);
+    background: linear-gradient(to bottom, #e8c900, #c29200);
+    box-shadow: 0 0 14px rgb(224 186 18 / 80%);
 }
 
 .custom-scrollbar .simplebar-scrollbar,
 .custom-scrollbar-provider .simplebar-scrollbar,
 .custom-scrollbar-organizer .simplebar-scrollbar {
-  width: 10px;
+    width: 10px;
 }
 
 .custom-scrollbar .simplebar-track.simplebar-vertical,
 .custom-scrollbar-provider .simplebar-track.simplebar-vertical,
 .custom-scrollbar-organizer .simplebar-track.simplebar-vertical {
-  background: rgb(0 0 0 / 0%);
-  width: 10px;
-  border-radius: 20px;
+    background: rgb(0 0 0 / 0%);
+    width: 10px;
+    border-radius: 20px;
 }
 
 /* ====== Custom CSS Animation ====== */
 
 @keyframes gradient-x {
-  0% {
-    background-position: 0 50%;
-  }
+    0% {
+        background-position: 0 50%;
+    }
 
-  50% {
-    background-position: 100% 50%;
-  }
+    50% {
+        background-position: 100% 50%;
+    }
 
-  100% {
-    background-position: 0 50%;
-  }
+    100% {
+        background-position: 0 50%;
+    }
 }
 
 .animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 6s ease infinite;
+    background-size: 200% 200%;
+    animation: gradient-x 6s ease infinite;
 }
 
 @keyframes toast-enter {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0) scale(0.98);
-  }
+    from {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0) scale(0.98);
+    }
 
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+    to {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
 }
 
 @keyframes toast-leave {
-  from {
-    opacity: 1;
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+    from {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) scale(1);
+    }
 
-  to {
-    opacity: 0;
-    transform: translate3d(0, 8px, 0) scale(0.98);
-  }
+    to {
+        opacity: 0;
+        transform: translate3d(0, 8px, 0) scale(0.98);
+    }
 }
 
 .animate-enter {
-  animation: toast-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: toast-enter 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .animate-leave {
-  animation: toast-leave 0.2s ease-in forwards;
+    animation: toast-leave 0.2s ease-in forwards;
 }
 
 /* ====== Remove default browser calendar icon ====== */
 
 .hide-date-icon::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  display: none;
+    opacity: 0;
+    display: none;
 }
 
 .hide-date-icon {
-  appearance: none;
+    appearance: none;
+}
+
+.event-hero-gradient {
+    background-color: #0d0221;
+    background-image: radial-gradient(at 15% 25%, rgb(140 70 255 / 35%) 0, transparent 55%),
+    radial-gradient(at 85% 20%, rgb(255 80 160 / 28%) 0, transparent 55%),
+    radial-gradient(at 50% 75%, rgb(60 130 255 / 22%) 0, transparent 55%),
+    radial-gradient(at 10% 85%, rgb(90 110 220 / 25%) 0, transparent 55%),
+    radial-gradient(at 90% 80%, rgb(180 80 255 / 22%) 0, transparent 55%);
+}
+
+.venue-hero-gradient {
+    background-image: linear-gradient(
+            135deg,
+            #0d0221 0%,
+            #1a0a33 18%,
+            #2a124a 36%,
+            #3b1e66 54%,
+            #4e2c85 72%,
+            #6240a3 100%
+    );
 }

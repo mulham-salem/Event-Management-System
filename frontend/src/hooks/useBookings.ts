@@ -33,8 +33,8 @@ export const useUpdateBooking = () => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateBookingPayload }) =>
-      bookingsApi.updateBooking(id, data),
+    mutationFn: ({ id, payload }: { id: string; payload: UpdateBookingPayload }) =>
+      bookingsApi.updateBooking(id, payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["client-bookings"],

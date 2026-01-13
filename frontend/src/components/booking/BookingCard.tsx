@@ -232,6 +232,7 @@ export const BookingCard: React.FC<BookingCardProps> = ({
 
                 <BookingForm
                   booking={booking}
+                  venueId={venue.id}
                   onClose={() => setOpenEdit(false)}
                 />
               </motion.div>
