@@ -9,26 +9,27 @@ import {
   type RatingTargetType,
   type fetchUserReviewsParams,
 } from "../api/ratings";
+import { getToken } from "../utils/authToken";
 
 /* =======================
    Query Keys
 ======================= */
 
 const ratingKeys = {
-  all: ["ratings"] as const,
-  eventReviews: (eventId: string) =>
-    [...ratingKeys.all, "event", eventId] as const,
-  venueReviews: (venueId: string) =>
-    [...ratingKeys.all, "venue", venueId] as const,
-  userEventReviews: (filters?: fetchUserReviewsParams) =>
+  all: (token: string) => ["ratings", token] as const,
+  eventReviews: (eventId: string, token: string) =>
+    [...ratingKeys.all(token), "event", eventId] as const,
+  venueReviews: (venueId: string, token: string) =>
+    [...ratingKeys.all(token), "venue", venueId] as const,
+  userEventReviews: (token: string, filters?: fetchUserReviewsParams) =>
     filters
-      ? ([...ratingKeys.all, "user", "events", filters] as const)
-      : ([...ratingKeys.all, "user", "events"] as const),
+      ? ([...ratingKeys.all(token), "user", "events", filters] as const)
+      : ([...ratingKeys.all(token), "user", "events"] as const),
 
-  userVenueReviews: (filters?: fetchUserReviewsParams) =>
-    [...ratingKeys.all, "user", "venues", filters] as const,
-  average: (targetType: RatingTargetType, targetId: string) =>
-    [...ratingKeys.all, "average", targetType, targetId] as const,
+  userVenueReviews: (token: string, filters?: fetchUserReviewsParams) =>
+    [...ratingKeys.all(token), "user", "venues", filters] as const,
+  average: (targetType: RatingTargetType, targetId: string, token: string) =>
+    [...ratingKeys.all(token), "average", targetType, targetId] as const,
 };
 
 /* =======================
@@ -37,8 +38,10 @@ const ratingKeys = {
 
 /* ----- Event Reviews ----- */
 export const useEventReviews = (eventId: string | null) => {
+  const token = getToken();
+
   return useQuery<Review[]>({
-    queryKey: ratingKeys.eventReviews(eventId ?? ""),
+    queryKey: ratingKeys.eventReviews(eventId ?? "", token!),
     queryFn: () => ratingsApi.fetchEventReviews(eventId!),
     enabled: !!eventId,
     staleTime: 1000 * 60 * 2,
@@ -47,8 +50,10 @@ export const useEventReviews = (eventId: string | null) => {
 
 /* ----- Venue Reviews ----- */
 export const useVenueReviews = (venueId: string | null) => {
+  const token = getToken();
+
   return useQuery<Review[]>({
-    queryKey: ratingKeys.venueReviews(venueId ?? ""),
+    queryKey: ratingKeys.venueReviews(venueId ?? "", token!),
     queryFn: () => ratingsApi.fetchVenueReviews(venueId!),
     enabled: !!venueId,
     staleTime: 1000 * 60 * 2,
@@ -57,16 +62,20 @@ export const useVenueReviews = (venueId: string | null) => {
 
 /* ----- User Reviews (Dashboard) ----- */
 export const useUserEventReviews = (filters?: fetchUserReviewsParams) => {
+  const token = getToken();
+
   return useQuery<UserEventReview[]>({
-    queryKey: ratingKeys.userEventReviews(filters),
+    queryKey: ratingKeys.userEventReviews(token!, filters),
     queryFn: () => ratingsApi.fetchUserEventReviews(filters),
     staleTime: 1000 * 60 * 5,
   });
 };
 
 export const useUserVenueReviews = (filters?: fetchUserReviewsParams) => {
+  const token = getToken();
+
   return useQuery<UserVenueReview[]>({
-    queryKey: ratingKeys.userVenueReviews(filters),
+    queryKey: ratingKeys.userVenueReviews(token!, filters),
     queryFn: () => ratingsApi.fetchUserVenueReviews(filters),
     staleTime: 1000 * 60 * 5,
   });
@@ -77,8 +86,10 @@ export const useAverageRating = (
   targetType: RatingTargetType,
   targetId: string | null
 ) => {
+  const token = getToken();
+
   return useQuery<AverageRatingResponse>({
-    queryKey: ratingKeys.average(targetType, targetId ?? ""),
+    queryKey: ratingKeys.average(targetType, targetId ?? "", token!),
     queryFn: () => ratingsApi.fetchAverageRating(targetId!, targetType),
     enabled: !!targetId,
     staleTime: 1000 * 60 * 5,
@@ -95,6 +106,7 @@ export const useCreateReview = (
   targetId: string
 ) => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (payload: ReviewPayload) => {
@@ -106,19 +118,19 @@ export const useCreateReview = (
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.eventReviews(targetId)
-            : ratingKeys.venueReviews(targetId),
+            ? ratingKeys.eventReviews(targetId, token!)
+            : ratingKeys.venueReviews(targetId, token!),
       });
 
       queryClient.invalidateQueries({
-        queryKey: ratingKeys.average(targetType, targetId),
+        queryKey: ratingKeys.average(targetType, targetId, token!),
       });
 
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.userEventReviews()
-            : ratingKeys.userVenueReviews(),
+            ? ratingKeys.userEventReviews(token!)
+            : ratingKeys.userVenueReviews(token!),
       });
     },
   });
@@ -131,6 +143,7 @@ export const useUpdateReview = (
   reviewId: string
 ) => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (payload: ReviewPayload) => {
@@ -142,19 +155,19 @@ export const useUpdateReview = (
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.eventReviews(targetId)
-            : ratingKeys.venueReviews(targetId),
+            ? ratingKeys.eventReviews(targetId, token!)
+            : ratingKeys.venueReviews(targetId, token!),
       });
 
       queryClient.invalidateQueries({
-        queryKey: ratingKeys.average(targetType, targetId),
+        queryKey: ratingKeys.average(targetType, targetId, token!),
       });
 
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.userEventReviews()
-            : ratingKeys.userVenueReviews(),
+            ? ratingKeys.userEventReviews(token!)
+            : ratingKeys.userVenueReviews(token!),
       });
     },
   });
@@ -167,6 +180,7 @@ export const useDeleteReview = (
   reviewId: string
 ) => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: () => {
@@ -178,19 +192,19 @@ export const useDeleteReview = (
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.eventReviews(targetId)
-            : ratingKeys.venueReviews(targetId),
+            ? ratingKeys.eventReviews(targetId, token!)
+            : ratingKeys.venueReviews(targetId, token!),
       });
 
       queryClient.invalidateQueries({
-        queryKey: ratingKeys.average(targetType, targetId),
+        queryKey: ratingKeys.average(targetType, targetId, token!),
       });
 
       queryClient.invalidateQueries({
         queryKey:
           targetType === "event"
-            ? ratingKeys.userEventReviews()
-            : ratingKeys.userVenueReviews(),
+            ? ratingKeys.userEventReviews(token!)
+            : ratingKeys.userVenueReviews(token!),
       });
     },
   });

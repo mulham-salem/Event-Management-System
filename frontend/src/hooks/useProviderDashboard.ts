@@ -1,5 +1,3 @@
-// src/hooks/useProviderDashboard.ts
-
 import { useQuery } from "@tanstack/react-query";
 
 import {
@@ -9,19 +7,21 @@ import {
   type ProviderVenue,
 } from "../api/providerDashboard";
 
+import { getToken } from "../utils/authToken";
+
 /* =========================
    Query Keys
 ========================= */
 
 export const providerDashboardKeys = {
-  all: ["provider-dashboard"] as const,
+  all: (token: string) => ["provider-dashboard", token] as const,
 
-  stats: () => [...providerDashboardKeys.all, "stats"] as const,
+  stats: (token: string) => [...providerDashboardKeys.all(token), "stats"] as const,
 
-  recentBookings: () =>
-    [...providerDashboardKeys.all, "recent-bookings"] as const,
+  recentBookings: (token: string) =>
+    [...providerDashboardKeys.all(token), "recent-bookings"] as const,
 
-  venues: () => [...providerDashboardKeys.all, "venues"] as const,
+  venues: (token: string) => [...providerDashboardKeys.all(token), "venues"] as const,
 };
 
 /* =========================
@@ -33,8 +33,10 @@ export const providerDashboardKeys = {
  * Used in <Stats />
  */
 export const useProviderStats = () => {
+  const token = getToken();
+
   return useQuery<ProviderStats>({
-    queryKey: providerDashboardKeys.stats(),
+    queryKey: providerDashboardKeys.stats(token!),
     queryFn: providerDashboardApi.getProviderStats,
     staleTime: 1000 * 60 * 5, // 5 minutes
   });
@@ -45,8 +47,10 @@ export const useProviderStats = () => {
  * Used in <RecentBookingsRequests />
  */
 export const useRecentBookingRequests = () => {
+  const token = getToken();
+
   return useQuery<RecentBooking[]>({
-    queryKey: providerDashboardKeys.recentBookings(),
+    queryKey: providerDashboardKeys.recentBookings(token!),
     queryFn: providerDashboardApi.getRecentBookingRequests,
     staleTime: 1000 * 60, // 1 minute
   });
@@ -57,8 +61,10 @@ export const useRecentBookingRequests = () => {
  * Used in <YourVenues />
  */
 export const useProviderVenues = () => {
+  const token = getToken();
+
   return useQuery<ProviderVenue[]>({
-    queryKey: providerDashboardKeys.venues(),
+    queryKey: providerDashboardKeys.venues(token!),
     queryFn: providerDashboardApi.getProviderVenues,
     staleTime: 1000 * 60 * 2, // 2 minutes
   });

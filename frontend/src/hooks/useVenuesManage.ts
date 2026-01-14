@@ -5,6 +5,7 @@ import {
   type CreateVenuePayload,
   type UpdateVenuePayload,
 } from "../api/venuesManage";
+import { getToken } from "../utils/authToken";
 
 /* =======================
    Queries
@@ -15,8 +16,10 @@ export const useVenuesQuery = (query?: {
   search?: string;
   ordering?: string;
 }) => {
+  const token = getToken();
+
   return useQuery<Venue[]>({
-    queryKey: ["provider-venues-manage", query],
+    queryKey: ["provider-venues-manage", query, token],
     queryFn: () => venuesManageApi.getVenues(query),
     staleTime: 1000 * 60,
   });
@@ -26,8 +29,10 @@ export const useVenuesArchiveQuery = (query?: {
   search?: string;
   ordering?: string;
 }) => {
+  const token = getToken();
+
   return useQuery<Venue[]>({
-    queryKey: ["archived-venues", query],
+    queryKey: ["archived-venues", query, token],
     queryFn: () => venuesManageApi.getArchivedVenues(query),
     staleTime: 1000 * 60,
   });
@@ -40,12 +45,13 @@ export const useVenuesArchiveQuery = (query?: {
 /* -------- CREATE VENUE -------- */
 export const useCreateVenue = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (payload: CreateVenuePayload) =>
       venuesManageApi.createVenue(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage", token] });
       queryClient.invalidateQueries({ queryKey: ["client-venues"] });
     },
   });
@@ -54,12 +60,13 @@ export const useCreateVenue = () => {
 /* -------- UPDATE VENUE -------- */
 export const useUpdateVenue = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (payload: UpdateVenuePayload) =>
       venuesManageApi.updateVenue(payload),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage", token] });
       queryClient.invalidateQueries({ queryKey: ["client-venues"] });
     },
   });
@@ -68,24 +75,26 @@ export const useUpdateVenue = () => {
 /* -------- ARCHIVE VENUE -------- */
 export const useArchiveVenue = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (id: string) => venuesManageApi.archiveVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage"] });
-      queryClient.invalidateQueries({ queryKey: ["archived-venues"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage", token] });
+      queryClient.invalidateQueries({ queryKey: ["archived-venues", token] });
     },
   });
 };
 
 export const useUnArchiveVenue = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (id: string) => venuesManageApi.unArchiveVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage"] });
-      queryClient.invalidateQueries({ queryKey: ["archived-venues"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage", token] });
+      queryClient.invalidateQueries({ queryKey: ["archived-venues", token] });
     },
   });
 };
@@ -93,11 +102,12 @@ export const useUnArchiveVenue = () => {
 /* -------- DELETE VENUE -------- */
 export const useDeleteVenue = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (id: string) => venuesManageApi.deleteVenue(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage"] });
+      queryClient.invalidateQueries({ queryKey: ["provider-venues-manage", token] });
       queryClient.invalidateQueries({ queryKey: ["client-venues"] });
     },
   });

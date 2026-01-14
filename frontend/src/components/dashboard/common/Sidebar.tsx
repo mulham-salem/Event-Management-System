@@ -97,7 +97,7 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
   else if (currentSection === "manage-bookings") currentSection = "manageBookings";
   else if (currentSection === "my-events") currentSection = "myEvents";
   else if (currentSection === "archived-events") currentSection = "archivedEvents";
-  else if (currentSection === "registrations") currentSection = "manageRegistrations";
+  else if (currentSection === "manage-registrations") currentSection = "manageRegistrations";
 
 
   /* =========================================================
@@ -157,7 +157,7 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
   ];
 
   const organizerAttendeeItems: SidebarItem[] = [
-    { name: "manageRegistrations", label: "Registrations", icon: <Users />, path: "/organizer/registrations" },
+    { name: "manageRegistrations", label: "Registrations", icon: <Users />, path: "/organizer/manage-registrations" },
     { name: "invitations", label: "Invitations", icon: <Mail />, path: "/organizer/invitations",  isNew: true, badge: "QR" },
     // { name: "e_tickets", label: "View E-Tickets", icon: <QrCode />, path: "/organizer/e-tickets" },
   ];

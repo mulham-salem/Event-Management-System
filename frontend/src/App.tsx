@@ -79,7 +79,7 @@ function App() {
               <Route path="/organizer/venues" element={<Venues showHero={false} />} />
               <Route path="/organizer/my-events" element={<EventsManage />} />
               <Route path="/organizer/archived-events" element={<EventsArchive />} />
-              <Route path="/organizer/registrations" element={<RegistrationsManage />} />
+              <Route path="/organizer/manage-registrations" element={<RegistrationsManage />} />
             </Route>
           </Route>
           

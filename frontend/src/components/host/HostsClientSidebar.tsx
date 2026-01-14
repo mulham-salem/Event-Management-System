@@ -368,7 +368,7 @@ export const HostsClientSidebar: React.FC<HostsSidebarProps> = ({
                 </div>
                 {/* Quick Presets */}
                 <div className="rounded-xl bg-blue-50 p-3">
-                  <label className="mb-1.5 font-nata-sans-md text-xs font-semibold text-blue-800">
+                  <label className="mb-3 block font-nata-sans-md text-xs font-semibold text-blue-800">
                     Quick Presets
                   </label>
                   <div className="flex flex-wrap gap-1.5">

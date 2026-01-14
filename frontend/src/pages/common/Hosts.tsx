@@ -120,7 +120,7 @@ export const Hosts: React.FC<HostsProps> = ({ role }) => {
 
         {/* GRID COLUMN */}
         <div className="flex min-h-0 flex-1">
-          <div className="w-full rounded-3xl bg-white pt-4 shadow-xl">
+          <div className="w-full rounded-3xl bg-white pt-8 shadow-xl">
             {/* Loading State */}
             {isLoading && isClient && <Loader text={"Loading hosts..."} />}
 

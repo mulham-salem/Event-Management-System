@@ -7,22 +7,25 @@ import {
   type UpcomingEvent,
 } from "../api/organizerDashboard";
 
+import { getToken } from "../utils/authToken";
 
 const KEYS = {
-  root: ["organizer-dashboard"] as const,
-  stats: () => [...KEYS.root, "stats"] as const,
-  recentRegistrations: () =>
-    [...KEYS.root, "recent-registrations"] as const,
-  upcomingEvents: () =>
-    [...KEYS.root, "upcoming-events"] as const,
+  root: (token: string) => ["organizer-dashboard", token] as const,
+  stats: (token: string) => [...KEYS.root(token), "stats"] as const,
+  recentRegistrations: (token: string) =>
+    [...KEYS.root(token), "recent-registrations"] as const,
+  upcomingEvents: (token: string) =>
+    [...KEYS.root(token), "upcoming-events"] as const,
 };
 
 /**
  * Dashboard Stats
  */
 export const useOrganizerStats = () => {
+  const token = getToken();
+
   return useQuery<DashboardStats>({
-    queryKey: KEYS.stats(),
+    queryKey: KEYS.stats(token!),
     queryFn: organizerDashboardApi.getOrganizerStats,
   });
 };
@@ -31,8 +34,10 @@ export const useOrganizerStats = () => {
  * Recent Registrations
  */
 export const useOrganizerRecentRegistrations = () => {
+  const token = getToken();
+
   return useQuery<RecentRegistration[]>({
-    queryKey: KEYS.recentRegistrations(),
+    queryKey: KEYS.recentRegistrations(token!),
     queryFn: organizerDashboardApi.getRecentRegistrations,
   });
 };
@@ -41,8 +46,10 @@ export const useOrganizerRecentRegistrations = () => {
  * Upcoming Events
  */
 export const useOrganizerUpcomingEvents = () => {
+  const token = getToken();
+
   return useQuery<UpcomingEvent[]>({
-    queryKey: KEYS.upcomingEvents(),
+    queryKey: KEYS.upcomingEvents(token!),
     queryFn: organizerDashboardApi.getUpcomingEvents,
   });
 };

@@ -6,10 +6,13 @@ import {
   type CreateRegistrationPayload,
   type UpdateRegistrationPayload,
 } from "../api/registrations";
+import { getToken } from "../utils/authToken";
 
 export const useRegistrations = (params?: GetRegistrationsParams) => {
+  const token = getToken();
+
   return useQuery<Registration[]>({
-    queryKey: ["client-registrations", params],
+    queryKey: ["client-registrations", params, token],
     queryFn: () => registrationsApi.getRegistrations(params),
     staleTime: 1000 * 60 * 2,
   });
@@ -17,13 +20,14 @@ export const useRegistrations = (params?: GetRegistrationsParams) => {
 
 export const useCreateRegistration = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (payload: CreateRegistrationPayload) =>
       registrationsApi.createRegistration(payload),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["client-registrations"],
+        queryKey: ["client-registrations", token],
       });
     },
   });
@@ -31,6 +35,7 @@ export const useCreateRegistration = () => {
 
 export const useUpdateRegistration = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: ({
@@ -42,7 +47,7 @@ export const useUpdateRegistration = () => {
     }) => registrationsApi.updateRegistration(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["client-registrations"],
+        queryKey: ["client-registrations", token],
       });
     },
   });
@@ -50,12 +55,13 @@ export const useUpdateRegistration = () => {
 
 export const useDeleteRegistration = () => {
   const queryClient = useQueryClient();
+  const token = getToken();
 
   return useMutation({
     mutationFn: (id: string) => registrationsApi.deleteRegistration(id),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["client-registrations"],
+        queryKey: ["client-registrations", token],
       });
     },
   });

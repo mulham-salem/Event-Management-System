@@ -1,6 +1,7 @@
-import { http, HttpResponse } from "msw";
+import { delay, http, HttpResponse } from "msw";
 import { ENV } from "../../config/env";
-import { mockMe } from "../data/users.mock";
+import { getMockMe } from "../data/users.mock";
+import { generateRandomToken, randomDelay } from "../helpers/random.helpers";
 
 export const authHandlers = [
   // Login Handler
@@ -12,28 +13,32 @@ export const authHandlers = [
 
     // Fake validation
     if (body.email === "client@example.com" && body.password === "123456") {
+      await delay(randomDelay());
       return HttpResponse.json({
-        access: "fake-access-token-123",
+        access: `fake-client-access-token-${generateRandomToken()}`,
         role: "client",
       });
     } else if (
       body.email === "provider@example.com" &&
       body.password === "123456"
     ) {
+      await delay(randomDelay());
       return HttpResponse.json({
-        access: "fake-access-token-123",
+        access: `fake-provider-access-token-${generateRandomToken()}`,
         role: "provider",
       });
     } else if (
       body.email === "organizer@example.com" &&
       body.password === "123456"
     ) {
+      await delay(randomDelay());
       return HttpResponse.json({
-        access: "fake-access-token-123",
+        access: `fake-organizer-access-token-${generateRandomToken()}`,
         role: "organizer",
       });
     }
 
+    await delay(randomDelay());
     return HttpResponse.json(
       { message: "Invalid credentials" },
       { status: 401 }
@@ -51,22 +56,26 @@ export const authHandlers = [
     };
 
     // Always success for testing
+    await delay(randomDelay());
     return HttpResponse.json({
-      access: "registered-token-456",
+      access: `registered-token-${generateRandomToken()}`,
       role: body.role,
     });
   }),
 
   // Me Handler
-  http.get(`${ENV.API_BASE_URL}/auth/me`, ({ request }) => {
+  http.get(`${ENV.API_BASE_URL}/auth/me`, async ({ request }) => {
     const authHeader = request.headers.get("authorization");
 
     // ⛔️ simulate unauthorized
     if (!authHeader || !authHeader.startsWith("Bearer")) {
+      await delay(randomDelay());
       return HttpResponse.json({ message: "Unauthenticated" }, { status: 401 });
     }
 
     // ✅ authenticated
+    await delay(randomDelay());
+    const mockMe = getMockMe();
     return HttpResponse.json(mockMe, { status: 200 });
   }),
 ];

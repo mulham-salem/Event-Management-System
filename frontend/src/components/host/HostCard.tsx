@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
@@ -23,10 +23,9 @@ interface HostCardProps {
 }
 
 export const HostCard: React.FC<HostCardProps> = ({ host }) => {
-  const [hasVoted, setHasVoted] = useState(false);
   const navigate = useNavigate();
   const voteMutation = useVoteForHost();
-
+  
   /* ================= Auth check ================= */
   const canVote = useMemo(() => {
     const token = getToken();
@@ -36,8 +35,13 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
   /* ================= Vote handlers ================= */
   const handleVote = (value: 1 | -1) => {
-    if (hasVoted) {
-      toast("You have already voted!", { icon: "⚠️" });
+    if (value === 1 && host.upvoted) {
+      toast("You already upvoted this host 👍", { icon: "⚠️" });
+      return;
+    }
+
+    if (value === -1 && host.downvoted) {
+      toast("You already downvoted this host 👎", { icon: "⚠️" });
       return;
     }
     voteMutation.mutate(
@@ -48,7 +52,6 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
       {
         onSuccess: () => {
           toast.success("Vote submitted successfully");
-          setHasVoted(true);
         },
         onError: (err: any) => {
           toast.error(err?.message || "Voting failed");
@@ -74,14 +77,6 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
       .slice(0, 2)
       .join("")
       .toUpperCase();
-  };
-
-  /* ================= Role badge styles ================= */
-  const getRoleBadgeStyles = () => {
-    if (host.role === "organizer") {
-      return "bg-violet-100 text-violet-700";
-    }
-    return "bg-blue-100 text-blue-700";
   };
 
   return (
@@ -113,9 +108,7 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
         {/* Role Badge */}
         <div className="absolute right-4 top-4">
-          <span
-            className={`inline-flex items-center gap-1 rounded-full px-3 py-1 font-nata-sans-bd text-xs ${getRoleBadgeStyles()} shadow-sm`}
-          >
+          <span className="inline-flex items-center gap-1 rounded-full bg-violet-100 px-3 py-1 font-nata-sans-bd text-xs text-violet-700 shadow-sm">
             {host.role === "organizer" ? (
               <Calendar size={12} />
             ) : (
@@ -161,7 +154,9 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 {host.votes_score.toFixed(1)}
               </span>
             </div>
-            <span className="font-nata-sans-md text-xs text-gray-500">Score</span>
+            <span className="font-nata-sans-md text-xs text-gray-500">
+              Score
+            </span>
           </div>
 
           {/* Divider */}
@@ -175,7 +170,9 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 {host.votes_count}
               </span>
             </div>
-            <span className="font-nata-sans-md text-xs text-gray-500">Votes</span>
+            <span className="font-nata-sans-md text-xs text-gray-500">
+              Votes
+            </span>
           </div>
         </div>
 
@@ -183,16 +180,16 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
         {canVote && (
           <div className="mb-4 flex items-center justify-center gap-3 rounded-xl border border-gray-100 bg-gray-50 p-3">
             <span className="font-nata-sans-md text-sm text-gray-600">
-              Rate this host:
+              Rate:
             </span>
             <div className="flex items-center gap-2">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleVote(1)}
-                disabled={voteMutation.isPending || hasVoted}
+                disabled={voteMutation.isPending}
                 className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
-                  hasVoted
+                  host.upvoted
                     ? "cursor-not-allowed bg-gray-100 text-gray-400"
                     : "bg-green-100 text-green-600 hover:bg-green-200 hover:shadow-md"
                 }`}
@@ -204,9 +201,9 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleVote(-1)}
-                disabled={voteMutation.isPending || hasVoted}
+                disabled={voteMutation.isPending}
                 className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
-                  hasVoted
+                  host.downvoted
                     ? "cursor-not-allowed bg-gray-100 text-gray-400"
                     : "bg-red-100 text-red-600 hover:bg-red-200 hover:shadow-md"
                 }`}
@@ -214,8 +211,16 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 <ChevronDown size={20} />
               </motion.button>
             </div>
-            {hasVoted && (
-              <span className="font-nata-sans-md text-xs text-green-600">✓ Voted</span>
+            {host.upvoted && (
+              <span className="font-nata-sans-md text-xs text-green-600">
+                ✓ You upvoted
+              </span>
+            )}
+
+            {host.downvoted && (
+              <span className="font-nata-sans-md text-xs text-red-600">
+                ✓ You downvoted
+              </span>
             )}
           </div>
         )}
@@ -234,7 +239,7 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
           }}
         >
           <Eye size={18} />
-          {host.role === "provider" ? "View Venues" : "View Events" }
+          {host.role === "provider" ? "View Venues" : "View Events"}
         </motion.button>
       </div>
 

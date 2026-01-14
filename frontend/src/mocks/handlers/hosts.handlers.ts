@@ -32,7 +32,12 @@ export const hostsHandlers = [
         // update mock stats
         host.votes_score += body.value;
         host.votes_count += 1;
-
+        
+        if (body.value === 1) 
+            host.upvoted = true;
+        else 
+            host.downvoted = true;
+        
         return HttpResponse.json({
             id: crypto.randomUUID(),
             target_user: body.target_user,

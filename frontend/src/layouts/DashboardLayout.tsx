@@ -31,7 +31,7 @@ export const DashboardLayout: React.FC = () => {
   else if (current === "manage-bookings") current = "manageBookings";
   else if (current === "my-events") current = "myEvents";
   else if (current === "archived-events") current = "archivedEvents";
-  else if (current === "registrations") current = "manageRegistrations";
+  else if (current === "manage-registrations") current = "manageRegistrations";
 
 
   const titles: Record<string, { title: string; subtitle: string }> = {

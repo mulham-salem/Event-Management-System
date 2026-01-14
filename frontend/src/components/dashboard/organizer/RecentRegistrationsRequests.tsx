@@ -37,7 +37,7 @@ export const RecentRegistrationsRequests: React.FC = () => {
         </h3>
 
         <Link
-          to="/organizer/registrations"
+          to="/organizer/manage-registrations"
           className="flex items-center gap-1 font-nata-sans-md text-sm text-amber-600 transition-colors hover:text-amber-800"
         >
           View All
