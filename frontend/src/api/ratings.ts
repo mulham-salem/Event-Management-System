@@ -76,10 +76,7 @@ export const ratingsApi = {
     /* ===== Event Reviews ===== */
 
     fetchEventReviews: async (eventId: string): Promise<Review[]> => {
-        const res = await axiosClient.get(
-            `/events/${eventId}/reviews`,
-            {skipAuth: true}
-        );
+        const res = await axiosClient.get(`/events/${eventId}/reviews`);
         return res.data;
     },
 
@@ -108,10 +105,7 @@ export const ratingsApi = {
     /* ===== Venue Reviews ===== */
 
     fetchVenueReviews: async (venueId: string): Promise<Review[]> => {
-        const res = await axiosClient.get(
-            `/venues/${venueId}/reviews`,
-            {skipAuth: true}
-        );
+        const res = await axiosClient.get(`/venues/${venueId}/reviews`);
         return res.data;
     },
 

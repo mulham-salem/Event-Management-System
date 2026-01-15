@@ -83,17 +83,12 @@ export const venuesApi = {
         params.append("page", String(filters.page));
         params.append("page_size", String(filters.page_size));
 
-        const res = await axiosClient.get(`/venues/public?${params.toString()}`, {
-            skipAuth: true,
-        });
-
+        const res = await axiosClient.get(`/venues/public?${params.toString()}`);
         return res.data;
     },
 
     fetchVenueById: async (id: string): Promise<VenueDetails> => {
-        const res = await axiosClient.get(`/venues/public/${id}`, {
-            skipAuth: true,
-        });
+        const res = await axiosClient.get(`/venues/public/${id}`);
         return res.data;
     },
 };

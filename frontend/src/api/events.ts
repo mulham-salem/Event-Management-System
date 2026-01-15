@@ -95,17 +95,12 @@ export const eventsApi = {
     params.append("page", String(filters.page));
     params.append("page_size", String(filters.page_size));
 
-    const res = await axiosClient.get(`/events/public?${params.toString()}`, {
-      skipAuth: true,
-    });
-
+    const res = await axiosClient.get(`/events/public?${params.toString()}`);
     return res.data;
   },
 
   fetchEventById: async (id: string): Promise<EventDetails> => {
-    const res = await axiosClient.get(`/events/public/${id}`, {
-      skipAuth: true,
-    });
+    const res = await axiosClient.get(`/events/public/${id}`);
     return res.data;
   },
 };

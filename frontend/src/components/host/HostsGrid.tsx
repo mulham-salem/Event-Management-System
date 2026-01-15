@@ -2,12 +2,17 @@ import React from "react";
 import { motion } from "framer-motion";
 import { HostCard } from "./HostCard";
 import type { Host } from "../../api/hosts";
+import { useLocation } from "react-router-dom";
 
 interface HostsGridProps {
   hosts: Host[];
 }
 
 export const HostsGrid: React.FC<HostsGridProps> = ({ hosts }) => {
+  const location = useLocation();
+  const isClient =
+    location.pathname === "/client/providers" ||
+    location.pathname === "/client/organizers";
   return (
     <motion.section
       initial="hidden"
@@ -28,9 +33,9 @@ export const HostsGrid: React.FC<HostsGridProps> = ({ hosts }) => {
             visible: { opacity: 1, y: 0 },
           }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="mx-auto w-80"
+          className={`mx-auto ${isClient ? "w-80" : "w-72"}`}
         >
-          <HostCard host={host} /> 
+          <HostCard host={host} />
         </motion.div>
       ))}
     </motion.section>

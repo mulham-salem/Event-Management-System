@@ -31,3 +31,5 @@ export const generateRandomToken = (length = 24): string => {
 export const randomDelay = (ms = 1000): number => {
     return Math.random() * ms + 500;
 }
+
+export const randomBool = () => Boolean(Math.round(Math.random()));

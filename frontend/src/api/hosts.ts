@@ -8,10 +8,11 @@ export interface Host {
   email: string;
   role: HostRole;
   created_at: string;
+  vote_id?: string; // Important
   votes_score: number;
   votes_count: number;
   upvoted: boolean; 
-  downvoted: boolean; 
+  downvoted: boolean;
 }
 
 export interface HostsResponse {
@@ -34,6 +35,15 @@ export interface FetchHostsParams {
 
 export interface VoteRequest {
   target_user: number;
+  value: 1 | -1;
+}
+
+export interface UpdateVoteRequest {
+  value: 1 | -1;
+}
+
+export interface UpdateVoteParams {
+  voteId: string;
   value: 1 | -1;
 }
 
@@ -65,17 +75,27 @@ export const hostsApi = {
     const endpoint =
       filters.role === "provider" ? "/auth/providers" : "/auth/organizers";
 
-    const res = await axiosClient.get(`${endpoint}?${params.toString()}`, {
-      skipAuth: true,
-    });
+    const res = await axiosClient.get(`${endpoint}?${params.toString()}`);
 
     return res.data;
   },
 
-  // -------- Vote (Like / Dislike) --------
+  // -------- Vote (Create) --------
   voteForHost: async (payload: VoteRequest): Promise<VoteResponse> => {
     const res = await axiosClient.post("/general/votes", payload);
-
     return res.data;
+  },
+
+  // -------- Vote (Update) --------
+  updateVote: async (voteId: string, payload: UpdateVoteRequest): Promise<VoteResponse> => {
+    const res = await axiosClient.patch(`/general/votes/${voteId}`,
+      payload
+    );
+    return res.data;
+  },
+
+  // -------- Vote (Delete) --------
+  deleteVote: async (voteId: string): Promise<void> => {
+    await axiosClient.delete(`/general/votes/${voteId}`);
   },
 };

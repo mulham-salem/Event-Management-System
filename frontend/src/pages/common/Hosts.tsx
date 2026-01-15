@@ -87,7 +87,7 @@ export const Hosts: React.FC<HostsProps> = ({ role }) => {
       {/* PAGE CONTENT */}
       <div
         className={`mx-auto flex w-full ${
-          isClient ? "max-w-6xl flex-col py-4" : "max-w-[86rem] flex-row  py-8"
+          isClient ? "max-w-6xl flex-col py-4" : "max-w-[86rem] flex-row py-8"
         }  gap-6`}
       >
         {!isClient ? (

@@ -13,7 +13,12 @@ import {
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
 
-import { useVoteForHost } from "../../hooks/useHost";
+import {
+  useVoteForHost,
+  useUpdateVote,
+  useDeleteVote,
+} from "../../hooks/useHost";
+
 import type { Host } from "../../api/hosts";
 import { getToken } from "../../utils/authToken";
 import { getRole } from "../../utils/authRole";
@@ -25,7 +30,9 @@ interface HostCardProps {
 export const HostCard: React.FC<HostCardProps> = ({ host }) => {
   const navigate = useNavigate();
   const voteMutation = useVoteForHost();
-  
+  const updateVoteMutation = useUpdateVote();
+  const deleteVoteMutation = useDeleteVote();
+
   /* ================= Auth check ================= */
   const canVote = useMemo(() => {
     const token = getToken();
@@ -35,15 +42,49 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
   /* ================= Vote handlers ================= */
   const handleVote = (value: 1 | -1) => {
-    if (value === 1 && host.upvoted) {
-      toast("You already upvoted this host 👍", { icon: "⚠️" });
+    if (!canVote) {
+      toast.error("You must be logged in as a client to vote");
       return;
     }
 
-    if (value === -1 && host.downvoted) {
-      toast("You already downvoted this host 👎", { icon: "⚠️" });
+    // 1️⃣ The same vote  → DELETE
+    if ((value === 1 && host.upvoted) || (value === -1 && host.downvoted)) {
+      if (!host.vote_id) return;
+
+      deleteVoteMutation.mutate(host.vote_id, {
+        onSuccess: () => {
+          toast.success("Vote removed");
+        },
+        onError: () => {
+          toast.error("Failed to remove vote");
+        },
+      });
+
       return;
     }
+
+    // 2️⃣ Seconde vote → PATCH
+    if (host.upvoted || host.downvoted) {
+      if (!host.vote_id) return;
+
+      updateVoteMutation.mutate(
+        { voteId: host.vote_id, value },
+        {
+          onSuccess: () => {
+            toast.success(
+              value === 1 ? "Upvote updated 👍" : "Downvote updated 👎"
+            );
+          },
+          onError: () => {
+            toast.error("Failed to update vote");
+          },
+        }
+      );
+
+      return;
+    }
+
+    // 3️⃣ First vote → POST
     voteMutation.mutate(
       {
         target_user: host.id,
@@ -178,19 +219,23 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
 
         {/* Voting Section - Only for clients */}
         {canVote && (
-          <div className="mb-4 flex items-center justify-center gap-3 rounded-xl border border-gray-100 bg-gray-50 p-3">
-            <span className="font-nata-sans-md text-sm text-gray-600">
-              Rate:
+          <div className="mb-4 flex w-full items-center justify-center gap-3 rounded-xl border border-gray-100 bg-gray-50 p-3">
+            <span className="w-20 font-nata-sans-md text-sm text-gray-600">
+              Rate host:
             </span>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center justify-center gap-2">
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleVote(1)}
-                disabled={voteMutation.isPending}
+                disabled={
+                  voteMutation.isPending ||
+                  updateVoteMutation.isPending ||
+                  deleteVoteMutation.isPending
+                }
                 className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
                   host.upvoted
-                    ? "cursor-not-allowed bg-gray-100 text-gray-400"
+                    ? "bg-green-50 text-green-300"
                     : "bg-green-100 text-green-600 hover:bg-green-200 hover:shadow-md"
                 }`}
               >
@@ -201,10 +246,14 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handleVote(-1)}
-                disabled={voteMutation.isPending}
+                disabled={
+                  voteMutation.isPending ||
+                  updateVoteMutation.isPending ||
+                  deleteVoteMutation.isPending
+                }
                 className={`flex h-9 w-9 items-center justify-center rounded-lg transition-all ${
                   host.downvoted
-                    ? "cursor-not-allowed bg-gray-100 text-gray-400"
+                    ? "bg-red-50 text-red-300"
                     : "bg-red-100 text-red-600 hover:bg-red-200 hover:shadow-md"
                 }`}
               >
@@ -212,13 +261,13 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
               </motion.button>
             </div>
             {host.upvoted && (
-              <span className="font-nata-sans-md text-xs text-green-600">
+              <span className="w-20 font-nata-sans-md text-xs text-green-600">
                 ✓ You upvoted
               </span>
             )}
 
             {host.downvoted && (
-              <span className="font-nata-sans-md text-xs text-red-600">
+              <span className="w-20 font-nata-sans-md text-xs text-red-600">
                 ✓ You downvoted
               </span>
             )}
