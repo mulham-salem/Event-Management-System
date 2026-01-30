@@ -1,15 +1,17 @@
 import React from "react";
-import { Search, Bell } from "lucide-react";
+import { Bell } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 interface HeaderProps {
   pageTitle: string;
   pageSubtitle: string;
 }
 
-export const Header: React.FC<HeaderProps> = ({
-  pageTitle,
-  pageSubtitle,
-}) => {
+export const Header: React.FC<HeaderProps> = ({ pageTitle, pageSubtitle }) => {
+  const location = useLocation();
+  const isClient = location.pathname.includes("client");
+  const isProvider = location.pathname.includes("provider");
+
   return (
     <header className="sticky top-0 z-10 border-b border-gray-200 bg-white px-8 py-[14px]">
       <div className="flex items-center justify-between">
@@ -24,21 +26,12 @@ export const Header: React.FC<HeaderProps> = ({
         </div>
 
         {/* Right */}
-        <div className="flex items-center gap-4">
-          {/* Search */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="w-64 rounded-xl border border-gray-200 py-2 pl-10 pr-4
-                         font-nata-sans-rg
-                         focus:border-transparent focus:outline-none
-                         focus:ring-2 focus:ring-violet-500"
-            />
-            <Search
-              size={20}
-              className="absolute left-3 top-2.5 text-gray-400"
-            />
+        <div className="flex w-1/4 items-center justify-between gap-4">
+          <div className="hidden items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 font-nata-sans-md text-sm text-slate-500 md:flex">
+            <span
+              className={`h-2 w-2 animate-pulse rounded-full ${isClient ? "bg-violet-500" : isProvider ? "bg-emerald-500" : "bg-amber-500"}`}
+            ></span>
+            System Online
           </div>
 
           {/* Notifications */}

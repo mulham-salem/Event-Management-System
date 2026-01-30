@@ -2,18 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Users, Loader2 } from "lucide-react";
 import { useOrganizerRecentRegistrations } from "../../../hooks/useOrganizerDashboard";
+import { getInitials } from "../../../utils/setAvatar";
 
 export const RecentRegistrationsRequests: React.FC = () => {
   const { data = [], isLoading } = useOrganizerRecentRegistrations();
-
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .join("")
-      .toUpperCase()
-      .slice(0, 2);
-  };
 
   const getStatusStyles = (status: string) => {
     switch (status.toLowerCase()) {

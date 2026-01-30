@@ -33,9 +33,9 @@ export type EventType =
 
 export interface EventsResponse {
   results: EventItem[];
-  total: number;
-  page: number;
-  page_size: number;
+  total?: number;
+  page?: number;
+  page_size?: number;
 }
 
 interface Organizer {
@@ -89,8 +89,7 @@ export const eventsApi = {
     if (filters.min_date) params.append("min_date", filters.min_date);
     if (filters.max_date) params.append("max_date", filters.max_date);
     if (filters.ordering) params.append("ordering", filters.ordering);
-    if (filters.organizer)
-      params.append("organizer", String(filters.organizer));
+    if (filters.organizer) params.append("organizer", String(filters.organizer));
 
     params.append("page", String(filters.page));
     params.append("page_size", String(filters.page_size));
@@ -101,6 +100,11 @@ export const eventsApi = {
 
   fetchEventById: async (id: string): Promise<EventDetails> => {
     const res = await axiosClient.get(`/events/public/${id}`);
+    return res.data;
+  },
+
+  fetchEventsRecommendations: async (): Promise<EventsResponse> => {
+    const res = await axiosClient.get("/recommendation/recommendations/events");
     return res.data;
   },
 };

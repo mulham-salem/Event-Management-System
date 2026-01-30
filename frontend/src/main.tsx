@@ -19,7 +19,7 @@ window.__TANSTACK_QUERY_CLIENT__ = queryClient;
 // Development only, Run MSW 
 if (import.meta.env.DEV) {
     const {worker} = await import("./mocks/browser");
-    // void worker.start();
+    void worker.start();
 }
 
 createRoot(document.getElementById('root')!).render(

@@ -20,7 +20,6 @@ import {
   CalendarCheck,
   Image,
   LayoutGrid,
-  Ticket,
   Mail,
   QrCode,
   Layers,
@@ -31,7 +30,7 @@ import { motion, AnimatePresence, type Variants } from "framer-motion";
 
 const sidebarVariants: Variants = {
   hidden: { x: -40, opacity: 0 },
-  visible: { x: 0, opacity: 1, transition: { duration: 0.35, ease: "easeOut" }},
+  visible: { x: 0, opacity: 1, transition: { duration: 0.35, ease: "easeOut" } },
 };
 
 const sectionVariants: Variants = {
@@ -98,6 +97,8 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
   else if (currentSection === "my-events") currentSection = "myEvents";
   else if (currentSection === "archived-events") currentSection = "archivedEvents";
   else if (currentSection === "manage-registrations") currentSection = "manageRegistrations";
+  else if (currentSection === "e-tickets") currentSection = "e_tickets";
+  else if (currentSection === "files") currentSection = "filesAndImages";
 
 
   /* =========================================================
@@ -153,13 +154,12 @@ export const Sidebar: React.FC<SidebarDashboardProps> = ({ onSectionChange }) =>
     { name: "myEvents", label: "My Events", icon: <Layers />, path: "/organizer/my-events" },
     { name: "archivedEvents", label: "Archived", icon: <Archive />, path: "/organizer/archived-events" },
     { name: "bookings", label: "Venue Bookings", icon: <Calendar />, path: "/organizer/bookings" },
-    // { name: "eventTickets", label: "Event Tickets", icon: <Ticket />, path: "/organizer/event-tickets" },
   ];
 
   const organizerAttendeeItems: SidebarItem[] = [
     { name: "manageRegistrations", label: "Registrations", icon: <Users />, path: "/organizer/manage-registrations" },
     { name: "invitations", label: "Invitations", icon: <Mail />, path: "/organizer/invitations",  isNew: true, badge: "QR" },
-    // { name: "e_tickets", label: "View E-Tickets", icon: <QrCode />, path: "/organizer/e-tickets" },
+    { name: "e_tickets", label: "E-Tickets", icon: <QrCode />, path: "/organizer/e-tickets" },
   ];
 
   const MotionLink = motion(Link);

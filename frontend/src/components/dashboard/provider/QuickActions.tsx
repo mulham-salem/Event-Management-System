@@ -39,15 +39,15 @@ export const QuickActions: React.FC = () => {
         </Link>
 
         {/* ===== Open Calendar ===== */}
-        <button
-          type="button"
+        <Link
+          to="/provider/calendar"
           className="group flex w-full items-center gap-3 rounded-xl border-2 border-dashed border-gray-200 p-3 transition-all hover:border-green-400 hover:bg-green-50/30"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100 transition-colors group-hover:bg-green-200">
             <Calendar className="h-5 w-5 text-green-600" />
           </div>
           <span className="font-nata-sans-md text-gray-600 transition-colors group-hover:text-green-700">Open Calendar</span>
-        </button>
+        </Link>
       </div>
       
       <AnimatePresence>

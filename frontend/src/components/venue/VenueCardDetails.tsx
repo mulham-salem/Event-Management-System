@@ -1,4 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { useVenue } from "../../hooks/useVenue";
+import { useOutletContext } from "react-router-dom";
+
+import { getToken } from "../../utils/authToken";
+import { getRole } from "../../utils/authRole";
+
+import { BookingForm } from "../booking/BookingForm";
+import { ModalPortal } from "../common/ModalPortal";
+import { RatingsSection } from "../rating/RatingsSection";
+import { VenuesRecommendations } from "./VenuesRecommendations";
+
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -16,32 +28,44 @@ import {
   Notebook,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
-import { getToken } from "../../utils/authToken";
-import { getRole } from "../../utils/authRole";
-import { BookingForm } from "../booking/BookingForm";
-import { ModalPortal } from "../common/ModalPortal";
-import { RatingsSection } from "../rating/RatingsSection";
+
 import type { VenueDetails } from "../../api/venues";
-import { useLocation } from "react-router-dom";
 
 interface VenueCardDetailsProps {
   venue: VenueDetails;
   onBack: () => void;
 }
 
-export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
-  venue,
-  onBack,
-}) => {
+interface LayoutContextType {
+  scrollableNodeRef: React.RefObject<HTMLElement>;
+}
+
+export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({ venue, onBack }) => {
+  const { scrollableNodeRef } = useOutletContext<LayoutContextType>();
+
+  const [selectedVenueId, setSelectedVenueId] = useState<string | null>(null);
+  const { data: venueData } = useVenue(selectedVenueId ?? venue.id);
+  const currentVenue = venueData ?? venue;
+
   const location = useLocation();
   const isOrganizer =
-    location.pathname === "/organizer/venues" ||
-    location.pathname === "/organizer/bookings";
+    location.pathname === "/organizer/venues" || location.pathname === "/organizer/bookings";
 
   const [openCreate, setOpenCreate] = useState(false);
 
-  const coverImage =
-    venue.images.find((img) => img.is_cover) ?? venue.images[0];
+  useEffect(() => {
+    if (!selectedVenueId) return;
+
+    const node = scrollableNodeRef?.current;
+    if (node) {
+      node.scrollTo({
+        top: 700,
+        behavior: "smooth",
+      });
+    }
+  }, [selectedVenueId, scrollableNodeRef]);
+
+  const coverImage = currentVenue.images.find((img) => img.is_cover) ?? currentVenue.images[0];
 
   const accessToken = getToken();
   const role = getRole();
@@ -63,6 +87,10 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
     setOpenCreate(true);
   };
 
+  const handleSelectRecommendation = (id: string) => {
+    setSelectedVenueId(id);
+  };
+
   return (
     <motion.section
       initial={{ opacity: 0, y: 20 }}
@@ -74,12 +102,11 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
       {/* Back */}
       <button
         onClick={onBack}
-        className={`mb-6 inline-flex items-center gap-2 font-nata-sans-md text-sm
-                    ${
-                      isOrganizer
-                        ? "text-amber-600 hover:text-amber-700"
-                        : "text-[#5a2ea6] hover:text-purple-700"
-                    }`}
+        className={`mb-6 inline-flex items-center gap-2 font-nata-sans-md text-sm ${
+          isOrganizer
+            ? "text-amber-600 hover:text-amber-700"
+            : "text-[#5a2ea6] hover:text-purple-700"
+        }`}
       >
         <ArrowLeft size={18} className="transition hover:translate-x-1" />
         Back to venues
@@ -97,11 +124,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
       )}
 
       {/* Provider */}
-      <div
-        className={`mb-6 rounded-2xl ${
-          isOrganizer ? "bg-amber-50/50" : "bg-[#f6f1ff]"
-        } p-5`}
-      >
+      <div className={`mb-6 rounded-2xl ${isOrganizer ? "bg-amber-50/50" : "bg-[#f6f1ff]"} p-5`}>
         <h3
           className={`mb-3 font-nata-sans-bd text-lg ${
             isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"
@@ -113,26 +136,24 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
         <div className="flex flex-wrap gap-8 text-sm text-gray-700">
           <div className="flex items-center gap-2">
             <User size={16} />
-            <span>Name: {venue.provider.full_name}</span>
+            <span>Name: {currentVenue.provider.full_name}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <Mail size={16} />
-            <span>Email: {venue.provider.email}</span>
+            <span>Email: {currentVenue.provider.email}</span>
           </div>
 
           <div className="flex items-center gap-2">
             <Phone size={16} />
-            <span>Phone: {venue.provider.phone ?? "0000000000"}</span>
+            <span>Phone: {currentVenue.provider.phone ?? "0000000000"}</span>
           </div>
         </div>
       </div>
 
       {/* Venue Info */}
       <div className="mb-8">
-        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">
-          Venue Details
-        </h3>
+        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">Venue Details</h3>
 
         <div className="mb-4 flex flex-wrap gap-6 text-sm text-gray-700">
           <div className="flex items-center gap-2">
@@ -140,15 +161,12 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
               size={16}
               className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
             />
-            <span>{venue.name}</span>
+            <span>{currentVenue.name}</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <Users
-              size={16}
-              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
-            />
-            <span>Capacity: {venue.capacity}</span>
+            <Users size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
+            <span>Capacity: {currentVenue.capacity}</span>
           </div>
 
           <div className="flex items-center gap-2">
@@ -156,28 +174,25 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
               size={17}
               className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
             />
-            <span>Price: {venue.price_per_hour} / hour</span>
+            <span>Price: {currentVenue.price_per_hour} / hour</span>
           </div>
 
           <div className="flex items-center gap-2">
-            <MapPin
-              size={16}
-              className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`}
-            />
+            <MapPin size={16} className={`${isOrganizer ? "text-amber-600" : "text-[#5a2ea6]"}`} />
             <span>
-              Location: {venue.location_geo.area}, {venue.location_geo.city}
+              Location: {currentVenue.location_geo.area}, {currentVenue.location_geo.city}
             </span>
           </div>
         </div>
 
         {/* Map */}
-        {venue.location_geo && (
+        {currentVenue.location_geo && (
           <>
             <div className="mb-6 overflow-hidden rounded-2xl border">
               <iframe
                 title="Venue location"
                 src={`https://www.google.com/maps?q=${encodeURIComponent(
-                  venue.location_geo.location
+                  currentVenue.location_geo.location
                 )}&output=embed`}
                 className="h-[300px] w-full border-0"
                 loading="lazy"
@@ -186,7 +201,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
             <a
               href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                venue.location_geo.location
+                currentVenue.location_geo.location
               )}`}
               target="_blank"
               rel="noopener noreferrer"
@@ -200,14 +215,12 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
         )}
 
         {/* Gallery */}
-        {venue.images.length > 1 && (
+        {currentVenue.images.length > 1 && (
           <div>
-            <h3 className="my-4 font-nata-sans-bd text-lg text-gray-800">
-              Gallery
-            </h3>
+            <h3 className="my-4 font-nata-sans-bd text-lg text-gray-800">Gallery</h3>
 
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
-              {venue.images.map((img) => (
+              {currentVenue.images.map((img) => (
                 <div key={img.id} className="overflow-hidden rounded-xl border">
                   <img
                     src={img.image_url}
@@ -223,22 +236,19 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
       {/* Booking */}
       <div className="mb-10">
-        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">
-          Availability Booking
-        </h3>
+        <h3 className="mb-4 font-nata-sans-bd text-lg text-gray-800">Availability Booking</h3>
 
-        {venue.bookings.length === 0 ? (
+        {currentVenue.bookings.length === 0 ? (
           <div className="flex items-center gap-2 text-sm text-gray-500">
             <AlertCircle size={16} />
             No bookings available
           </div>
         ) : (
           <div className="grid gap-4 sm:grid-cols-2">
-            {venue.bookings.map((booking) => (
+            {currentVenue.bookings.map((booking) => (
               <div
                 key={booking.id}
-                className="rounded-xl border border-red-200 
-                         bg-red-50 p-4 text-sm text-red-600"
+                className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-600"
               >
                 <div className="mb-2 flex items-center gap-2">
                   <Calendar size={15} />
@@ -257,7 +267,7 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
         )}
       </div>
 
-      {isLoggedIn && <RatingsSection targetType="venue" targetId={venue.id} />}
+      {isLoggedIn && <RatingsSection targetType="venue" targetId={currentVenue.id} />}
 
       {/* Action */}
       <motion.div
@@ -271,19 +281,15 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
           whileTap={{ scale: 0.97 }}
           onClick={handleBooking}
           disabled={isLoggedIn && !isAllowed}
-          className={`
-            group inline-flex items-center gap-2 rounded-xl px-8 py-3
-            font-nata-sans-md text-sm transition-all
-            ${
-              isLoggedIn && isAllowed
-                ? `${
-                    isOrganizer
-                      ? "bg-amber-500 hover:bg-amber-600"
-                      : "bg-[#5a2ea6] hover:bg-purple-800"
-                  } text-white active:scale-95`
-                : "cursor-not-allowed bg-gray-200 text-gray-500"
-            }
-          `}
+          className={`group inline-flex items-center gap-2 rounded-xl px-8 py-3 font-nata-sans-md text-sm transition-all ${
+            isLoggedIn && isAllowed
+              ? `${
+                  isOrganizer
+                    ? "bg-amber-500 hover:bg-amber-600"
+                    : "bg-[#5a2ea6] hover:bg-purple-800"
+                } text-white active:scale-95`
+              : "cursor-not-allowed bg-gray-200 text-gray-500"
+          } `}
         >
           {!isLoggedIn && (
             <>
@@ -294,20 +300,14 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
 
           {isLoggedIn && !isAllowed && (
             <>
-              <AlertCircle
-                size={18}
-                className="transition group-hover:scale-110"
-              />
+              <AlertCircle size={18} className="transition group-hover:scale-110" />
               Only clients can book
             </>
           )}
 
           {isLoggedIn && isAllowed && (
             <>
-              <CheckCircle
-                size={18}
-                className="transition group-hover:scale-110"
-              />
+              <CheckCircle size={18} className="transition group-hover:scale-110" />
               Request Booking
             </>
           )}
@@ -333,19 +333,16 @@ export const VenueCardDetails: React.FC<VenueCardDetailsProps> = ({
                 onClick={(e) => e.stopPropagation()}
                 className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl"
               >
-                <h3 className="mb-4 text-lg font-semibold">
-                  Create New Booking
-                </h3>
+                <h3 className="mb-4 text-lg font-semibold">Create New Booking</h3>
 
-                <BookingForm
-                  venueId={venue.id}
-                  onClose={() => setOpenCreate(false)}
-                />
+                <BookingForm venueId={currentVenue.id} onClose={() => setOpenCreate(false)} />
               </motion.div>
             </motion.div>
           </ModalPortal>
         )}
       </AnimatePresence>
+
+      {isLoggedIn && <VenuesRecommendations onSelect={handleSelectRecommendation} />}
     </motion.section>
   );
 };

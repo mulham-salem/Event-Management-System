@@ -76,7 +76,7 @@ export const RegistrationsTable: React.FC<RegistrationsTableProps> = ({
               transition={{ duration: 0.3 }}
               className="h-60"
             >
-              <td colSpan={6} className="py-16">
+              <td colSpan={10} className="py-16">
                 <div className="flex items-center justify-center gap-2 text-amber-600">
                   <Loader2 className="h-5 w-5 animate-spin" />
                   <span className="font-nata-sans-md text-sm">

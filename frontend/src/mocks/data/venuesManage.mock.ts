@@ -1,3 +1,4 @@
+import type { VenueImage } from "../../api/venues";
 import type { Venue } from "../../api/venuesManage";
 import { randomDate } from "../helpers/random.helpers";
 
@@ -47,3 +48,6 @@ export const archivedVenuesDB: Venue[] = Array.from({ length: 20 }, (_, i) => {
     last_time_archived: randomDate(),
   };
 });
+
+// In-memory database for venue images
+export const venueImagesDB: Record<string, VenueImage[]> = {};

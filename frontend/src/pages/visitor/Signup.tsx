@@ -107,7 +107,7 @@ export const Signup: React.FC<SignupProps> = ({ role = "client" }) => {
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
           transition={{ duration: 1.0, ease: "easeOut" }}
-          className={`flex flex-col justify-between p-10 text-black ${
+          className={`flex flex-col justify-between rounded-r-3xl p-10 text-black ${
             role === "client"
               ? "bg-gradient-to-br from-indigo-300 via-purple-300 to-pink-300"
               : role === "provider"

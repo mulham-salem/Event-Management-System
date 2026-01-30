@@ -45,7 +45,7 @@ export const Registrations: React.FC = () => {
                         <Calendar className="h-6 w-6"/>
                         Registrations
                     </h1>
-                    <p className="mt-1 text-sm text-gray-500">
+                    <p className="mt-1 font-nata-sans-md text-sm text-gray-500">
                         Manage your event registrations
                     </p>
                 </div>

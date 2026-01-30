@@ -1,10 +1,13 @@
+import type { VenueImage } from "../../api/venues";
 import type {
   Venue,
   CreateVenuePayload,
   UpdateVenuePayload,
+  LocalVenueImage,
+  UploadVenueImagesResponse,
 } from "../../api/venuesManage";
 
-import { archivedVenuesDB, venueManageDB } from "../data/venuesManage.mock";
+import { archivedVenuesDB, venueImagesDB, venueManageDB } from "../data/venuesManage.mock";
 
 /* =======================
    Query Helpers
@@ -124,4 +127,33 @@ export const deleteVenue = (id: string): void => {
   if (index !== -1) {
     venueManageDB.splice(index, 1);
   }
+};
+
+export const uploadVenueImages = (venueId: string, images: LocalVenueImage[]): UploadVenueImagesResponse => {
+  const uploadedImages: VenueImage[] = images.map((img) => ({
+    id: `img-${Date.now()}-${Math.random().toString(36).substr(2, 5)}`,
+    image_url: URL.createObjectURL(img.file), 
+    image_size: img.file.size,
+    alt_text: img.alt_text,
+    is_cover: img.is_cover,
+  }));
+
+  if (!venueImagesDB[venueId]) venueImagesDB[venueId] = [];
+  venueImagesDB[venueId].push(...uploadedImages);
+
+  return {
+    message: "Images uploaded successfully",
+    images: uploadedImages,
+  };
+};
+
+export const deleteVenueImage = (venueId: string, imageId: string): boolean => {
+  const venueImages = venueImagesDB[venueId];
+  if (!venueImages) return false;
+
+  const index = venueImages.findIndex((img) => img.id === imageId);
+  if (index === -1) return false;
+
+  venueImages.splice(index, 1);
+  return true;
 };

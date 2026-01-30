@@ -21,6 +21,10 @@ import { OrganizerDashboard } from "./pages/organizer/OrganizerDashboard";
 import { EventsManage } from "./pages/organizer/EventsManage";
 import { EventsArchive } from "./pages/organizer/EventsArchive";
 import { RegistrationsManage } from "./pages/organizer/RegistrationsManage";
+import { Invitations } from "./pages/organizer/Invitations";
+import { E_Ticket } from "./pages/organizer/E_Ticket.tsx";
+import { BookingsCalendar } from "./pages/provider/BookingsCalendar";
+import { VenueFiles } from "./pages/provider/VenueFiles";
 
 function App() {
   return (
@@ -28,7 +32,6 @@ function App() {
       <Toaster position="top-right" toastOptions={{ duration: 4000 }} />
       <Router>
         <Routes>
-
           {/* ===== PUBLIC ROUTES ===== */}
           <Route element={<PublicLayout />}>
             <Route path="/" element={<Home />} />
@@ -57,7 +60,10 @@ function App() {
               <Route path="/client/event-ratings" element={<Ratings key="event" type="event" />} />
               <Route path="/client/venue-ratings" element={<Ratings key="venue" type="venue" />} />
               <Route path="/client/providers" element={<Hosts key="provider" role="provider" />} />
-              <Route path="/client/organizers" element={<Hosts key="organizer" role="organizer" />} />
+              <Route
+                path="/client/organizers"
+                element={<Hosts key="organizer" role="organizer" />}
+              />
             </Route>
           </Route>
 
@@ -68,6 +74,8 @@ function App() {
               <Route path="/provider/my-venues" element={<VenuesManage />} />
               <Route path="/provider/archived-venues" element={<VenuesArchive />} />
               <Route path="/provider/manage-bookings" element={<BookingsManage />} />
+              <Route path="/provider/calendar" element={<BookingsCalendar />} />
+              <Route path="/provider/files" element={<VenueFiles />} />
             </Route>
           </Route>
 
@@ -80,9 +88,10 @@ function App() {
               <Route path="/organizer/my-events" element={<EventsManage />} />
               <Route path="/organizer/archived-events" element={<EventsArchive />} />
               <Route path="/organizer/manage-registrations" element={<RegistrationsManage />} />
+              <Route path="/organizer/invitations" element={<Invitations />} />
+              <Route path="/organizer/e-tickets" element={<E_Ticket />} />
             </Route>
           </Route>
-          
         </Routes>
       </Router>
     </>

@@ -163,3 +163,106 @@
             #6240a3 100%
     );
 }
+
+/* ==============================
+   FullCalendar custom styling
+============================== */
+
+/* Container */
+.fc {
+  @apply rounded-2xl py-2 whitespace-nowrap border border-emerald-200 shadow-md;
+}
+
+/* Header toolbar */
+.fc .fc-toolbar {
+  @apply px-4 my-4;
+}
+
+.fc .fc-toolbar-title {
+  @apply text-gray-800 font-semibold text-xl tracking-tight;
+
+  font-feature-settings: "ss01", "ss02";
+}
+
+/* All buttons - Enhanced design */
+.fc .fc-button {
+  @apply bg-white text-sm font-nata-sans-md text-gray-700 border border-gray-200 px-4 py-2 rounded-xl 
+         hover:bg-emerald-50 hover:border-emerald-300 hover:text-emerald-700 
+         transition-all duration-200 ease-out shadow-sm hover:shadow-md;
+}
+
+/* Kill default browser & FullCalendar focus ring */
+.fc .fc-button:focus,
+.fc .fc-button:focus-visible,
+.fc .fc-button:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.fc .fc-button:not(:disabled):active,
+.fc .fc-button:not(:disabled).fc-button-active {
+  @apply bg-emerald-500 ring-1 ring-emerald-300 text-white border-emerald-500 shadow-md;
+}
+
+/* Today button special */
+.fc .fc-today-button {
+  @apply bg-emerald-500 text-white border-emerald-500 hover:bg-emerald-600 hover:border-emerald-600 hover:text-white;
+}
+
+
+/* Current day cell (dayGrid view) */
+.fc .fc-day-today {
+  background-color: #dbf7ec !important; /* emerald-400 */
+}
+
+/* Remove extra borders to clean up */
+.fc .fc-scrollgrid {
+  border: none !important;
+}
+
+/* DayGrid table (grid of dates) */
+.fc .fc-daygrid {
+  @apply bg-white rounded-2xl border border-gray-200;
+
+  overflow: hidden;
+  width: 98%;
+  margin: 0 auto;
+}
+
+.fc .fc-col-header-cell-cushion {
+  @apply text-sm text-gray-700 font-nata-sans-md py-1.5;
+  
+  letter-spacing: 0.5px;
+}
+
+/* Events */
+.fc-event {
+  @apply cursor-pointer rounded-lg bg-emerald-500 text-white px-2 py-1 text-xs shadow-md transition duration-150 hover:bg-emerald-600;
+}
+
+/* Day cells */
+.fc .fc-daygrid-day-frame {
+  @apply transition duration-150 hover:bg-emerald-50;
+}
+
+.fc .fc-daygrid-day-top {
+  @apply justify-center;
+}
+
+.fc .fc-daygrid-day-number {
+  @apply text-gray-800 p-2 font-nata-sans-md rounded-full w-7 h-7 flex items-center justify-center 
+         hover:bg-emerald-100 transition-colors duration-150;
+}
+
+.fc .fc-day-today .fc-daygrid-day-number {
+  @apply bg-emerald-500 text-white font-nata-sans-bd;
+}
+
+/* Hover for timegrid slots */
+.fc .fc-timegrid-slot:hover {
+  @apply bg-gradient-to-r from-emerald-50/30 to-transparent;
+}
+
+.fc .fc-timegrid-axis-cushion {
+  @apply text-gray-500 font-nata-sans-md;
+}

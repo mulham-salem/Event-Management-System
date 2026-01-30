@@ -19,9 +19,9 @@ export const DashboardLayout: React.FC = () => {
   const location = useLocation();
   let current = location.pathname.split("/").pop()!;
 
-  
+
   const scrollableNodeRef = useRef<HTMLDivElement | null>(null);
-  
+
   if (current === "events") current = "registrations";
   else if (current === "venues") current = "bookings";
   else if (current === "event-ratings") current = "eventsRatings";
@@ -32,6 +32,8 @@ export const DashboardLayout: React.FC = () => {
   else if (current === "my-events") current = "myEvents";
   else if (current === "archived-events") current = "archivedEvents";
   else if (current === "manage-registrations") current = "manageRegistrations";
+  else if (current === "e-tickets") current = "e_tickets";
+  else if (current === "files") current = "filesAndImages";
 
 
   const titles: Record<string, { title: string; subtitle: string }> = {
@@ -102,10 +104,6 @@ export const DashboardLayout: React.FC = () => {
       title: "Archived Events",
       subtitle: "View and restore completed events.",
     },
-    // eventTickets: {
-    //   title: "Event Tickets",
-    //   subtitle: "Manage ticket types and pricing.",
-    // },
     manageRegistrations: {
       title: "Manage Registrations",
       subtitle: "View and manage attendee registrations.",
@@ -114,10 +112,10 @@ export const DashboardLayout: React.FC = () => {
       title: "Invitations",
       subtitle: "Generate and send QR-coded e-tickets.",
     },
-    // e_tickets: {
-    //   title: "E-Tickets",
-    //   subtitle: "View all generated electronic tickets.",
-    // },
+    e_tickets: {
+      title: "E-Tickets",
+      subtitle: "View all generated electronic tickets.",
+    },
   };
 
   const role = getRole();

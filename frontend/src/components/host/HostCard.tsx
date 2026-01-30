@@ -22,6 +22,7 @@ import {
 import type { Host } from "../../api/hosts";
 import { getToken } from "../../utils/authToken";
 import { getRole } from "../../utils/authRole";
+import { getInitials } from "../../utils/setAvatar";
 
 interface HostCardProps {
   host: Host;
@@ -108,16 +109,6 @@ export const HostCard: React.FC<HostCardProps> = ({ host }) => {
     } else {
       navigate(`/venues?provider=${host.id}`);
     }
-  };
-
-  /* ================= Get initials ================= */
-  const getInitials = (name: string) => {
-    return name
-      .split(" ")
-      .map((n) => n[0])
-      .slice(0, 2)
-      .join("")
-      .toUpperCase();
   };
 
   return (

@@ -1,5 +1,5 @@
 import axiosClient from "./axiosClient";
-import type {EventType} from "./events.ts";
+import type { EventType } from "./events.ts";
 
 export type EventRegistrationStatus  = "pending" | "approved" | "rejected" | "canceled";
 

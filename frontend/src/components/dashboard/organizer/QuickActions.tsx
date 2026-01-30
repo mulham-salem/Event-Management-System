@@ -1,5 +1,5 @@
 import React from "react";
-import { Plus, Ticket, Mail } from "lucide-react";
+import { Plus, Ticket, Mail, Calendar } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface QuickActionsProp {
@@ -30,14 +30,14 @@ export const QuickActions: React.FC<QuickActionsProp> = ({ onOpen }) => {
 
         {/* ===== Create Ticket Type ===== */}
         <Link
-          to="/organizer/event-tickets"
+          to="/organizer/venues"
           className="group flex w-full items-center gap-3 rounded-xl border-2 border-dashed border-gray-200 p-3 transition-all hover:border-emerald-400 hover:bg-emerald-50/30"
         >
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-emerald-100 transition-colors group-hover:bg-emerald-200">
-            <Ticket className="h-5 w-5 text-emerald-600" />
+            <Calendar className="h-5 w-5 text-emerald-600" />
           </div>
           <span className="font-nata-sans-md text-gray-600 transition-colors group-hover:text-emerald-700">
-            Create Ticket Type
+            Create New Booking
           </span>
         </Link>
 
